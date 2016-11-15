@@ -140,7 +140,7 @@ class EnPassentMove extends Move {
     @Override
     public void execute(MoveTarget moveTarget) {
         Offset offset = to.getRank() - from.getRank() > 0 ? Offset.DOWN : Offset.UP;
-        moveTarget.movePieceAndDoCapture(from, to, to.getNext(offset));
+        moveTarget.movePieceAndDoCapture(from, to, to.next(offset));
     }
 
     @Override

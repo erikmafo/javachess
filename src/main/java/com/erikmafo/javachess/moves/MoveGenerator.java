@@ -64,11 +64,11 @@ class SlidingMoveGenerator extends MoveGenerator {
     public void findAttackSquares(ReadableBoard readableBoard, BoardCoordinate pieceLocation, AttackTable attackTable) {
         super.findAttackSquares(readableBoard, pieceLocation, attackTable);
         for (Offset offset : getAttackOffsets()) {
-            BoardCoordinate target = pieceLocation.getNext(offset);
+            BoardCoordinate target = pieceLocation.next(offset);
             while (target.isOnBoard()) {
                 if (!readableBoard.isOccupiedAt(target)) {
                     attackTable.addEmptyTarget(target);
-                    target = target.getNext(offset);
+                    target = target.next(offset);
                     continue;
                 } else if (readableBoard.getPieceColorAt(target) != pieceColor) {
                     attackTable.addOccupiedTarget(target);
@@ -89,7 +89,7 @@ class NonSlidingMoveGenerator extends MoveGenerator {
     public void findAttackSquares(ReadableBoard readableBoard, BoardCoordinate pieceLocation, AttackTable attackTable) {
         super.findAttackSquares(readableBoard, pieceLocation, attackTable);
         for (Offset offset : getAttackOffsets()) {
-            BoardCoordinate target = pieceLocation.getNext(offset);
+            BoardCoordinate target = pieceLocation.next(offset);
             if (!target.isOnBoard()) {
                 continue;
             }
@@ -146,12 +146,12 @@ class KingMoveGenerator extends NonSlidingMoveGenerator {
 
         if (isKingSideCastlingLegal(board)) {
             moves.add(Moves.createCastlingMove(pieceLocation, kingSideCastlingTarget,
-                    initialKingSideRookCoordinate, kingSideCastlingTarget.getNext(Offset.LEFT)));
+                    initialKingSideRookCoordinate, kingSideCastlingTarget.next(Offset.LEFT)));
         }
 
         if (isQueenSideCastlingLegal(board)) {
             moves.add(Moves.createCastlingMove(pieceLocation, queenSideCastlingTarget,
-                    initialQueenSideRookCoordinate, queenSideCastlingTarget.getNext(Offset.RIGHT)));
+                    initialQueenSideRookCoordinate, queenSideCastlingTarget.next(Offset.RIGHT)));
         }
 
     }
@@ -227,7 +227,7 @@ class PawnMoveGenerator extends NonSlidingMoveGenerator {
         MoveGenerator queen = board.getMovingColor() == PieceColor.WHITE ?
                 MoveGenerators.getWhiteQueen() : MoveGenerators.getBlackQueen();
 
-        BoardCoordinate oneUp = pieceLocation.getNext(up);
+        BoardCoordinate oneUp = pieceLocation.next(up);
         if (oneUp.isOnBoard() && !board.isOccupiedAt(oneUp)) {
             moves.add(Moves.createPawnPromotionMove(pieceLocation, oneUp, PieceType.QUEEN));
         }
@@ -246,7 +246,7 @@ class PawnMoveGenerator extends NonSlidingMoveGenerator {
         int fileDiff = Math.abs(lastMove.getTo().getFile() - pieceLocation.getFile());
 
         if (pieceLocation.getRank() == fifthRank && lastMoveIsDoublePawnPush && fileDiff == 1) {
-            moves.add(Moves.createEnPassentMove(pieceLocation, lastMove.getTo().getNext(up)));
+            moves.add(Moves.createEnPassentMove(pieceLocation, lastMove.getTo().next(up)));
         }
     }
 
@@ -256,14 +256,14 @@ class PawnMoveGenerator extends NonSlidingMoveGenerator {
 
         // add single push
         boolean addedSinglePush = false;
-        BoardCoordinate oneUp = pieceLocation.getNext(up);
+        BoardCoordinate oneUp = pieceLocation.next(up);
         if (oneUp.isOnBoard() && !board.isOccupiedAt(oneUp)) {
             moves.add(Moves.createQuietMove(pieceLocation, oneUp));
             addedSinglePush = true;
         }
 
         // add double push
-        BoardCoordinate twoUp = oneUp.getNext(up);
+        BoardCoordinate twoUp = oneUp.next(up);
         if (pieceLocation.getRank() == secondRank && addedSinglePush && !board.isOccupiedAt(twoUp)) {
             moves.add(Moves.createQuietMove(pieceLocation, twoUp));
         }

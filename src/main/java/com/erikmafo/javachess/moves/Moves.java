@@ -88,13 +88,13 @@ public class Moves {
 
         if (2 == to.getFile() - from.getFile()) {
             // king side castling move
-            BoardCoordinate rookFrom = to.getNext(Offset.RIGHT);
-            BoardCoordinate rookTo = from.getNext(Offset.RIGHT);
+            BoardCoordinate rookFrom = to.next(Offset.RIGHT);
+            BoardCoordinate rookTo = from.next(Offset.RIGHT);
             move = createCastlingMove(from, to, rookFrom, rookTo);
         } else if (2 == from.getFile() - to.getFile()) {
             // queen side castling move
-            BoardCoordinate rookFrom = to.getNext(Offset.LEFT).getNext(Offset.LEFT);
-            BoardCoordinate rookTo = from.getNext(Offset.LEFT);
+            BoardCoordinate rookFrom = to.next(Offset.LEFT).next(Offset.LEFT);
+            BoardCoordinate rookTo = from.next(Offset.LEFT);
             move = createCastlingMove(from, to, rookFrom, rookTo);
         } else if (board.isOccupiedAt(to)) {
             move = createCaptureMove(from, to);
@@ -111,7 +111,7 @@ public class Moves {
         evaluationFunction.setColor(board.getMovingColor());
         MoveSearchAlgorithm moveSearchAlgorithm = new MinMax();
 
-        return moveSearchAlgorithm.execute(board, evaluationFunction, 4);
+        return moveSearchAlgorithm.execute(board, evaluationFunction, 5);
     }
 
     public static Move createCastlingMove(BoardCoordinate kingFrom, BoardCoordinate kingTo,
