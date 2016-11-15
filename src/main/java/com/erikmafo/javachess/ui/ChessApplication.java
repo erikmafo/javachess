@@ -172,8 +172,6 @@ public class ChessApplication extends Application {
 
         BoardCoordinate boardCoordinate = BoardCoordinate.valueOf(file, rank);
 
-        System.out.println(boardCoordinate + " was pressed");
-
         dragPiece.setBoardCoordinate(boardCoordinate);
 
         dragPiece.setIsSelected(true);
@@ -272,7 +270,14 @@ public class ChessApplication extends Application {
 
         primaryStage.show();
 
-        primaryStage.setOnCloseRequest(t -> Platform.exit());
+        primaryStage.setOnCloseRequest(t -> {
+
+            if (calculateComputerMoveTask != null) {
+                calculateComputerMoveTask.cancel();
+            }
+
+            Platform.exit();
+        });
 
     }
 
