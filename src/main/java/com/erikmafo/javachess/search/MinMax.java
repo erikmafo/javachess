@@ -25,10 +25,8 @@ public class MinMax extends MoveSearchAlgorithm {
             return evaluationFunction.evaluate(board);
         }
 
-        List<Move> moves = new ArrayList<>();
-        board.fillWithPossibleMoves(moves);
+        List<Move> moves = board.getPossibleMoves();
         moves.sort(moveComparator.reversed());
-
 
         PieceColor color = board.getMovingColor();
 
@@ -60,8 +58,7 @@ public class MinMax extends MoveSearchAlgorithm {
             return evaluationFunction.evaluate(board);
         }
 
-        List<Move> moves = new ArrayList<>();
-        board.fillWithPossibleMoves(moves);
+        List<Move> moves = board.getPossibleMoves();
         moves.sort(moveComparator.reversed());
 
         PieceColor color = board.getMovingColor();

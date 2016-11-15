@@ -7,6 +7,7 @@ import com.erikmafo.javachess.pieces.PieceType;
 import com.erikmafo.javachess.moves.Move;
 import com.erikmafo.javachess.moves.Moves;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -17,7 +18,6 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -193,7 +193,7 @@ public class ChessApplication extends Application {
 
         Move move = Moves.valueOf(board, from, to);
 
-        if (getLegalMoves().contains(move)) {
+        if (getMoves().contains(move)) {
 
             playMove(move);
 
@@ -250,13 +250,11 @@ public class ChessApplication extends Application {
     }
 
 
-    private List<Move> getLegalMoves() {
+    private List<Move> getMoves() {
 
-        List<Move> legalMoves = new ArrayList<>();
+        List<Move> moves = board.getPossibleMoves();
 
-        board.fillWithPossibleMoves(legalMoves);
-
-        return legalMoves;
+        return moves;
 
     }
 
@@ -268,13 +266,13 @@ public class ChessApplication extends Application {
 
         primaryStage.setTitle("Chess Application");
 
-
         Scene scene = new Scene(createContent());
 
         primaryStage.setScene(scene);
 
         primaryStage.show();
 
+        primaryStage.setOnCloseRequest(t -> Platform.exit());
 
     }
 

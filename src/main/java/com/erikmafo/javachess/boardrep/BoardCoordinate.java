@@ -83,7 +83,7 @@ public enum BoardCoordinate {
     }
 
 
-    public BoardCoordinate getNext(Offset offset) {
+    public BoardCoordinate next(Offset offset) {
         int newIndex = index + offset.getValue();
         if (!hasNext(offset)) {
             return OFF_BOARD;

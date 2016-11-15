@@ -197,6 +197,22 @@ public class Board implements ReadableBoard, MoveTarget, PlayableBoard {
     }
 
     @Override
+    public List<Move> getPossibleMoves() {
+
+        List<Move> moves = new ArrayList<>();
+
+        Piece[] pieceEntries = getPieceEntriesHeldBy(getMovingColor());
+        for (Piece piece : pieceEntries) {
+            if (!piece.isCaptured()) {
+                piece.findPossibleMoves(this, moves);
+            }
+        }
+
+        return moves;
+
+    }
+
+    @Override
     public boolean isChecked(PieceColor color) {
         for (Piece piece : getPieceEntriesHeldBy(color.getOpposite())) {
             if (!piece.isCaptured() && piece.attacksPieceAt(getKingLocation(color))) {
@@ -250,7 +266,7 @@ public class Board implements ReadableBoard, MoveTarget, PlayableBoard {
 
     public void search(Collection<BoardCoordinate> results, BoardCoordinate start, Offset[] offsets) {
         for (Offset offset : offsets) {
-            BoardCoordinate current = start.getNext(offset);
+            BoardCoordinate current = start.next(offset);
             if (current.isOnBoard() && isOccupiedAt(current)) {
                 results.add(current);
             }
@@ -260,13 +276,13 @@ public class Board implements ReadableBoard, MoveTarget, PlayableBoard {
 
     public void slideSearch(Collection<BoardCoordinate> results, BoardCoordinate start, Set<Offset> offsets) {
         for (Offset offset : offsets) {
-            BoardCoordinate current = start.getNext(offset);
+            BoardCoordinate current = start.next(offset);
             while (current.isOnBoard()) {
                 if (isOccupiedAt(current)) {
                     results.add(current);
                     break;
                 }
-                current = current.getNext(offset);
+                current = current.next(offset);
             }
 
         }
@@ -309,7 +325,7 @@ public class Board implements ReadableBoard, MoveTarget, PlayableBoard {
         BoardCoordinate curr = BoardCoordinate.A2;
         for (int i = 0; i < 8; i++) {
             whitePieceEntries[8 + i] = new Piece(PieceColor.WHITE, PieceType.PAWN, curr);
-            curr = curr.getNext(Offset.RIGHT);
+            curr = curr.next(Offset.RIGHT);
         }
 
         blackPieceEntries = new Piece[16];
@@ -329,7 +345,7 @@ public class Board implements ReadableBoard, MoveTarget, PlayableBoard {
         curr = BoardCoordinate.A7;
         for (int i = 0; i < 8; i++) {
             blackPieceEntries[8 + i] = new Piece(PieceColor.BLACK, PieceType.PAWN, curr);
-            curr = curr.getNext(Offset.RIGHT);
+            curr = curr.next(Offset.RIGHT);
         }
 
         for (Piece piece : whitePieceEntries) {

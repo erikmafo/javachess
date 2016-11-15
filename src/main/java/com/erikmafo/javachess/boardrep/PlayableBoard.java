@@ -11,6 +11,9 @@ public interface PlayableBoard extends ReadableBoard {
 
     void play(Move move);
 
+    @Deprecated
     void fillWithPossibleMoves(List<Move> moveSet);
+
+    List<Move> getPossibleMoves();
 
 }
