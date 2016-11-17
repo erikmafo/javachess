@@ -26,13 +26,6 @@ public class Board implements ReadableBoard, MoveTarget, PlayableBoard {
     private boolean whiteHasCastled;
     private boolean blackHasCastled;
 
-    public static Board createInstance() {
-        return new Board();
-    }
-
-
-    // ------- ReadableBoard interface -------
-
     @Override
     public final boolean isOccupiedAt(BoardCoordinate location) {
         return pieceEntryEnumMap.get(location) != null;
@@ -75,9 +68,6 @@ public class Board implements ReadableBoard, MoveTarget, PlayableBoard {
         }
         return sum;
     }
-
-    // ------- MoveTarget Interface --------
-
 
     @Override
     public void movePiece(BoardCoordinate from, BoardCoordinate to) {
@@ -153,10 +143,6 @@ public class Board implements ReadableBoard, MoveTarget, PlayableBoard {
         return color == WHITE ? whitePieceEntries : blackPieceEntries;
     }
 
-
-    // ------- PlayableBoard Interface -------
-
-
     @Override
     public void undoLast() {
         if (!moveHistory.isEmpty()) {
@@ -184,7 +170,7 @@ public class Board implements ReadableBoard, MoveTarget, PlayableBoard {
         return sum;
     }
 
-    // move generation
+
     @Override
     public void fillWithPossibleMoves(List<Move> moves) {
         Piece[] pieceEntries = getPieceEntriesHeldBy(getMovingColor());
@@ -258,11 +244,6 @@ public class Board implements ReadableBoard, MoveTarget, PlayableBoard {
         }
         return false;
     }
-
-    // constructor
-
-
-    // ------ move validation -------
 
     public void search(Collection<BoardCoordinate> results, BoardCoordinate start, Offset[] offsets) {
         for (Offset offset : offsets) {
@@ -356,12 +337,7 @@ public class Board implements ReadableBoard, MoveTarget, PlayableBoard {
             pieceEntryEnumMap.put(piece.getCoordinate(), piece);
         }
 
-
-        //update attack tables
-
         updateAttackTables();
-
-
     }
 
 
