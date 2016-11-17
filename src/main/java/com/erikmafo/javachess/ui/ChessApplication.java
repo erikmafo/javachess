@@ -12,6 +12,7 @@ import javafx.concurrent.Task;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -34,18 +36,35 @@ public class ChessApplication extends Application {
     public static final int HEIGHT = 8;
 
 
-    private Board board = new Board();
-    private Group squares = new Group();
-    private Group pieceGroup = new Group();
+    private final Board board = new Board();
+    private final Group squares = new Group();
+    private final Group pieceGroup = new Group();
 
+    private final Map<BoardCoordinate, PieceEntry> entries = new HashMap<>();
+    private final Map<BoardCoordinate, ImageView> pieceImageViews = new HashMap<>();
+    private final DragPiece dragPiece = new DragPiece();
 
-    private Map<BoardCoordinate, ImageView> pieceImageViews = new HashMap<>();
-
-    private DragPiece dragPiece = new DragPiece();
-
+    private PieceColor playerColor = PieceColor.WHITE;
+    private PieceColor computerColor = PieceColor.BLACK;
+    private PieceColor currentColor = PieceColor.WHITE;
 
     private Map<PieceColor, Map<PieceType, Image>> pieceImages = new HashMap<>();
     private Task<Move> calculateComputerMoveTask;
+
+    private final Object mutex = new Object();
+
+    private PieceColor getCurrentColor() {
+        synchronized (mutex) {
+            return currentColor;
+        }
+    }
+
+    private void setCurrentColor(PieceColor currentColor) {
+        synchronized (mutex) {
+            this.currentColor = currentColor;
+        }
+    }
+
 
     private void loadPieceImages() {
 
@@ -78,8 +97,17 @@ public class ChessApplication extends Application {
 
         Pane root = new Pane();
 
+        root.setPrefSize(SQUARE_SIZE * WIDTH, SQUARE_SIZE * (HEIGHT + 0.5));
 
-        root.setPrefSize(SQUARE_SIZE * WIDTH, SQUARE_SIZE * HEIGHT);
+        Button undoButton = createUndoButton();
+
+        undoButton.setPrefSize(SQUARE_SIZE * WIDTH, SQUARE_SIZE * 0.5);
+
+        undoButton.relocate(0, SQUARE_SIZE * HEIGHT);
+
+        Pane boardViewPane = new Pane();
+
+        boardViewPane.setPrefSize(SQUARE_SIZE * WIDTH, SQUARE_SIZE * HEIGHT);
 
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
@@ -89,17 +117,32 @@ public class ChessApplication extends Application {
             }
         }
 
-        loadPieceImages();
-
         createPieces();
 
-        root.getChildren().addAll(squares, pieceGroup);
+        boardViewPane.getChildren().addAll(squares, pieceGroup);
+
+        root.getChildren().addAll(boardViewPane, undoButton);
 
         return root;
 
     }
 
+    private Button createUndoButton() {
+        Button undoButton = new Button();
 
+        undoButton.setText("Undo");
+
+        undoButton.setOnAction(event -> {
+
+            if (calculateComputerMoveTask != null) {
+                calculateComputerMoveTask.cancel(true);
+            }
+
+            undo();
+
+        });
+        return undoButton;
+    }
 
 
     private void updateBoardView() {
@@ -110,21 +153,64 @@ public class ChessApplication extends Application {
 
     }
 
-    private void updateSquareView(BoardCoordinate sq) {
-        if (board.isOccupiedAt(sq) && !pieceImageViews.containsKey(sq)) {
-            PieceColor pieceColor = board.getPieceColorAt(sq);
-            PieceType pieceType = board.getPieceTypeAt(sq);
-            ImageView imageView = createPieceImageView(sq, pieceColor, pieceType);
-            pieceImageViews.put(sq, imageView);
-            pieceGroup.getChildren().add(imageView);
-        } else if (pieceImageViews.containsKey(sq) && !board.isOccupiedAt(sq)) {
-            ImageView imageView = pieceImageViews.remove(sq);
-            pieceGroup.getChildren().remove(imageView);
+
+    private void removePieceImage(BoardCoordinate boardCoordinate) {
+        PieceEntry entry = entries.remove(boardCoordinate);
+        if (entry != null) {
+            pieceGroup.getChildren().remove(entry.getPieceImageView());
         }
+
+    }
+
+    private void setPieceImageView(BoardCoordinate sq, PieceColor color, PieceType pieceType) {
+
+
+        boolean update = true;
+
+        if (entries.containsKey(sq)) {
+
+            PieceEntry pieceEntry = entries.get(sq);
+
+            if (pieceEntry.getPieceColor().equals(board.getPieceColorAt(sq)) &&
+                    pieceEntry.getPieceType().equals(board.getPieceTypeAt(sq))) {
+                update = false;
+            } else {
+                removePieceImage(sq);
+            }
+        }
+
+
+        if (update) {
+            ImageView pieceImageView = createPieceImageView(sq, color, pieceType);
+
+            pieceGroup.getChildren().add(pieceImageView);
+
+            PieceEntry entry = new PieceEntry(color, pieceType, pieceImageView);
+
+            entries.put(sq, entry);
+        }
+
+
+    }
+
+    private void updateSquareView(BoardCoordinate sq) {
+
+            if (board.isOccupiedAt(sq)) {
+                setPieceImageView(
+                        sq,
+                        board.getPieceColorAt(sq),
+                        board.getPieceTypeAt(sq));
+            } else {
+                setEmtpy(sq);
+            }
+
+
     }
 
 
     private void createPieces() {
+
+        loadPieceImages();
 
         for (BoardCoordinate sq : BoardCoordinate.values()) {
 
@@ -134,6 +220,11 @@ public class ChessApplication extends Application {
                 PieceType pieceType = board.getPieceTypeAt(sq);
 
                 ImageView pieceView = createPieceImageView(sq, pieceColor, pieceType);
+
+                PieceEntry pieceEntry = new PieceEntry(pieceColor, pieceType, pieceView);
+
+                entries.put(sq, pieceEntry);
+
 
                 pieceImageViews.put(sq, pieceView);
 
@@ -189,40 +280,55 @@ public class ChessApplication extends Application {
         BoardCoordinate from = dragPiece.getCoordinate();
         BoardCoordinate to = BoardCoordinate.valueOf(file, rank);
 
-        Move move = Moves.valueOf(board, from, to);
 
-        if (getMoves().contains(move)) {
+        boolean acceptMove = false;
 
-            playMove(move);
+        if (playerColor.equals(getCurrentColor())) {
 
-            calculateComputerMoveTask = new Task() {
-                @Override
-                protected Move call() throws Exception {
-                    return Moves.findBestMove(board);
-                }
-            };
+            Move move = Moves.valueOf(board, from, to);
+
+            if (getMoves().contains(move)) {
+
+                acceptMove = true;
+
+                playMove(move);
+
+                setCurrentColor(computerColor);
+
+                calculateComputerMoveTask = new Task() {
+                    @Override
+                    protected Move call() throws Exception {
+                        return Moves.findBestMove(board);
+                    }
+                };
 
 
-            calculateComputerMoveTask.setOnSucceeded(successEvent -> {
-                Move computerMove = (Move) successEvent.getSource().getValue();
-                playMove(computerMove);
-            });
+                calculateComputerMoveTask.setOnSucceeded(successEvent -> {
+                    Move computerMove = (Move) successEvent.getSource().getValue();
+                    playMove(computerMove);
+                    setCurrentColor(playerColor);
+                });
 
-            executorService.submit(calculateComputerMoveTask);
+                executorService.submit(calculateComputerMoveTask);
+            }
+        }
 
-
-        } else {
+        if (!acceptMove) {
             pieceView.relocate(findX(from.getFile()), findY(from.getRank()));
+        }
+
+    }
+
+
+    private void undo() {
+        if (board.getLastMove() != null) {
+            board.undoLast();
+            updateBoardView();
+            setCurrentColor(board.getMovingColor());
         }
     }
 
     private void playMove(Move move) {
-
-        if (pieceImageViews.containsKey(move.getTo())) {
-            ImageView imageView = pieceImageViews.remove(move.getTo());
-            pieceGroup.getChildren().remove(imageView);
-        }
-
         board.play(move);
         updateBoardView();
     }
@@ -257,8 +363,6 @@ public class ChessApplication extends Application {
     }
 
 
-
-
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -282,4 +386,13 @@ public class ChessApplication extends Application {
     }
 
 
+    public void setEmtpy(BoardCoordinate sq) {
+
+        if (entries.containsKey(sq)) {
+
+            removePieceImage(sq);
+
+        }
+
+    }
 }
