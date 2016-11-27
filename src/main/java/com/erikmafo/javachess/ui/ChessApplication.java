@@ -1,8 +1,8 @@
 package com.erikmafo.javachess.ui;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardImpl;
 import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Boards;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.movegenerator.MoveGenerators;
 import com.erikmafo.javachess.pieces.Piece;
@@ -35,7 +35,7 @@ public class ChessApplication extends Application {
     public static final int HEIGHT = 8;
 
 
-    private final Board board = new BoardImpl();
+    private final Board board = Boards.newBoard();
     private final Group squares = new Group();
     private final Group pieceGroup = new Group();
 

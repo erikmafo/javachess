@@ -75,11 +75,19 @@ public enum BoardCoordinate {
     }
 
 
-    public static BoardCoordinate valueOf(int file, int rank) {
-        if (rank < 0 || rank > 7 || file < 0 || file > 7) {
-            return OFF_BOARD;
+    /**
+     * Returns the corresponding BoardCoordinate.
+     *
+     * @param fileIndex - an integer between 0 and 7
+     * @param rankIndex - an integer between 0 and 7
+     * @return - a board coordinate
+     * @throws IllegalArgumentException if the fileIndex or rankIndex is out of range
+     */
+    public static BoardCoordinate valueOf(int fileIndex, int rankIndex) {
+        if (rankIndex < 0 || rankIndex > 7 || fileIndex < 0 || fileIndex > 7) {
+            throw new IllegalArgumentException();
         }
-        return cachedValues[16 * rank + file];
+        return cachedValues[16 * rankIndex + fileIndex];
     }
 
 

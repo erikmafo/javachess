@@ -37,6 +37,16 @@ public class BoardImpl implements Board, MoveReceiver {
     private int moveCount = 0;
     private PieceColor colorToMove = PieceColor.WHITE;
 
+    private Map<PieceColor, CastlingRight> initialCastlingRight = new HashMap<>();
+
+    BoardImpl() {
+    }
+
+    BoardImpl(PieceColor colorToMove, Map<PieceColor, CastlingRight> initialCastlingRight) {
+        this.colorToMove = colorToMove;
+        this.initialCastlingRight = initialCastlingRight;
+    }
+
     @Override
     public void movePiece(BoardCoordinate from, BoardCoordinate to) {
 
