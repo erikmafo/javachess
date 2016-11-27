@@ -1,11 +1,13 @@
 package com.erikmafo.javachess.ui;
 
-import com.erikmafo.javachess.boardrep.Board;
-import com.erikmafo.javachess.boardrep.BoardCoordinate;
+import com.erikmafo.javachess.board.Board;
+import com.erikmafo.javachess.board.BoardImpl;
+import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.move.Move;
+import com.erikmafo.javachess.movegenerator.MoveGenerators;
+import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
 import com.erikmafo.javachess.pieces.PieceType;
-import com.erikmafo.javachess.moves.Move;
-import com.erikmafo.javachess.moves.Moves;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -19,10 +21,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -36,13 +35,15 @@ public class ChessApplication extends Application {
     public static final int HEIGHT = 8;
 
 
-    private final Board board = new Board();
+    private final Board board = new BoardImpl();
     private final Group squares = new Group();
     private final Group pieceGroup = new Group();
 
     private final Map<BoardCoordinate, PieceEntry> entries = new HashMap<>();
     private final Map<BoardCoordinate, ImageView> pieceImageViews = new HashMap<>();
     private final DragPiece dragPiece = new DragPiece();
+
+    private final Stack<Move> playedMoves = new Stack<>();
 
     private PieceColor playerColor = PieceColor.WHITE;
     private PieceColor computerColor = PieceColor.BLACK;
@@ -171,8 +172,9 @@ public class ChessApplication extends Application {
 
             PieceEntry pieceEntry = entries.get(sq);
 
-            if (pieceEntry.getPieceColor().equals(board.getPieceColorAt(sq)) &&
-                    pieceEntry.getPieceType().equals(board.getPieceTypeAt(sq))) {
+            if (board.pieceAt(sq)
+                    .filter(piece -> piece.is(piece.getColor(), pieceEntry.getPieceType()))
+                    .isPresent()) {
                 update = false;
             } else {
                 removePieceImage(sq);
@@ -195,16 +197,20 @@ public class ChessApplication extends Application {
 
     private void updateSquareView(BoardCoordinate sq) {
 
-            if (board.isOccupiedAt(sq)) {
-                setPieceImageView(
-                        sq,
-                        board.getPieceColorAt(sq),
-                        board.getPieceTypeAt(sq));
-            } else {
-                setEmtpy(sq);
-            }
+        if (board.isOccupied(sq)) {
 
+            Piece piece = board.getNullablePiece(sq);
 
+            setPieceImageView(
+                    sq,
+                    piece.getColor(),
+                    piece.getType());
+        } else {
+            setEmtpy(sq);
+        }
+
+        board.pieceAt(sq).ifPresent(
+                piece -> setPieceImageView(sq, piece.getColor(), piece.getType()));
     }
 
 
@@ -214,17 +220,17 @@ public class ChessApplication extends Application {
 
         for (BoardCoordinate sq : BoardCoordinate.values()) {
 
-            if (board.isOccupiedAt(sq)) {
+            if (board.isOccupied(sq)) {
 
-                PieceColor pieceColor = board.getPieceColorAt(sq);
-                PieceType pieceType = board.getPieceTypeAt(sq);
+                Piece piece = board.getNullablePiece(sq);
+                PieceType type = piece.getType();
+                PieceColor color = piece.getColor();
 
-                ImageView pieceView = createPieceImageView(sq, pieceColor, pieceType);
+                ImageView pieceView = createPieceImageView(sq, color, type);
 
-                PieceEntry pieceEntry = new PieceEntry(pieceColor, pieceType, pieceView);
+                PieceEntry pieceEntry = new PieceEntry(color, type, pieceView);
 
                 entries.put(sq, pieceEntry);
-
 
                 pieceImageViews.put(sq, pieceView);
 
@@ -285,7 +291,7 @@ public class ChessApplication extends Application {
 
         if (playerColor.equals(getCurrentColor())) {
 
-            Move move = Moves.valueOf(board, from, to);
+            Move move = null; //Moves.valueOf(board, from, to);
 
             if (getMoves().contains(move)) {
 
@@ -298,7 +304,7 @@ public class ChessApplication extends Application {
                 calculateComputerMoveTask = new Task() {
                     @Override
                     protected Move call() throws Exception {
-                        return Moves.findBestMove(board);
+                        return null;//Moves.findBestMove(board);
                     }
                 };
 
@@ -321,16 +327,19 @@ public class ChessApplication extends Application {
 
 
     private void undo() {
-        if (board.getLastMove() != null) {
-            board.undoLast();
+        if (!playedMoves.empty()) {
+            Move lastMove = playedMoves.pop();
+            lastMove.undo();
             updateBoardView();
-            setCurrentColor(board.getMovingColor());
+            setCurrentColor(board.getColorToMove());
         }
     }
 
     private void playMove(Move move) {
-        board.play(move);
+        playedMoves.push(move);
+        move.play();
         updateBoardView();
+        setCurrentColor(board.getColorToMove());
     }
 
     private int findX(int file) {
@@ -356,7 +365,7 @@ public class ChessApplication extends Application {
 
     private List<Move> getMoves() {
 
-        List<Move> moves = board.getPossibleMoves();
+        List<Move> moves = board.getMoves(MoveGenerators.newPseudoLegalMoveGenerator());
 
         return moves;
 

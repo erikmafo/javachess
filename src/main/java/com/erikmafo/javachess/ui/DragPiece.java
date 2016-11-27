@@ -1,6 +1,6 @@
 package com.erikmafo.javachess.ui;
 
-import com.erikmafo.javachess.boardrep.BoardCoordinate;
+import com.erikmafo.javachess.board.BoardCoordinate;
 
 
 public class DragPiece {

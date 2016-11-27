@@ -2,15 +2,23 @@ package com.erikmafo.javachess.pieces;
 
 
 public enum PieceType {
-    PAWN(1), BISHOP(3), KNIGHT(3), ROOK(5), QUEEN(9), KING(100);
+    PAWN(false, 1), BISHOP(true, 3), KNIGHT(false, 3), ROOK(true, 5), QUEEN(true, 9), KING(false, 100);
 
+    private boolean slides;
     private int value;
 
-    PieceType(int value) {
+    PieceType(boolean slides, int value) {
+        this.slides = slides;
         this.value = value;
     }
 
     public int getValue() {
         return value;
     }
+
+    public boolean slides() {
+        return slides;
+    }
+
+
 }

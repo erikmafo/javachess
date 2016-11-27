@@ -1,92 +1,53 @@
 package com.erikmafo.javachess.pieces;
 
 
-import com.erikmafo.javachess.boardrep.BoardCoordinate;
-import com.erikmafo.javachess.boardrep.ReadableBoard;
-import com.erikmafo.javachess.moves.Move;
-import com.erikmafo.javachess.moves.MoveGenerator;
-import com.erikmafo.javachess.moves.MoveGenerators;
-
-import java.util.List;
-
-
 public class Piece {
 
-    private BoardCoordinate coordinate;
-    private MoveGenerator moveGenerator;
-    private AttackTable attackTable;
-    private boolean isCaptured;
+    private final PieceColor color;
+    private final PieceType type;
 
-    private PieceColor pieceColor;
-    private PieceType pieceType;
-
-
-    public void capture() {
-        isCaptured = true;
+    public Piece(PieceColor color, PieceType type) {
+        this.color = color;
+        this.type = type;
     }
 
-    public void unCapture() {
-        isCaptured = false;
+    public PieceColor getColor() {
+        return color;
     }
 
-
-    public boolean isCaptured() {
-        return isCaptured;
+    public PieceType getType() {
+        return type;
     }
 
-    public Piece(PieceColor pieceColor, PieceType pieceType, BoardCoordinate coordinate) {
-        this.pieceColor = pieceColor;
-        this.pieceType = pieceType;
-        this.coordinate = coordinate;
-        moveGenerator = MoveGenerators.valueOf(pieceColor, pieceType);
-        attackTable = new AttackTable();
+    @Override
+    public String toString() {
+        return "Piece{" +
+                "color=" + color +
+                ", type=" + type +
+                '}';
     }
 
-    public BoardCoordinate getCoordinate() {
-        return coordinate;
+    public boolean is(PieceColor color, PieceType type) {
+        return color.equals(this.color) && type.equals(this.type);
     }
 
-    public PieceColor getPieceColor() {
-        return pieceColor;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Piece)) return false;
+
+        Piece piece = (Piece) o;
+
+        if (color != piece.color) return false;
+        return type == piece.type;
+
     }
 
-    public PieceType getPieceType() {
-        return pieceType;
-    }
-
-
-    public void move(BoardCoordinate newCoordinate) {
-        this.coordinate = newCoordinate;
-    }
-
-    public void moveBackwards(BoardCoordinate oldCoordinate) {
-        this.coordinate = oldCoordinate;
-    }
-
-    public void setPieceType(PieceType newPieceType) {
-        pieceType = newPieceType;
-        moveGenerator = MoveGenerators.valueOf(pieceColor, newPieceType);
-    }
-
-    public void findPossibleMoves(ReadableBoard readableBoard, List<Move> moves) {
-        //moveGenerator.findAttackSquares(readableBoard, coordinate, attackTable);
-        moveGenerator.findPossibleMoves(readableBoard, coordinate, attackTable, moves);
-    }
-
-    public void updateAttackTable(ReadableBoard board) {
-        moveGenerator.findAttackSquares(board, coordinate, attackTable);
-    }
-
-    public boolean attacksPieceAt(BoardCoordinate kingLocation) {
-        return attackTable.attacksPieceAt(kingLocation);
-    }
-
-    public int getNumberOfAttacks() {
-        return attackTable.size();
-    }
-
-    public boolean attacksSquareAt(BoardCoordinate coordinate) {
-        return attackTable.attacksSquareAt(coordinate);
+    @Override
+    public int hashCode() {
+        int result = color.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
     }
 }
 
