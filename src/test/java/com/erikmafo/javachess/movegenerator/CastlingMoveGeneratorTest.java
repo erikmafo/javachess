@@ -33,7 +33,7 @@ public class CastlingMoveGeneratorTest {
     private final MoveFactory moveFactory = mock(MoveFactory.class);
 
     private final BoardSeeker boardSeeker = mock(BoardSeeker.class);
-    private final CastlingMoveGenerator castlingMoveGenerator = new CastlingMoveGenerator(boardSeeker);
+    private final CastlingMoveGenerator castlingMoveGenerator = new CastlingMoveGenerator(moveFactory, boardSeeker);
 
     @Before
     public void setUp() throws Exception {
@@ -69,7 +69,7 @@ public class CastlingMoveGeneratorTest {
         Move kingSideCastlingMove = mock(Move.class, "O-O");
         when(moveFactory.newCastlingMove(kingFrom, kingTo, rookFrom, rookTo)).thenReturn(kingSideCastlingMove);
 
-        List<Move> moves = castlingMoveGenerator.generateMoves(board, kingFrom, moveFactory);
+        List<Move> moves = castlingMoveGenerator.generateMoves(board, kingFrom);
 
         assertThat(moves, is(Arrays.asList(kingSideCastlingMove)));
     }

@@ -18,15 +18,17 @@ import java.util.Optional;
 public class SlidingMoveGenerator implements MoveGenerator {
 
 
+    private final MoveFactory moveFactory;
     private final Offset[] attackOffsets;
 
-    public SlidingMoveGenerator(Offset... attackOffsets) {
+    public SlidingMoveGenerator(MoveFactory moveFactory, Offset... attackOffsets) {
+        this.moveFactory = moveFactory;
         this.attackOffsets = attackOffsets;
     }
 
 
     @Override
-    public List<Move> generateMoves(Board board, BoardCoordinate from, MoveFactory moveFactory) {
+    public List<Move> generateMoves(Board board, BoardCoordinate from) {
 
         List<Move> moves = new ArrayList<>();
 

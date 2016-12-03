@@ -15,6 +15,9 @@ import java.util.List;
  */
 public class CastlingMoveGenerator implements MoveGenerator {
 
+
+    private final MoveFactory moveFactory;
+
     private final BoardCoordinate[] whiteKingSideCastlingSquares;
     private final BoardCoordinate[] whiteQueenSideCastlingSquares;
 
@@ -24,7 +27,8 @@ public class CastlingMoveGenerator implements MoveGenerator {
 
     private final BoardSeeker boardSeeker;
 
-    CastlingMoveGenerator(BoardSeeker boardSeeker) {
+    CastlingMoveGenerator(MoveFactory moveFactory, BoardSeeker boardSeeker) {
+        this.moveFactory = moveFactory;
         this.boardSeeker = boardSeeker;
 
         whiteKingSideCastlingSquares = new BoardCoordinate[]{BoardCoordinate.F1, BoardCoordinate.G1};
@@ -104,7 +108,7 @@ public class CastlingMoveGenerator implements MoveGenerator {
 
 
     @Override
-    public List<Move> generateMoves(Board board, BoardCoordinate from, MoveFactory moveFactory) {
+    public List<Move> generateMoves(Board board, BoardCoordinate from) {
         List<Move> moves = new ArrayList<>();
         appendCastlingMoves(moveFactory, board, from, moves);
         return moves;

@@ -57,7 +57,7 @@ public class BoardSeekerTest {
 
 
     @Test
-    @Parameters(method = "fixtures")
+    @Parameters(method = "knightMovesTestFixtures")
     public void slideSearch(Optional<Piece> expected,
                             Piece piece,
                             BoardCoordinate square,

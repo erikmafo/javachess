@@ -41,7 +41,7 @@ public class SlidingMoveGeneratorTest {
         BoardCoordinate from = BoardCoordinate.E4;
         Offset slidingDirection = Offset.DOWN;
 
-        SlidingMoveGenerator slidingMoveGenerator = new SlidingMoveGenerator(slidingDirection);
+        SlidingMoveGenerator slidingMoveGenerator = new SlidingMoveGenerator(moveFactory, slidingDirection);
 
         Move e4e3 = mock(Move.class, "e4e3");
         Move e4e2 = mock(Move.class, "e4e2");
@@ -51,7 +51,7 @@ public class SlidingMoveGeneratorTest {
         when(moveFactory.newQuietMove(from, BoardCoordinate.E2)).thenReturn(e4e2);
         when(moveFactory.newQuietMove(from, BoardCoordinate.E1)).thenReturn(e4e1);
 
-        List<Move> moves = slidingMoveGenerator.generateMoves(board, from, moveFactory);
+        List<Move> moves = slidingMoveGenerator.generateMoves(board, from);
 
         assertThat(moves, is(Arrays.asList(e4e3, e4e2, e4e1)));
     }
@@ -62,7 +62,7 @@ public class SlidingMoveGeneratorTest {
         BoardCoordinate from = BoardCoordinate.E4;
         Offset slidingDirection = Offset.UP_LEFT;
 
-        SlidingMoveGenerator slidingMoveGenerator = new SlidingMoveGenerator(slidingDirection);
+        SlidingMoveGenerator slidingMoveGenerator = new SlidingMoveGenerator(moveFactory, slidingDirection);
 
         Move e4d5 = mock(Move.class, "e4d5");
         Move e4c6 = mock(Move.class, "e4c6");
@@ -74,7 +74,7 @@ public class SlidingMoveGeneratorTest {
         when(moveFactory.newQuietMove(from, BoardCoordinate.B7)).thenReturn(e4b7);
         when(moveFactory.newQuietMove(from, BoardCoordinate.A8)).thenReturn(e4a8);
 
-        List<Move> moves = slidingMoveGenerator.generateMoves(board, from, moveFactory);
+        List<Move> moves = slidingMoveGenerator.generateMoves(board, from);
 
         assertThat(moves, is(Arrays.asList(e4d5, e4c6, e4b7, e4a8)));
     }

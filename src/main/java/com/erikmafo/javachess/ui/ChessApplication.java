@@ -6,7 +6,6 @@ import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.Moves;
 import com.erikmafo.javachess.movegenerator.BoardSeeker;
 import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
-import com.erikmafo.javachess.movegenerator.MoveGenerators;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
 import com.erikmafo.javachess.pieces.PieceType;

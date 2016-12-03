@@ -3,7 +3,6 @@ package com.erikmafo.javachess.move;
 import com.erikmafo.javachess.board.Board;
 import com.erikmafo.javachess.board.BoardCoordinate;
 import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
-import com.erikmafo.javachess.movegenerator.MoveGenerators;
 
 import java.util.List;
 

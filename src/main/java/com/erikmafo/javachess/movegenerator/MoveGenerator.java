@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface MoveGenerator {
 
-    List<Move> generateMoves(Board board, BoardCoordinate from, MoveFactory moveFactory);
+    List<Move> generateMoves(Board board, BoardCoordinate from);
 
 
 }

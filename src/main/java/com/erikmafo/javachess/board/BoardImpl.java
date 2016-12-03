@@ -215,15 +215,15 @@ public class BoardImpl implements Board, MoveReceiver {
     @Override
     public List<Move> getMoves(MoveGenerationStrategy strategy) {
 
-        MoveGenerator moveGenerator = moveGeneratorFactory.newInstance(strategy);
-
         MoveFactory moveFactory = new MoveFactory(this);
+
+        MoveGenerator moveGenerator = moveGeneratorFactory.newInstance(strategy, moveFactory);
 
         List<Move> moves = new ArrayList<>();
 
         for (BoardCoordinate square : pieceEntryEnumMap.keySet()) {
             if (getNullablePiece(square).getColor().equals(colorToMove)) {
-                moves.addAll(moveGenerator.generateMoves(this, square, moveFactory));
+                moves.addAll(moveGenerator.generateMoves(this, square));
             }
         }
 

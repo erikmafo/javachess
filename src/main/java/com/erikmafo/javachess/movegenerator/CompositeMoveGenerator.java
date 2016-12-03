@@ -23,7 +23,7 @@ public class CompositeMoveGenerator implements MoveGenerator {
     }
 
     @Override
-    public List<Move> generateMoves(Board board, BoardCoordinate from, MoveFactory moveFactory) {
+    public List<Move> generateMoves(Board board, BoardCoordinate from) {
 
         List<Move> moves = new ArrayList<>();
 
@@ -33,7 +33,7 @@ public class CompositeMoveGenerator implements MoveGenerator {
 
         if (pieceOptional.filter(piece -> piece.getColor().equals(color)).isPresent()) {
             PieceType type = pieceOptional.get().getType();
-            moves.addAll(moveGenerators.get(type).generateMoves(board, from, moveFactory));
+            moves.addAll(moveGenerators.get(type).generateMoves(board, from));
         }
 
         return moves;

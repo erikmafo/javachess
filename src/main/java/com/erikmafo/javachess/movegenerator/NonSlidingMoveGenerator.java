@@ -17,17 +17,20 @@ import java.util.Optional;
  */
 public class NonSlidingMoveGenerator implements MoveGenerator {
 
+    private final MoveFactory moveFactory;
     private final boolean includeQuietMoves;
     private final Offset[] attackOffsets;
 
 
-    public NonSlidingMoveGenerator(boolean includeQuietMoves, Offset... offsets) {
+
+    public NonSlidingMoveGenerator(MoveFactory moveFactory, boolean includeQuietMoves, Offset... offsets) {
+        this.moveFactory = moveFactory;
         this.includeQuietMoves = includeQuietMoves;
         this.attackOffsets = offsets;
     }
 
     @Override
-    public List<Move> generateMoves(Board board, BoardCoordinate from, MoveFactory moveFactory) {
+    public List<Move> generateMoves(Board board, BoardCoordinate from) {
         return getMoves(moveFactory, board, board.getColorToMove().getOpposite(), from, includeQuietMoves);
     }
 

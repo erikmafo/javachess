@@ -26,11 +26,12 @@ import static org.mockito.Mockito.when;
 public class PawnMoveGeneratorTest {
 
 
-    private MoveGenerator pawnMoveGenerator = new PawnMoveGenerator();
+    private MoveFactory moveFactory = mock(MoveFactory.class);
+
+    private MoveGenerator pawnMoveGenerator = new PawnMoveGenerator(moveFactory);
 
     private Board board = mock(Board.class);
 
-    private MoveFactory moveFactory = mock(MoveFactory.class);
 
     @Before
     public void setUp() throws Exception {
@@ -57,7 +58,7 @@ public class PawnMoveGeneratorTest {
         Move expected = mock(Move.class, "" + from + enPassentTarget);
         when(moveFactory.newEnPassentMove(from, enPassentTarget, captured)).thenReturn(expected);
 
-        List<Move> moves = pawnMoveGenerator.generateMoves(board, from, moveFactory);
+        List<Move> moves = pawnMoveGenerator.generateMoves(board, from);
 
         assertThat(moves, CoreMatchers.hasItem(expected));
     }
@@ -79,7 +80,7 @@ public class PawnMoveGeneratorTest {
         when(moveFactory.newSinglePawnPushMove(from, oneUp)).thenReturn(singlePush);
         when(moveFactory.newDoublePawnPushMove(from, twoUp)).thenReturn(doublePush);
 
-        List<Move> moves = pawnMoveGenerator.generateMoves(board, from, moveFactory);
+        List<Move> moves = pawnMoveGenerator.generateMoves(board, from);
 
         assertThat(moves, is(Arrays.asList(singlePush, doublePush)));
     }
