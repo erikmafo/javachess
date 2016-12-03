@@ -31,13 +31,13 @@ public class SearchExecutorImpl implements SearchExecutor {
 
             int depth = 1000;
 
-            Thread searchThread = Thread.currentThread();
-
-            Executors.newSingleThreadScheduledExecutor().schedule(() -> searchThread.interrupt(), timeout, timeUnit);
-
             return moveSearch.execute(board, evaluation, depth);
 
         });
+
+
+        Executors.newSingleThreadScheduledExecutor().schedule(() ->
+                executorService.shutdownNow(), timeout, timeUnit);
 
 
         return result;

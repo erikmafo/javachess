@@ -4,10 +4,15 @@ import com.erikmafo.javachess.board.Board;
 import com.erikmafo.javachess.board.BoardCoordinate;
 import com.erikmafo.javachess.board.Boards;
 import com.erikmafo.javachess.move.Move;
+import com.erikmafo.javachess.move.Moves;
+import com.erikmafo.javachess.movegenerator.BoardSeeker;
 import com.erikmafo.javachess.movegenerator.MoveGenerators;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
 import com.erikmafo.javachess.pieces.PieceType;
+import com.erikmafo.javachess.search.*;
+import com.erikmafo.javachess.uci.FenParseException;
+import com.erikmafo.javachess.uci.FenParser;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -24,6 +29,7 @@ import javafx.stage.Stage;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by erikmafo on 13.11.16.
@@ -35,7 +41,23 @@ public class ChessApplication extends Application {
     public static final int HEIGHT = 8;
 
 
-    private final Board board = Boards.newBoard();
+    private final SearchExecutor searchExecutor = new SearchExecutorImpl(
+            new AlphaBetaSearch(MoveGenerators.newPseudoLegalMoveGenerator(), new BoardSeeker()),
+            Executors.newSingleThreadExecutor());
+
+
+
+
+    private Board board;
+
+    public ChessApplication() {
+        try {
+            this.board = new FenParser().parse(FenParser.START_POSITION);
+        } catch (FenParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     private final Group squares = new Group();
     private final Group pieceGroup = new Group();
 
@@ -291,20 +313,21 @@ public class ChessApplication extends Application {
 
         if (playerColor.equals(getCurrentColor())) {
 
-            Move move = null; //Moves.valueOf(board, from, to);
+            Move move = Moves.valueOf(board, from, to);
 
-            if (getMoves().contains(move)) {
+            if (move != null) {
 
                 acceptMove = true;
 
                 playMove(move);
 
-                setCurrentColor(computerColor);
-
                 calculateComputerMoveTask = new Task() {
                     @Override
                     protected Move call() throws Exception {
-                        return null;//Moves.findBestMove(board);
+
+                        SearchResult result = searchExecutor.submitSearch(board, new MaterialBoardEvaluation(), 10, TimeUnit.SECONDS).get();
+
+                        return result.getBestMove();
                     }
                 };
 
@@ -312,7 +335,6 @@ public class ChessApplication extends Application {
                 calculateComputerMoveTask.setOnSucceeded(successEvent -> {
                     Move computerMove = (Move) successEvent.getSource().getValue();
                     playMove(computerMove);
-                    setCurrentColor(playerColor);
                 });
 
                 executorService.submit(calculateComputerMoveTask);

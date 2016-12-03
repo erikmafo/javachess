@@ -1,6 +1,7 @@
 package com.erikmafo.javachess.board;
 
 import com.erikmafo.javachess.move.Move;
+import com.erikmafo.javachess.move.MoveFactory;
 import com.erikmafo.javachess.movegenerator.MoveGenerator;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
@@ -34,5 +35,7 @@ public interface Board {
     boolean hasKingSideCastlingRight(PieceColor pieceColor);
 
     boolean hasQueenSideCastlingRight(PieceColor pieceColor);
+
+
 
 }

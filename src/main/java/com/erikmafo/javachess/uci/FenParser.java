@@ -1,6 +1,9 @@
-package com.erikmafo.javachess.board;
+package com.erikmafo.javachess.uci;
 
 
+import com.erikmafo.javachess.board.*;
+import com.erikmafo.javachess.move.Move;
+import com.erikmafo.javachess.move.MoveFactory;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
 import com.erikmafo.javachess.pieces.PieceType;
@@ -11,16 +14,32 @@ import com.erikmafo.javachess.pieces.PieceType;
  */
 public class FenParser {
 
-    /*private final static String START_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    public final static String START_POSITION = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-    public PlayableBoard createInstance() {
-        try {
-            return parse(START_POSITION);
-        } catch (FenParseException e) {
-            throw new AssertionError(); // should never happen
+
+
+    public FenParser() {
+
+    }
+
+    public Board parse(String fen, String... movesList) throws FenParseException {
+
+        Board board = parse(fen);
+
+        MoveParser moveParser = new MoveParser(new MoveFactory((BoardImpl) board));
+        // TODO: create new board interface that includes MoveReceiver
+
+        for (String moveString : movesList) {
+
+            Move move = moveParser.parse(board, moveString, MoveParser.Format.LONG_ALGEBRAIC);
+
+            move.play();
 
         }
-    }*/
+
+        return board;
+    }
+
 
     public Board parse(String fen) throws FenParseException {
 

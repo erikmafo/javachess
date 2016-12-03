@@ -1,4 +1,4 @@
-package com.erikmafo.javachess.board;
+package com.erikmafo.javachess.uci;
 
 
 /**

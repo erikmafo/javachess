@@ -50,9 +50,7 @@ public class MoveGenerators {
 
     public static MoveGenerator getKnightMoveGenerator() {
 
-        Offset[] offsets = new Offset[8];
-
-        Offset.getKnightAttackOffsets().toArray(offsets);
+        Offset[] offsets = Offset.getKnightAttackOffsets().toArray(new Offset[8]);
 
         MoveGenerator moveGenerator = new NonSlidingMoveGenerator(true, offsets);
 

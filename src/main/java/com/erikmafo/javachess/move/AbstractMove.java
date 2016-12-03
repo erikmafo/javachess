@@ -19,10 +19,12 @@ public abstract class AbstractMove implements Move {
         this.to = to;
     }
 
+    @Override
     public BoardCoordinate getFrom() {
         return from;
     }
 
+    @Override
     public BoardCoordinate getTo() {
         return to;
     }
@@ -32,6 +34,8 @@ public abstract class AbstractMove implements Move {
     protected abstract void beforePlayComplete();
 
     protected abstract void beforeUndoComplete();
+
+
 
 
     @Override
@@ -46,6 +50,12 @@ public abstract class AbstractMove implements Move {
         moveReceiver.movePiece(to, from);
         beforeUndoComplete();
         moveReceiver.completeUndo();
+    }
+
+
+    @Override
+    public String toString() {
+        return from + "-" + to;
     }
 
     @Override
