@@ -2,7 +2,9 @@ package com.erikmafo.javachess.board;
 
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.MoveFactory;
+import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
 import com.erikmafo.javachess.movegenerator.MoveGenerator;
+import com.erikmafo.javachess.movegenerator.MoveGeneratorFactory;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
 import com.erikmafo.javachess.pieces.PieceType;
@@ -23,6 +25,8 @@ public class BoardImpl implements Board, MoveReceiver {
 
     private final int[] castlingSquaresMoveCount = new int[6];
 
+    private final MoveGeneratorFactory moveGeneratorFactory;
+
     private static final int E1_INDEX = 0;
     private static final int H1_INDEX = 1;
     private static final int A1_INDEX = 2;
@@ -40,9 +44,11 @@ public class BoardImpl implements Board, MoveReceiver {
     private Map<PieceColor, CastlingRight> initialCastlingRight = new HashMap<>();
 
     BoardImpl() {
+        this.moveGeneratorFactory = new MoveGeneratorFactory();
     }
 
-    BoardImpl(PieceColor colorToMove, Map<PieceColor, CastlingRight> initialCastlingRight) {
+    BoardImpl(MoveGeneratorFactory moveGeneratorFactory, PieceColor colorToMove, Map<PieceColor, CastlingRight> initialCastlingRight) {
+        this.moveGeneratorFactory = moveGeneratorFactory;
         this.colorToMove = colorToMove;
         this.initialCastlingRight = initialCastlingRight;
     }
@@ -207,7 +213,9 @@ public class BoardImpl implements Board, MoveReceiver {
     }
 
     @Override
-    public List<Move> getMoves(MoveGenerator moveGenerator) {
+    public List<Move> getMoves(MoveGenerationStrategy strategy) {
+
+        MoveGenerator moveGenerator = moveGeneratorFactory.newInstance(strategy);
 
         MoveFactory moveFactory = new MoveFactory(this);
 

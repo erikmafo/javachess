@@ -4,6 +4,7 @@ import com.erikmafo.javachess.board.Board;
 import com.erikmafo.javachess.board.BoardCoordinate;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.movegenerator.BoardSeeker;
+import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
 import com.erikmafo.javachess.movegenerator.MoveGenerator;
 import com.erikmafo.javachess.pieces.PieceColor;
 
@@ -13,11 +14,9 @@ public class AlphaBetaSearch implements MoveSearch {
 
     private static final int MAX_VALUE = 1000000;
 
-    private final MoveGenerator moveGenerator;
     private final BoardSeeker boardSeeker;
 
-    public AlphaBetaSearch(MoveGenerator moveGenerator, BoardSeeker boardSeeker) {
-        this.moveGenerator = moveGenerator;
+    public AlphaBetaSearch(BoardSeeker boardSeeker) {
         this.boardSeeker = boardSeeker;
     }
 
@@ -39,7 +38,7 @@ public class AlphaBetaSearch implements MoveSearch {
             return evaluation.applyAsInt(board);
         }
 
-        List<Move> moves = board.getMoves(moveGenerator);
+        List<Move> moves = board.getMoves(MoveGenerationStrategy.ALL_PSEUDO_LEGAL_MOVES);
 
         PieceColor color = board.getColorToMove();
 

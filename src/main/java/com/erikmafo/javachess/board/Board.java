@@ -2,6 +2,7 @@ package com.erikmafo.javachess.board;
 
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.MoveFactory;
+import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
 import com.erikmafo.javachess.movegenerator.MoveGenerator;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
@@ -30,7 +31,7 @@ public interface Board {
 
     int getMoveCount();
 
-    List<Move> getMoves(MoveGenerator moveGenerator);
+    List<Move> getMoves(MoveGenerationStrategy moveGenerationStrategy);
 
     boolean hasKingSideCastlingRight(PieceColor pieceColor);
 

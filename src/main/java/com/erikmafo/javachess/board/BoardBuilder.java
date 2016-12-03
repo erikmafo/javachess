@@ -1,10 +1,10 @@
 package com.erikmafo.javachess.board;
 
+import com.erikmafo.javachess.movegenerator.MoveGeneratorFactory;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -42,7 +42,7 @@ public class BoardBuilder {
 
     public Board build() {
 
-        BoardImpl board = new BoardImpl(activeColor, castlingRights);
+        BoardImpl board = new BoardImpl(new MoveGeneratorFactory(), activeColor, castlingRights);
 
         for (BoardCoordinate square : pieceEntries.keySet()) {
             board.put(square, pieceEntries.get(square));

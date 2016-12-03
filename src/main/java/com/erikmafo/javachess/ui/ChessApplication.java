@@ -2,10 +2,10 @@ package com.erikmafo.javachess.ui;
 
 import com.erikmafo.javachess.board.Board;
 import com.erikmafo.javachess.board.BoardCoordinate;
-import com.erikmafo.javachess.board.Boards;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.Moves;
 import com.erikmafo.javachess.movegenerator.BoardSeeker;
+import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
 import com.erikmafo.javachess.movegenerator.MoveGenerators;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
@@ -42,7 +42,7 @@ public class ChessApplication extends Application {
 
 
     private final SearchExecutor searchExecutor = new SearchExecutorImpl(
-            new AlphaBetaSearch(MoveGenerators.newPseudoLegalMoveGenerator(), new BoardSeeker()),
+            new AlphaBetaSearch(new BoardSeeker()),
             Executors.newSingleThreadExecutor());
 
 
@@ -387,7 +387,7 @@ public class ChessApplication extends Application {
 
     private List<Move> getMoves() {
 
-        List<Move> moves = board.getMoves(MoveGenerators.newPseudoLegalMoveGenerator());
+        List<Move> moves = board.getMoves(MoveGenerationStrategy.ALL_PSEUDO_LEGAL_MOVES);
 
         return moves;
 
