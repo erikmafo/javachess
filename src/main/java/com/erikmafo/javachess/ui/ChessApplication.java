@@ -28,7 +28,6 @@ import javafx.stage.Stage;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by erikmafo on 13.11.16.
@@ -67,8 +66,6 @@ public class ChessApplication extends Application {
     private final Stack<Move> playedMoves = new Stack<>();
 
     private PieceColor playerColor = PieceColor.WHITE;
-    private PieceColor computerColor = PieceColor.BLACK;
-    private PieceColor currentColor = PieceColor.WHITE;
 
     private Map<PieceColor, Map<PieceType, Image>> pieceImages = new HashMap<>();
     private Task<Move> calculateComputerMoveTask;
@@ -77,13 +74,7 @@ public class ChessApplication extends Application {
 
     private PieceColor getCurrentColor() {
         synchronized (mutex) {
-            return currentColor;
-        }
-    }
-
-    private void setCurrentColor(PieceColor currentColor) {
-        synchronized (mutex) {
-            this.currentColor = currentColor;
+            return board.getColorToMove();
         }
     }
 
@@ -194,7 +185,7 @@ public class ChessApplication extends Application {
             PieceEntry pieceEntry = entries.get(sq);
 
             if (board.pieceAt(sq)
-                    .filter(piece -> piece.is(piece.getColor(), pieceEntry.getPieceType()))
+                    .filter(piece -> piece.is(pieceEntry.getPieceColor(), pieceEntry.getPieceType()))
                     .isPresent()) {
                 update = false;
             } else {
@@ -324,7 +315,7 @@ public class ChessApplication extends Application {
                     @Override
                     protected Move call() throws Exception {
 
-                        SearchResult result = searchExecutor.submitSearch(board, new MaterialBoardEvaluation(), 10, TimeUnit.SECONDS).get();
+                        SearchResult result = searchExecutor.submitSearch(board, new MaterialBoardEvaluation(), 5).get();
 
                         return result.getBestMove();
                     }
@@ -352,7 +343,6 @@ public class ChessApplication extends Application {
             Move lastMove = playedMoves.pop();
             lastMove.undo();
             updateBoardView();
-            setCurrentColor(board.getColorToMove());
         }
     }
 
@@ -360,7 +350,6 @@ public class ChessApplication extends Application {
         playedMoves.push(move);
         move.play();
         updateBoardView();
-        setCurrentColor(board.getColorToMove());
     }
 
     private int findX(int file) {
