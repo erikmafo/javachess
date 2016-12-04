@@ -67,6 +67,9 @@ public class BoardSeeker {
                 }
 
                 if (slide) {
+                    if (pieceOptional.isPresent()) {
+                        break;
+                    }
                     current = current.next(offset);
                 } else {
                     break;

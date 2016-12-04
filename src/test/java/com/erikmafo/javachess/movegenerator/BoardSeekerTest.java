@@ -43,7 +43,7 @@ public class BoardSeekerTest {
     }
 
 
-    public Object[] fixtures() {
+    public Object[] slideSearchFixtures() {
 
         return new Object[] {
                 new Object[]{Optional.ofNullable(whitePawn), whitePawn, BoardCoordinate.G8, PieceColor.WHITE, BoardCoordinate.G6, Offset.UP},
@@ -57,7 +57,7 @@ public class BoardSeekerTest {
 
 
     @Test
-    @Parameters(method = "knightMovesTestFixtures")
+    @Parameters(method = "slideSearchFixtures")
     public void slideSearch(Optional<Piece> expected,
                             Piece piece,
                             BoardCoordinate square,
@@ -75,7 +75,26 @@ public class BoardSeekerTest {
     }
 
 
+    @Test
+    public void lookOutForBlockingPiece() throws Exception {
 
+        PieceColor opponent = PieceColor.BLACK;
 
+        Piece blockingPiece = PieceMocks.newPieceMock(PieceColor.WHITE, PieceType.PAWN);
+        Piece targetPiece = PieceMocks.newPieceMock(PieceColor.WHITE, PieceType.KING);
+        Piece slidingPiece = PieceMocks.newPieceMock(PieceColor.BLACK, PieceType.ROOK);
 
+        BoardCoordinate blockingPieceSquare = BoardCoordinate.G5;
+        BoardCoordinate targetPieceSquare = BoardCoordinate.G4;
+        BoardCoordinate slidingPieceSquare = BoardCoordinate.G8;
+
+        when(board.pieceAt(blockingPieceSquare)).thenReturn(Optional.ofNullable(blockingPiece));
+        when(board.pieceAt(targetPieceSquare)).thenReturn(Optional.ofNullable(targetPiece));
+        when(board.pieceAt(slidingPieceSquare)).thenReturn(Optional.ofNullable(slidingPiece));
+
+        boolean isAttaked = boardSeeker.isAttackedBy(opponent, targetPieceSquare, board);
+
+        assertThat("" + targetPiece + " is not attacked because " + blockingPiece + " is blocking the " + slidingPiece,
+                isAttaked, is(false));
+    }
 }

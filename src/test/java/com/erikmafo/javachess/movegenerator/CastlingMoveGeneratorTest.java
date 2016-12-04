@@ -61,6 +61,10 @@ public class CastlingMoveGeneratorTest {
         when(board.getColorToMove()).thenReturn(color);
         when(board.hasKingSideCastlingRight(color)).thenReturn(true);
 
+        when(boardSeeker.isAttackedBy(color, kingFrom, board)).thenReturn(true);
+        when(boardSeeker.isAttackedBy(color, rookTo, board)).thenReturn(true);
+        when(boardSeeker.isAttackedBy(color, kingTo, board)).thenReturn(true);
+
         when(boardSeeker.isAttackedBy(opponent, kingFrom, board)).thenReturn(false);
         when(boardSeeker.isAttackedBy(opponent, rookTo, board)).thenReturn(false);
         when(boardSeeker.isAttackedBy(opponent, kingTo, board)).thenReturn(false);

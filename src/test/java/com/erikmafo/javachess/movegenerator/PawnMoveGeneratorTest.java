@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -60,9 +62,32 @@ public class PawnMoveGeneratorTest {
 
         List<Move> moves = pawnMoveGenerator.generateMoves(board, from);
 
-        assertThat(moves, CoreMatchers.hasItem(expected));
+        assertThat(moves, hasItem(expected));
     }
 
+
+    @Test
+    public void onlyFindEnPasssentMoveFromValidRank() throws Exception {
+
+        PieceColor colorToMove = PieceColor.WHITE;
+        BoardCoordinate from = BoardCoordinate.B2;
+        BoardCoordinate enPassentTarget = BoardCoordinate.A6;
+        BoardCoordinate oppentPawnSquare = BoardCoordinate.A5;
+        when(board.enPassentTarget()).thenReturn(Optional.ofNullable(enPassentTarget));
+
+        when(board.getColorToMove()).thenReturn(colorToMove);
+
+        Piece opponentPawn = mock(Piece.class);
+        when(board.pieceAt(oppentPawnSquare)).thenReturn(Optional.ofNullable(opponentPawn));
+
+        Move enPassentMove = mock(Move.class, "" + from + enPassentTarget);
+        when(moveFactory.newEnPassentMove(from, enPassentTarget, opponentPawn)).thenReturn(enPassentMove);
+
+        List<Move> moves = pawnMoveGenerator.generateMoves(board, from);
+
+        assertThat(moves, not(hasItem(enPassentMove)));
+
+    }
 
     @Test
     public void findPawnPushMoves() throws Exception {

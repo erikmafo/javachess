@@ -48,8 +48,6 @@ public class NonSlidingMoveGenerator implements MoveGenerator {
                 } else if (pieceOptional.filter(piece -> piece.getColor().equals(opponent)).isPresent()) {
                     moves.add(moveFactory.newCaptureMove(from, target, pieceOptional.get()));
                 }
-            } else {
-                break;
             }
         }
         return moves;

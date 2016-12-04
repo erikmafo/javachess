@@ -85,8 +85,8 @@ public class CastlingMoveGenerator implements MoveGenerator {
             }
         }
 
-        return !(boardSeeker.isAttackedBy(color, getKingSideCastlingSquares(color)[0], board) ||
-                boardSeeker.isAttackedBy(color, getKingSideCastlingSquares(color)[1], board));
+        return !(boardSeeker.isAttackedBy(color.getOpposite(), getKingSideCastlingSquares(color)[0], board) ||
+                boardSeeker.isAttackedBy(color.getOpposite(), getKingSideCastlingSquares(color)[1], board));
     }
 
 
@@ -101,8 +101,8 @@ public class CastlingMoveGenerator implements MoveGenerator {
             }
         }
 
-        return !(boardSeeker.isAttackedBy(color, getQueenSideCastlingSquares(color)[0], board) ||
-                boardSeeker.isAttackedBy(color, getQueenSideCastlingSquares(color)[1], board));
+        return !(boardSeeker.isAttackedBy(color.getOpposite(), getQueenSideCastlingSquares(color)[0], board) ||
+                boardSeeker.isAttackedBy(color.getOpposite(), getQueenSideCastlingSquares(color)[1], board));
 
     }
 

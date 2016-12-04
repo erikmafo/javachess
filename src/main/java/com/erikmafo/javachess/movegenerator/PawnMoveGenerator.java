@@ -99,9 +99,14 @@ public class PawnMoveGenerator implements MoveGenerator {
         Optional<BoardCoordinate> enPassentTargetOptional = board.enPassentTarget();
         if (enPassentTargetOptional.isPresent()) {
             BoardCoordinate target = enPassentTargetOptional.get();
+
             Offset offset = target.getFile() > from.getFile() ? Offset.RIGHT : Offset.LEFT;
-            Piece captured = board.pieceAt(from.next(offset)).get();
-            moves.add(moveFactory.newEnPassentMove(from, target, captured));
+
+            if (from.next(offset).equals(target)) {
+                Piece captured = board.pieceAt(from.next(offset)).get();
+                moves.add(moveFactory.newEnPassentMove(from, target, captured));
+            }
+
         }
 
     }
