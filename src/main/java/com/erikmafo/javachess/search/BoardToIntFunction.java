@@ -2,9 +2,12 @@ package com.erikmafo.javachess.search;
 
 import com.erikmafo.javachess.board.Board;
 
+import java.util.function.ToIntFunction;
+
 /**
  * Created by erikmafo on 26.11.16.
  */
+@FunctionalInterface
 public interface BoardToIntFunction {
 
     /**
