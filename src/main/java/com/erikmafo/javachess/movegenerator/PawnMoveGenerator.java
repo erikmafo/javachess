@@ -12,6 +12,8 @@ import com.erikmafo.javachess.pieces.PieceType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by erikmafo on 20.11.16.
@@ -57,6 +59,8 @@ public class PawnMoveGenerator implements MoveGenerator {
         return color.isWhite() ? 1 : 7;
     }
 
+    private int getEnPassentRank(PieceColor color) {return color.isWhite() ? 4 : 3; }
+
     private Offset getUp(PieceColor pawnColor) {
         return pawnColor.isWhite() ? Offset.UP : Offset.DOWN;
     }
@@ -97,17 +101,22 @@ public class PawnMoveGenerator implements MoveGenerator {
 
     private void findEnPassentMove(MoveFactory moveFactory, Board board, PieceColor color, BoardCoordinate from, List<Move> moves) {
         Optional<BoardCoordinate> enPassentTargetOptional = board.enPassentTarget();
-        if (enPassentTargetOptional.isPresent()) {
+        if (enPassentTargetOptional.isPresent() && from.getRank() == getEnPassentRank(color)) {
             BoardCoordinate target = enPassentTargetOptional.get();
 
-            Offset oneUp = getUp(color);
-            Offset offset = target.getFile() > from.getFile() ? Offset.RIGHT : Offset.LEFT;
+            int fileDiff = target.getFile() - from.getFile();
 
-            if (from.next(oneUp).next(offset).equals(target)) {
-                Piece captured = board.pieceAt(from.next(offset)).get();
-                moves.add(moveFactory.newEnPassentMove(from, target, captured));
+            Optional<Piece> capturedOptional = Optional.empty();
+
+            if (fileDiff == 1) {
+                capturedOptional = board.pieceAt(from.next(Offset.RIGHT));
+            } else if (fileDiff == -1) {
+                capturedOptional = board.pieceAt(from.next(Offset.LEFT));
             }
 
+            if (capturedOptional.isPresent()) {
+                moves.add(moveFactory.newEnPassentMove(from, target, capturedOptional.get()));
+            }
         }
 
     }

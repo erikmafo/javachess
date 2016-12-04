@@ -62,7 +62,7 @@ public class AbstractMoveTest {
     class AbstractMoveImpl extends AbstractMove {
 
         protected AbstractMoveImpl(MoveReceiver moveReceiver, BoardCoordinate from, BoardCoordinate to) {
-            super(moveReceiver, from, to);
+            super(moveReceiver, from, to, 0);
         }
 
         @Override
