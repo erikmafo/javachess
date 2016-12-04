@@ -14,7 +14,7 @@ public class EnPassentMove extends AbstractMove {
     private final BoardCoordinate capturePieceCoordinate;
 
     public EnPassentMove(MoveReceiver moveReceiver, BoardCoordinate from, BoardCoordinate to, Piece capturedPiece) {
-        super(moveReceiver, from, to);
+        super(moveReceiver, from, to, Ranks.EN_PASSENT);
         this.capturedPiece = capturedPiece;
         Offset offset = to.getRank() - from.getRank() > 0 ? Offset.DOWN : Offset.UP;
         capturePieceCoordinate = to.next(offset);

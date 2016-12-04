@@ -5,7 +5,6 @@ import com.erikmafo.javachess.board.BoardCoordinate;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.movegenerator.BoardSeeker;
 import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
-import com.erikmafo.javachess.movegenerator.MoveGenerator;
 import com.erikmafo.javachess.pieces.PieceColor;
 
 import java.util.List;
@@ -27,18 +26,20 @@ public class AlphaBetaSearch implements MoveSearch {
 
         int alpha = -MAX_VALUE;
         int beta = MAX_VALUE;
-        int score = negMax(board, boardToIntFunction, principleVariation, alpha, beta, depth);
+        int score = negMax(principleVariation, board, boardToIntFunction, alpha, beta, depth);
 
         return new SearchResult(score, principleVariation);
     }
 
-    private int negMax(Board board, BoardToIntFunction evaluation, Move[] principleVariation, int alpha, int beta, int depthLeft) {
+    private int negMax(Move[] principleVariation, Board board, BoardToIntFunction evaluation, int alpha, int beta, int depthLeft) {
 
         if (depthLeft == 0 || Thread.currentThread().isInterrupted()) {
             return evaluation.applyAsInt(board);
         }
 
         List<Move> moves = board.getMoves(MoveGenerationStrategy.ALL_PSEUDO_LEGAL_MOVES);
+
+        moves.sort(new MoveComparator().reversed());
 
         PieceColor color = board.getColorToMove();
 
@@ -47,7 +48,7 @@ public class AlphaBetaSearch implements MoveSearch {
             move.play();
 
             if (!isChecked(color, board)) {
-                int score = - negMax(board, evaluation, principleVariation, -beta, -alpha, depthLeft - 1);
+                int score = - negMax(principleVariation, board, evaluation, -beta, -alpha, depthLeft - 1);
                 if (score >= beta) {
                     principleVariation[principleVariation.length - depthLeft] = move;
                     move.undo();

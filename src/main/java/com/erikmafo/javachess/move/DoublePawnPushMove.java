@@ -12,7 +12,7 @@ public class DoublePawnPushMove extends AbstractMove {
     private final BoardCoordinate enPassentTarget;
 
     protected DoublePawnPushMove(MoveReceiver moveReceiver, BoardCoordinate from, BoardCoordinate to) {
-        super(moveReceiver, from, to);
+        super(moveReceiver, from, to, Ranks.DOUBLE_PAWN_PUSH);
         Offset dir = from.getRank() > to.getRank() ? Offset.UP : Offset.DOWN;
         enPassentTarget = to.next(dir);
     }

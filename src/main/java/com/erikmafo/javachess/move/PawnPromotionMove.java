@@ -13,7 +13,7 @@ public class PawnPromotionMove extends AbstractMove {
     private final Piece promoteTo;
 
     protected PawnPromotionMove(MoveReceiver moveReceiver, BoardCoordinate from, BoardCoordinate to, Piece pawn, Piece promoteTo) {
-        super(moveReceiver, from, to);
+        super(moveReceiver, from, to, Ranks.PROMOTION);
         this.pawn = pawn;
         this.promoteTo = promoteTo;
     }

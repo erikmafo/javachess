@@ -11,11 +11,10 @@ public interface Move {
 
     BoardCoordinate getTo();
 
-
     void play();
 
     void undo();
 
-
+    int getRank();
 
 }

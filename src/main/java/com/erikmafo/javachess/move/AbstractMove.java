@@ -8,12 +8,28 @@ import com.erikmafo.javachess.board.BoardCoordinate;
  */
 public abstract class AbstractMove implements Move {
 
+
+
+    public static class Ranks {
+
+        public static final int QUIET = 1;
+        public static final int DOUBLE_PAWN_PUSH = 2;
+        public static final int CASTLING = 3;
+        public static final int CAPTURE = 4;
+        public static final int EN_PASSENT = 5;
+        public static final int PROMOTION = 6;
+    }
+
+
+    private final int rank;
     protected final MoveReceiver moveReceiver;
     protected final BoardCoordinate from;
     protected final BoardCoordinate to;
 
 
-    protected AbstractMove(MoveReceiver moveReceiver, BoardCoordinate from, BoardCoordinate to) {
+
+    protected AbstractMove(MoveReceiver moveReceiver, BoardCoordinate from, BoardCoordinate to, int rank) {
+        this.rank = rank;
         this.moveReceiver = moveReceiver;
         this.from = from;
         this.to = to;
@@ -36,7 +52,10 @@ public abstract class AbstractMove implements Move {
     protected abstract void beforeUndoComplete();
 
 
-
+    @Override
+    public int getRank() {
+        return rank;
+    }
 
     @Override
     public void play() {

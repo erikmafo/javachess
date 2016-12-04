@@ -15,7 +15,7 @@ public class CastlingMove extends AbstractMove {
     private final PieceColor color;
 
     protected CastlingMove(MoveReceiver moveReceiver, BoardCoordinate from, BoardCoordinate to, BoardCoordinate rookFrom, BoardCoordinate rookTo) {
-        super(moveReceiver, from, to);
+        super(moveReceiver, from, to, Ranks.CASTLING);
         this.rookFrom = rookFrom;
         this.rookTo = rookTo;
         color = rookFrom.getRank() == 0 ? PieceColor.WHITE : PieceColor.BLACK;

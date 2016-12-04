@@ -12,7 +12,7 @@ public class CaptureMove extends AbstractMove {
     private final Piece capturedPiece;
 
     public CaptureMove(MoveReceiver moveReceiver, BoardCoordinate from, BoardCoordinate to, Piece capturedPiece) {
-        super(moveReceiver, from, to);
+        super(moveReceiver, from, to, Ranks.CAPTURE);
         this.capturedPiece = capturedPiece;
     }
 

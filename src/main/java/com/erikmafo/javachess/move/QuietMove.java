@@ -9,7 +9,7 @@ import com.erikmafo.javachess.board.BoardCoordinate;
 public class QuietMove extends AbstractMove {
 
     public QuietMove(MoveReceiver moveReceiver, BoardCoordinate from, BoardCoordinate to) {
-        super(moveReceiver, from, to);
+        super(moveReceiver, from, to, Ranks.QUIET);
     }
 
     @Override
