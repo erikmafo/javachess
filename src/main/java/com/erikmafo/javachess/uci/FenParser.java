@@ -159,7 +159,7 @@ public class FenParser {
     }
 
     private static int getRankIndexOf(String square) {
-        return Integer.parseInt(" " + square.charAt(1)) - 1;
+        return Integer.parseInt("" + square.charAt(1)) - 1;
     }
 
     private static int to0x88(int fileIndex, int rankIndex) {
