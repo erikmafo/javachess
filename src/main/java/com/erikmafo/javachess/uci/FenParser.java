@@ -88,7 +88,7 @@ public class FenParser {
 
         PieceColor color = Character.isUpperCase(token) ? PieceColor.WHITE : PieceColor.BLACK;
 
-        BoardCoordinate coordinate = BoardCoordinate.valueOf(fileIndex, rankIndex);
+        Square coordinate = Square.valueOf(fileIndex, rankIndex);
 
         switch (Character.toLowerCase(token)) {
             case 'p':
@@ -153,7 +153,7 @@ public class FenParser {
             int fileIndex = getFileIndexOf(square);
             int rankIndex = getRankIndexOf(square);
 
-            builder.setEnPassentTarget(BoardCoordinate.valueOf(fileIndex, rankIndex));
+            builder.setEnPassentTarget(Square.valueOf(fileIndex, rankIndex));
         }
 
     }

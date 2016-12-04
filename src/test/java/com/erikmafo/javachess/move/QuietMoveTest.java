@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.move;
 
 import com.erikmafo.javachess.board.MoveReceiver;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import org.junit.Test;
 import org.mockito.InOrder;
 
@@ -16,8 +16,8 @@ public class QuietMoveTest {
 
 
     private MoveReceiver moveReceiver = mock(MoveReceiver.class);
-    private BoardCoordinate from = BoardCoordinate.A2;
-    private BoardCoordinate to = BoardCoordinate.A5;
+    private Square from = Square.A2;
+    private Square to = Square.A5;
 
     private Move move = new QuietMove(moveReceiver, from, to);
 

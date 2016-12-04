@@ -1,12 +1,11 @@
 package com.erikmafo.javachess.movegenerator;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.MoveFactory;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,9 +46,9 @@ public class PawnMoveGeneratorTest {
     public void findEnPassentMoveWhenEnPassentTargetIsSet() throws Exception {
 
         PieceColor colorToMove = PieceColor.WHITE;
-        BoardCoordinate from = BoardCoordinate.B5;
-        BoardCoordinate enPassentTarget = BoardCoordinate.A6;
-        BoardCoordinate capturePieceSquare = BoardCoordinate.A5;
+        Square from = Square.B5;
+        Square enPassentTarget = Square.A6;
+        Square capturePieceSquare = Square.A5;
         when(board.enPassentTarget()).thenReturn(Optional.ofNullable(enPassentTarget));
 
         when(board.getColorToMove()).thenReturn(colorToMove);
@@ -70,9 +69,9 @@ public class PawnMoveGeneratorTest {
     public void onlyFindEnPasssentMoveFromValidRank() throws Exception {
 
         PieceColor colorToMove = PieceColor.WHITE;
-        BoardCoordinate from = BoardCoordinate.B2;
-        BoardCoordinate enPassentTarget = BoardCoordinate.A6;
-        BoardCoordinate oppentPawnSquare = BoardCoordinate.A5;
+        Square from = Square.B2;
+        Square enPassentTarget = Square.A6;
+        Square oppentPawnSquare = Square.A5;
         when(board.enPassentTarget()).thenReturn(Optional.ofNullable(enPassentTarget));
 
         when(board.getColorToMove()).thenReturn(colorToMove);
@@ -94,10 +93,10 @@ public class PawnMoveGeneratorTest {
 
         PieceColor colorToMove = PieceColor.WHITE;
         when(board.getColorToMove()).thenReturn(colorToMove);
-        BoardCoordinate from = BoardCoordinate.E2;
+        Square from = Square.E2;
 
-        BoardCoordinate oneUp = BoardCoordinate.E3;
-        BoardCoordinate twoUp = BoardCoordinate.E4;
+        Square oneUp = Square.E3;
+        Square twoUp = Square.E4;
 
         Move singlePush = mock(Move.class, "" + from + oneUp);
         Move doublePush = mock(Move.class, "" + from + twoUp);

@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.movegenerator;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.board.Offset;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
@@ -32,7 +32,7 @@ public class BoardSeeker {
         Offset.getWhitePawnAttackOffsets().toArray(whitePawnOffsets);
     }
 
-    public boolean isAttackedBy(PieceColor opponent, BoardCoordinate square, Board board) {
+    public boolean isAttackedBy(PieceColor opponent, Square square, Board board) {
 
         boolean result;
 
@@ -50,13 +50,13 @@ public class BoardSeeker {
     }
 
 
-    public Optional<Piece> search(Predicate<Piece> piecePredicate, Board board, BoardCoordinate start, boolean slide, Offset... offsets) {
+    public Optional<Piece> search(Predicate<Piece> piecePredicate, Board board, Square start, boolean slide, Offset... offsets) {
 
         Optional<Piece> result = Optional.empty();
 
         for (Offset offset : offsets) {
 
-            BoardCoordinate current = start.next(offset);
+            Square current = start.next(offset);
 
             while (current.isOnBoard()){
 

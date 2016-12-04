@@ -1,9 +1,7 @@
 package com.erikmafo.javachess.board;
 
 import com.erikmafo.javachess.move.Move;
-import com.erikmafo.javachess.move.MoveFactory;
 import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
-import com.erikmafo.javachess.movegenerator.MoveGenerator;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
 
@@ -17,17 +15,17 @@ public interface Board {
 
     PieceColor getColorToMove();
 
-    BoardCoordinate getKingLocation(PieceColor kingColor);
+    Square getKingLocation(PieceColor kingColor);
 
-    Optional<Piece> pieceAt(BoardCoordinate boardCoordinate);
+    Optional<Piece> pieceAt(Square square);
 
-    Piece getNullablePiece(BoardCoordinate boardCoordinate);
+    Piece getNullablePiece(Square square);
 
     boolean hasCastled(PieceColor color);
 
-    Optional<BoardCoordinate> enPassentTarget();
+    Optional<Square> enPassentTarget();
 
-    boolean isOccupied(BoardCoordinate boardCoordinate);
+    boolean isOccupied(Square square);
 
     int getMoveCount();
 

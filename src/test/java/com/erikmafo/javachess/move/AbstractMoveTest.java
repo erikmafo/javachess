@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.move;
 
 import com.erikmafo.javachess.board.MoveReceiver;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import org.junit.Test;
 import org.mockito.InOrder;
 
@@ -16,8 +16,8 @@ public class AbstractMoveTest {
 
 
     private final MoveReceiver moveReceiver = mock(MoveReceiver.class);
-    private final BoardCoordinate from = BoardCoordinate.E7;
-    private final BoardCoordinate to = BoardCoordinate.F6;
+    private final Square from = Square.E7;
+    private final Square to = Square.F6;
 
     private final AbstractMove move = spy(new AbstractMoveImpl(moveReceiver, from, to));
 
@@ -61,7 +61,7 @@ public class AbstractMoveTest {
 
     class AbstractMoveImpl extends AbstractMove {
 
-        protected AbstractMoveImpl(MoveReceiver moveReceiver, BoardCoordinate from, BoardCoordinate to) {
+        protected AbstractMoveImpl(MoveReceiver moveReceiver, Square from, Square to) {
             super(moveReceiver, from, to, 0);
         }
 

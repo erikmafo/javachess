@@ -1,15 +1,15 @@
 package com.erikmafo.javachess.move;
 
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 
 /**
  * Created by erikmafo on 18.11.16.
  */
 public interface Move {
 
-    BoardCoordinate getFrom();
+    Square getFrom();
 
-    BoardCoordinate getTo();
+    Square getTo();
 
     void play();
 

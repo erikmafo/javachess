@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.move;
 
 import com.erikmafo.javachess.board.MoveReceiver;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.pieces.PieceColor;
 import org.junit.Test;
 
@@ -13,10 +13,10 @@ import static org.mockito.Mockito.verify;
  */
 public class CastlingMoveTest {
 
-    private final BoardCoordinate kingFrom = BoardCoordinate.E1;
-    private final BoardCoordinate kingTo = BoardCoordinate.G1;
-    private final BoardCoordinate rookFrom = BoardCoordinate.H1;
-    private final BoardCoordinate rookTo = BoardCoordinate.F1;
+    private final Square kingFrom = Square.E1;
+    private final Square kingTo = Square.G1;
+    private final Square rookFrom = Square.H1;
+    private final Square rookTo = Square.F1;
 
     private final PieceColor color = PieceColor.WHITE;
 

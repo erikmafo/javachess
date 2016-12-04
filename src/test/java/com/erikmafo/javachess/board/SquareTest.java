@@ -1,6 +1,5 @@
 package com.erikmafo.javachess.board;
 
-import com.erikmafo.javachess.board.BoardCoordinate;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -9,7 +8,7 @@ import static org.junit.Assert.*;
 /**
  * Created by erikmafo on 13.11.16.
  */
-public class BoardCoordinateTest {
+public class SquareTest {
 
 
 
@@ -17,9 +16,9 @@ public class BoardCoordinateTest {
     public void isBetween() throws Exception {
 
 
-        BoardCoordinate sq = BoardCoordinate.A1;
+        Square sq = Square.A1;
 
-        boolean result = sq.isBetween(BoardCoordinate.A2, BoardCoordinate.A3);
+        boolean result = sq.isBetween(Square.A2, Square.A3);
 
 
         assertThat(result, is(false));

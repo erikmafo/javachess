@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.search;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.movegenerator.BoardSeeker;
 import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
@@ -69,7 +69,7 @@ public class AlphaBetaSearch implements MoveSearch {
 
     boolean isChecked(PieceColor color, Board board) {
 
-        BoardCoordinate square = board.getKingLocation(color);
+        Square square = board.getKingLocation(color);
 
         return boardSeeker.isAttackedBy(color.getOpposite(), square, board);
     }

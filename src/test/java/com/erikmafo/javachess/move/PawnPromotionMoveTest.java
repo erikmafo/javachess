@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.move;
 
 import com.erikmafo.javachess.board.MoveReceiver;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.pieces.Piece;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -21,8 +21,8 @@ public class PawnPromotionMoveTest {
     private final Piece pawn = mock(Piece.class);
     private final Piece promoteTo = mock(Piece.class);
 
-    private final BoardCoordinate from = BoardCoordinate.E7;
-    private final BoardCoordinate to = BoardCoordinate.E8;
+    private final Square from = Square.E7;
+    private final Square to = Square.E8;
 
     private final Move move = new PawnPromotionMove(moveReceiver, from, to, pawn, promoteTo);
 

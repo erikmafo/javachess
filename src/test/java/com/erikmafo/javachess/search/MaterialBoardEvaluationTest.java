@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.search;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
 import com.erikmafo.javachess.pieces.PieceType;
@@ -27,13 +27,13 @@ public class MaterialBoardEvaluationTest {
 
     @Before
     public void setUp() throws Exception {
-        when(board.pieceAt(any(BoardCoordinate.class))).thenReturn(Optional.empty());
+        when(board.pieceAt(any(Square.class))).thenReturn(Optional.empty());
         when(board.getColorToMove()).thenReturn(PieceColor.WHITE);
 
 
     }
 
-    private void putPiece(BoardCoordinate sq, Piece piece) {
+    private void putPiece(Square sq, Piece piece) {
 
         when(board.isOccupied(sq)).thenReturn(true);
         when(board.getNullablePiece(sq)).thenReturn(piece);
@@ -50,10 +50,10 @@ public class MaterialBoardEvaluationTest {
 
         Piece blackKing = PieceMocks.newPieceMock(PieceColor.BLACK, PieceType.KING);
 
-        putPiece(BoardCoordinate.E1, whiteKing);
-        putPiece(BoardCoordinate.F1, whiteBishop);
+        putPiece(Square.E1, whiteKing);
+        putPiece(Square.F1, whiteBishop);
 
-        putPiece(BoardCoordinate.E8, blackKing);
+        putPiece(Square.E8, blackKing);
 
         assertThat(evaluation.applyAsInt(board), is(3));
 

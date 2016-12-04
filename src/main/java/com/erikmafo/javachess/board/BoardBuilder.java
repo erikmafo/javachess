@@ -13,18 +13,18 @@ import java.util.Map;
 public class BoardBuilder {
 
 
-    private Map<BoardCoordinate, Piece> pieceEntries = new HashMap<>();
-    private BoardCoordinate enPassentTarget;
+    private Map<Square, Piece> pieceEntries = new HashMap<>();
+    private Square enPassentTarget;
     private PieceColor activeColor = PieceColor.WHITE;
     private int halfMoveCount = 0;
     private final Map<PieceColor, CastlingRight> castlingRights = new HashMap<>();
 
-    public BoardBuilder put(BoardCoordinate square, Piece piece) {
+    public BoardBuilder put(Square square, Piece piece) {
         pieceEntries.put(square, piece);
         return this;
     }
 
-    public BoardBuilder setEnPassentTarget(BoardCoordinate enPassentTarget) {
+    public BoardBuilder setEnPassentTarget(Square enPassentTarget) {
         this.enPassentTarget = enPassentTarget;
         return this;
     }
@@ -44,7 +44,7 @@ public class BoardBuilder {
 
         BoardImpl board = new BoardImpl(new MoveGeneratorFactory(), activeColor, castlingRights);
 
-        for (BoardCoordinate square : pieceEntries.keySet()) {
+        for (Square square : pieceEntries.keySet()) {
             board.put(square, pieceEntries.get(square));
         }
 

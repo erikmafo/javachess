@@ -1,14 +1,14 @@
 package com.erikmafo.javachess.move;
 
 import com.erikmafo.javachess.board.MoveReceiver;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 
 /**
  * Created by erikmafo on 18.11.16.
  */
 public class QuietMove extends AbstractMove {
 
-    public QuietMove(MoveReceiver moveReceiver, BoardCoordinate from, BoardCoordinate to) {
+    public QuietMove(MoveReceiver moveReceiver, Square from, Square to) {
         super(moveReceiver, from, to, Ranks.QUIET);
     }
 

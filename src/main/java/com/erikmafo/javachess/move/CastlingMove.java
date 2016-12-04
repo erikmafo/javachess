@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.move;
 
 import com.erikmafo.javachess.board.MoveReceiver;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.pieces.PieceColor;
 
 /**
@@ -9,12 +9,12 @@ import com.erikmafo.javachess.pieces.PieceColor;
  */
 public class CastlingMove extends AbstractMove {
 
-    private final BoardCoordinate rookFrom;
-    private final BoardCoordinate rookTo;
+    private final Square rookFrom;
+    private final Square rookTo;
 
     private final PieceColor color;
 
-    protected CastlingMove(MoveReceiver moveReceiver, BoardCoordinate from, BoardCoordinate to, BoardCoordinate rookFrom, BoardCoordinate rookTo) {
+    protected CastlingMove(MoveReceiver moveReceiver, Square from, Square to, Square rookFrom, Square rookTo) {
         super(moveReceiver, from, to, Ranks.CASTLING);
         this.rookFrom = rookFrom;
         this.rookTo = rookTo;

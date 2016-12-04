@@ -1,9 +1,8 @@
 package com.erikmafo.javachess.movegenerator;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.move.Move;
-import com.erikmafo.javachess.move.MoveFactory;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
 import com.erikmafo.javachess.pieces.PieceType;
@@ -23,7 +22,7 @@ public class CompositeMoveGenerator implements MoveGenerator {
     }
 
     @Override
-    public List<Move> generateMoves(Board board, BoardCoordinate from) {
+    public List<Move> generateMoves(Board board, Square from) {
 
         List<Move> moves = new ArrayList<>();
 

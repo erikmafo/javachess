@@ -9,7 +9,6 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by erikmafo on 19.11.16.
@@ -25,7 +24,7 @@ public class BoardImplTest {
     @Test
     public void putAndRemove() throws Exception {
 
-        BoardCoordinate square = BoardCoordinate.G6;
+        Square square = Square.G6;
 
         board.put(square, piece);
 
@@ -41,8 +40,8 @@ public class BoardImplTest {
     @Test
     public void movePiece() throws Exception {
 
-        BoardCoordinate from = BoardCoordinate.G6;
-        BoardCoordinate to = BoardCoordinate.F6;
+        Square from = Square.G6;
+        Square to = Square.F6;
 
         board.put(from, piece);
 
@@ -57,7 +56,7 @@ public class BoardImplTest {
     @Test
     public void shouldKeepEnPassentTargetOnlyForNextTurn() throws Exception {
 
-        BoardCoordinate square = BoardCoordinate.A3;
+        Square square = Square.A3;
 
         board.setEnPassentTarget(square);
 
@@ -79,7 +78,7 @@ public class BoardImplTest {
     @Test
     public void shouldKeepEnPassentTargetForCurrentTurn() throws Exception {
 
-        BoardCoordinate square = BoardCoordinate.A3;
+        Square square = Square.A3;
 
         board.setEnPassentTarget(square);
 
@@ -100,10 +99,10 @@ public class BoardImplTest {
         Piece king = PieceMocks.newPieceMock(PieceColor.WHITE, PieceType.KING);
         Piece rook = PieceMocks.newPieceMock(PieceColor.WHITE, PieceType.ROOK);
 
-        board.put(BoardCoordinate.E1, king);
-        board.put(BoardCoordinate.G1, mock(Piece.class));
-        board.put(BoardCoordinate.F1, mock(Piece.class));
-        board.put(BoardCoordinate.H1, rook);
+        board.put(Square.E1, king);
+        board.put(Square.G1, mock(Piece.class));
+        board.put(Square.F1, mock(Piece.class));
+        board.put(Square.H1, rook);
 
         assertThat(board.hasKingSideCastlingRight(PieceColor.WHITE), is(true));
     }
@@ -115,10 +114,10 @@ public class BoardImplTest {
         Piece king = PieceMocks.newPieceMock(PieceColor.WHITE, PieceType.KING);
         Piece rook = PieceMocks.newPieceMock(PieceColor.WHITE, PieceType.ROOK);
 
-        board.put(BoardCoordinate.E1, king);
-        board.put(BoardCoordinate.H1, rook);
+        board.put(Square.E1, king);
+        board.put(Square.H1, rook);
 
-        board.movePiece(BoardCoordinate.H1, BoardCoordinate.H2);
+        board.movePiece(Square.H1, Square.H2);
         board.completePlay();
 
         boolean actual = board.hasKingSideCastlingRight(PieceColor.WHITE);
@@ -134,10 +133,10 @@ public class BoardImplTest {
         Piece king = PieceMocks.newPieceMock(PieceColor.WHITE, PieceType.KING);
         Piece rook = PieceMocks.newPieceMock(PieceColor.WHITE, PieceType.ROOK);
 
-        board.put(BoardCoordinate.E1, king);
-        board.put(BoardCoordinate.H1, rook);
+        board.put(Square.E1, king);
+        board.put(Square.H1, rook);
 
-        board.movePiece(BoardCoordinate.E1, BoardCoordinate.E2);
+        board.movePiece(Square.E1, Square.E2);
         board.completePlay();
 
         boolean actual = board.hasKingSideCastlingRight(PieceColor.WHITE);
@@ -153,13 +152,13 @@ public class BoardImplTest {
         Piece king = PieceMocks.newPieceMock(PieceColor.WHITE, PieceType.KING);
         Piece rook = PieceMocks.newPieceMock(PieceColor.WHITE, PieceType.ROOK);
 
-        board.put(BoardCoordinate.E1, king);
-        board.put(BoardCoordinate.H1, rook);
+        board.put(Square.E1, king);
+        board.put(Square.H1, rook);
 
-        board.movePiece(BoardCoordinate.E1, BoardCoordinate.E2);
+        board.movePiece(Square.E1, Square.E2);
         board.completePlay();
 
-        board.movePiece(BoardCoordinate.E2, BoardCoordinate.E1);
+        board.movePiece(Square.E2, Square.E1);
         board.completeUndo();
 
         boolean actual = board.hasKingSideCastlingRight(PieceColor.WHITE);
@@ -177,11 +176,11 @@ public class BoardImplTest {
 
         Piece whiteKing = PieceMocks.newPieceMock(PieceColor.WHITE, PieceType.KING);
 
-        BoardCoordinate kingLocation = BoardCoordinate.E8;
+        Square kingLocation = Square.E8;
         board.put(kingLocation, blackKing);
-        board.put(BoardCoordinate.E7, blackPawn);
+        board.put(Square.E7, blackPawn);
 
-        board.put(BoardCoordinate.E1, whiteKing);
+        board.put(Square.E1, whiteKing);
 
         assertThat(board.getKingLocation(PieceColor.BLACK), is(kingLocation));
 

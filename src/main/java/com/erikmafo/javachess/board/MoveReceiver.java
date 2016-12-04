@@ -8,13 +8,13 @@ import com.erikmafo.javachess.pieces.PieceColor;
  */
 public interface MoveReceiver {
 
-    void movePiece(BoardCoordinate from, BoardCoordinate to);
+    void movePiece(Square from, Square to);
 
-    void remove(BoardCoordinate boardCoordinate);
+    void remove(Square square);
 
-    void put(BoardCoordinate boardCoordinate, Piece piece);
+    void put(Square square, Piece piece);
 
-    void setEnPassentTarget(BoardCoordinate boardCoordinate);
+    void setEnPassentTarget(Square square);
 
     void removeEnPassentTarget();
 

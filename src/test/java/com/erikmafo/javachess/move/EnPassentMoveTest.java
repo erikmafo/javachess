@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.move;
 
 import com.erikmafo.javachess.board.MoveReceiver;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.pieces.Piece;
 import org.junit.Test;
 
@@ -14,9 +14,9 @@ import static org.mockito.Mockito.verify;
 public class EnPassentMoveTest {
 
     private MoveReceiver moveReceiver = mock(MoveReceiver.class);
-    private BoardCoordinate from = BoardCoordinate.D6;
-    private BoardCoordinate to = BoardCoordinate.C5;
-    private BoardCoordinate captureCoordinate = BoardCoordinate.C6;
+    private Square from = Square.D6;
+    private Square to = Square.C5;
+    private Square captureCoordinate = Square.C6;
     private Piece capturedPiece = mock(Piece.class);
 
     private EnPassentMove enPassentMove = new EnPassentMove(moveReceiver, from, to, capturedPiece);

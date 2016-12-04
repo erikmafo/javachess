@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.move;
 
 import com.erikmafo.javachess.board.MoveReceiver;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import org.junit.Test;
 import org.mockito.InOrder;
 
@@ -15,9 +15,9 @@ import static org.mockito.Mockito.verify;
 public class DoublePawnPushMoveTest {
 
     private MoveReceiver moveReceiver = mock(MoveReceiver.class);
-    private BoardCoordinate from = BoardCoordinate.A2;
-    private BoardCoordinate to = BoardCoordinate.A4;
-    private BoardCoordinate enPassentTarget = BoardCoordinate.A3;
+    private Square from = Square.A2;
+    private Square to = Square.A4;
+    private Square enPassentTarget = Square.A3;
 
     private Move move = new DoublePawnPushMove(moveReceiver, from, to);
 

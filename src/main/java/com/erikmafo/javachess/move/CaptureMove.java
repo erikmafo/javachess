@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.move;
 
 import com.erikmafo.javachess.board.MoveReceiver;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.pieces.Piece;
 
 /**
@@ -11,7 +11,7 @@ public class CaptureMove extends AbstractMove {
 
     private final Piece capturedPiece;
 
-    public CaptureMove(MoveReceiver moveReceiver, BoardCoordinate from, BoardCoordinate to, Piece capturedPiece) {
+    public CaptureMove(MoveReceiver moveReceiver, Square from, Square to, Piece capturedPiece) {
         super(moveReceiver, from, to, Ranks.CAPTURE);
         this.capturedPiece = capturedPiece;
     }

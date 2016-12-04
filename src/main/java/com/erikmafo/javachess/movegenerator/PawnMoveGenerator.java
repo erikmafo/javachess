@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.movegenerator;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.board.Offset;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.MoveFactory;
@@ -12,8 +12,6 @@ import com.erikmafo.javachess.pieces.PieceType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by erikmafo on 20.11.16.
@@ -29,7 +27,7 @@ public class PawnMoveGenerator implements MoveGenerator {
     }
 
     @Override
-    public List<Move> generateMoves(Board board, BoardCoordinate from) {
+    public List<Move> generateMoves(Board board, Square from) {
 
         List<Move> moves = new ArrayList<>();
 
@@ -66,11 +64,11 @@ public class PawnMoveGenerator implements MoveGenerator {
     }
 
 
-    private void findPawnAttackMoves(MoveFactory moveFactory, Board board, PieceColor pawnColor, BoardCoordinate from, List<Move> moves) {
+    private void findPawnAttackMoves(MoveFactory moveFactory, Board board, PieceColor pawnColor, Square from, List<Move> moves) {
 
         for (Offset offset : getAttackOffsets(pawnColor)) {
 
-            BoardCoordinate target = from.next(offset);
+            Square target = from.next(offset);
 
             Optional<Piece> piece = board.pieceAt(target);
 
@@ -84,12 +82,12 @@ public class PawnMoveGenerator implements MoveGenerator {
     }
 
     private void findPawnPromotionMoves(MoveFactory moveFactory, Board board, PieceColor pawnColor,
-                                BoardCoordinate pieceLocation, List<Move> moves) {
+                                        Square pieceLocation, List<Move> moves) {
         if (pieceLocation.getRank() != getSeventRank(pawnColor)) {
             return;
         }
 
-        BoardCoordinate oneUp = pieceLocation.next(getUp(pawnColor));
+        Square oneUp = pieceLocation.next(getUp(pawnColor));
         if (oneUp.isOnBoard() && !board.pieceAt(oneUp).isPresent()) {
             Piece pawn = board.pieceAt(pieceLocation).get();
             moves.add(moveFactory.newPawnPromotionMove(pieceLocation, oneUp, pawn,
@@ -99,10 +97,10 @@ public class PawnMoveGenerator implements MoveGenerator {
     }
 
 
-    private void findEnPassentMove(MoveFactory moveFactory, Board board, PieceColor color, BoardCoordinate from, List<Move> moves) {
-        Optional<BoardCoordinate> enPassentTargetOptional = board.enPassentTarget();
+    private void findEnPassentMove(MoveFactory moveFactory, Board board, PieceColor color, Square from, List<Move> moves) {
+        Optional<Square> enPassentTargetOptional = board.enPassentTarget();
         if (enPassentTargetOptional.isPresent() && from.getRank() == getEnPassentRank(color)) {
-            BoardCoordinate target = enPassentTargetOptional.get();
+            Square target = enPassentTargetOptional.get();
 
             int fileDiff = target.getFile() - from.getFile();
 
@@ -123,18 +121,18 @@ public class PawnMoveGenerator implements MoveGenerator {
 
 
 
-    private void findQuietMoves(MoveFactory moveFactory, Board board, PieceColor pawnColor, BoardCoordinate from, List<Move> moves) {
+    private void findQuietMoves(MoveFactory moveFactory, Board board, PieceColor pawnColor, Square from, List<Move> moves) {
 
         // add single push
         boolean addedSinglePush = false;
-        BoardCoordinate oneUp = from.next(getUp(pawnColor));
+        Square oneUp = from.next(getUp(pawnColor));
         if (oneUp.isOnBoard() && !board.isOccupied(oneUp)) {
             moves.add(moveFactory.newSinglePawnPushMove(from, oneUp));
             addedSinglePush = true;
         }
 
         // add double push
-        BoardCoordinate twoUp = oneUp.next(getUp(pawnColor));
+        Square twoUp = oneUp.next(getUp(pawnColor));
         if (from.getRank() == getSecondRank(pawnColor) && addedSinglePush && !board.isOccupied(twoUp)) {
             moves.add(moveFactory.newDoublePawnPushMove(from, twoUp));
         }

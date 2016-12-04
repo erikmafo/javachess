@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.ui;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.Moves;
 import com.erikmafo.javachess.movegenerator.BoardSeeker;
@@ -59,8 +59,8 @@ public class ChessApplication extends Application {
     private final Group squares = new Group();
     private final Group pieceGroup = new Group();
 
-    private final Map<BoardCoordinate, PieceEntry> entries = new HashMap<>();
-    private final Map<BoardCoordinate, ImageView> pieceImageViews = new HashMap<>();
+    private final Map<Square, PieceEntry> entries = new HashMap<>();
+    private final Map<Square, ImageView> pieceImageViews = new HashMap<>();
     private final DragPiece dragPiece = new DragPiece();
 
     private final Stack<Move> playedMoves = new Stack<>();
@@ -160,22 +160,22 @@ public class ChessApplication extends Application {
 
     private void updateBoardView() {
 
-        for (BoardCoordinate sq : BoardCoordinate.values()) {
+        for (Square sq : Square.values()) {
             updateSquareView(sq);
         }
 
     }
 
 
-    private void removePieceImage(BoardCoordinate boardCoordinate) {
-        PieceEntry entry = entries.remove(boardCoordinate);
+    private void removePieceImage(Square square) {
+        PieceEntry entry = entries.remove(square);
         if (entry != null) {
             pieceGroup.getChildren().remove(entry.getPieceImageView());
         }
 
     }
 
-    private void setPieceImageView(BoardCoordinate sq, PieceColor color, PieceType pieceType) {
+    private void setPieceImageView(Square sq, PieceColor color, PieceType pieceType) {
 
 
         boolean update = true;
@@ -207,7 +207,7 @@ public class ChessApplication extends Application {
 
     }
 
-    private void updateSquareView(BoardCoordinate sq) {
+    private void updateSquareView(Square sq) {
 
         if (board.isOccupied(sq)) {
 
@@ -230,7 +230,7 @@ public class ChessApplication extends Application {
 
         loadPieceImages();
 
-        for (BoardCoordinate sq : BoardCoordinate.values()) {
+        for (Square sq : Square.values()) {
 
             if (board.isOccupied(sq)) {
 
@@ -254,7 +254,7 @@ public class ChessApplication extends Application {
 
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    private ImageView createPieceImageView(BoardCoordinate sq, PieceColor pieceColor, PieceType pieceType) {
+    private ImageView createPieceImageView(Square sq, PieceColor pieceColor, PieceType pieceType) {
 
         ImageView pieceView = new ImageView(getPieceImage(pieceColor, pieceType));
         pieceView.setFitHeight(SQUARE_SIZE);
@@ -279,9 +279,9 @@ public class ChessApplication extends Application {
         int file = findFile(x);
         int rank = findRank(y);
 
-        BoardCoordinate boardCoordinate = BoardCoordinate.valueOf(file, rank);
+        Square square = Square.valueOf(file, rank);
 
-        dragPiece.setBoardCoordinate(boardCoordinate);
+        dragPiece.setSquare(square);
 
         dragPiece.setIsSelected(true);
     }
@@ -295,8 +295,8 @@ public class ChessApplication extends Application {
         int file = findFile(x);
         int rank = findRank(y);
 
-        BoardCoordinate from = dragPiece.getCoordinate();
-        BoardCoordinate to = BoardCoordinate.valueOf(file, rank);
+        Square from = dragPiece.getCoordinate();
+        Square to = Square.valueOf(file, rank);
 
 
         boolean acceptMove = false;
@@ -405,7 +405,7 @@ public class ChessApplication extends Application {
     }
 
 
-    public void setEmtpy(BoardCoordinate sq) {
+    public void setEmtpy(Square sq) {
 
         if (entries.containsKey(sq)) {
 

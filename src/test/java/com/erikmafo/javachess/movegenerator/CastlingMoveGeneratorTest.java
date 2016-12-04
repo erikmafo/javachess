@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.movegenerator;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.MoveFactory;
 import com.erikmafo.javachess.pieces.PieceColor;
@@ -43,8 +43,8 @@ public class CastlingMoveGeneratorTest {
 
     private Object[] kingSideCastlingFixtures() {
         return new Object[]{
-                new Object[]{PieceColor.WHITE, BoardCoordinate.E1, BoardCoordinate.G1, BoardCoordinate.H1, BoardCoordinate.F1},
-                new Object[]{PieceColor.BLACK, BoardCoordinate.E8, BoardCoordinate.G8, BoardCoordinate.H8, BoardCoordinate.F8}
+                new Object[]{PieceColor.WHITE, Square.E1, Square.G1, Square.H1, Square.F1},
+                new Object[]{PieceColor.BLACK, Square.E8, Square.G8, Square.H8, Square.F8}
         };
     }
 
@@ -53,8 +53,8 @@ public class CastlingMoveGeneratorTest {
     @Test
     @Parameters(method = "kingSideCastlingFixtures")
     public void findKingSideCastlingMove(
-            PieceColor color, BoardCoordinate kingFrom, BoardCoordinate kingTo,
-            BoardCoordinate rookFrom, BoardCoordinate rookTo) throws Exception {
+            PieceColor color, Square kingFrom, Square kingTo,
+            Square rookFrom, Square rookTo) throws Exception {
 
         PieceColor opponent = color.getOpposite();
 

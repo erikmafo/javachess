@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.movegenerator;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.board.Offset;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.MoveFactory;
@@ -30,15 +30,15 @@ public class NonSlidingMoveGenerator implements MoveGenerator {
     }
 
     @Override
-    public List<Move> generateMoves(Board board, BoardCoordinate from) {
+    public List<Move> generateMoves(Board board, Square from) {
         return getMoves(moveFactory, board, board.getColorToMove().getOpposite(), from, includeQuietMoves);
     }
 
-    private List<Move> getMoves(MoveFactory moveFactory, Board board, PieceColor opponent, BoardCoordinate from, boolean includeQuietMoves) {
+    private List<Move> getMoves(MoveFactory moveFactory, Board board, PieceColor opponent, Square from, boolean includeQuietMoves) {
         List<Move> moves = new ArrayList<>();
 
         for (Offset offset : attackOffsets) {
-            BoardCoordinate target = from.next(offset);
+            Square target = from.next(offset);
             if (target.isOnBoard()) {
                 Optional<Piece> pieceOptional = board.pieceAt(target);
                 if (!pieceOptional.isPresent()) {

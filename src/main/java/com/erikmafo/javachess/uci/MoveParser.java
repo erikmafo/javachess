@@ -2,7 +2,7 @@ package com.erikmafo.javachess.uci;
 
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.MoveFactory;
 import com.erikmafo.javachess.pieces.Piece;
@@ -69,9 +69,9 @@ public class MoveParser {
 
         String to = moveString.substring(3);
 
-        BoardCoordinate fromSquare = BoardCoordinate.valueOf(from.toUpperCase());
+        Square fromSquare = Square.valueOf(from.toUpperCase());
 
-        BoardCoordinate toSquare = BoardCoordinate.valueOf(to.toUpperCase());
+        Square toSquare = Square.valueOf(to.toUpperCase());
 
         MoveEncoding moveEncoding = determineEncoding(board, fromSquare, toSquare);
 
@@ -80,13 +80,13 @@ public class MoveParser {
         return move;
     }
 
-    private Move getMove(Board board, BoardCoordinate fromSquare, BoardCoordinate toSquare, MoveEncoding moveEncoding) {
+    private Move getMove(Board board, Square fromSquare, Square toSquare, MoveEncoding moveEncoding) {
         Move move = null;
 
         switch (moveEncoding) {
 
             case EN_PASSENT:
-                Optional<BoardCoordinate> enPassentTarget = board.enPassentTarget();
+                Optional<Square> enPassentTarget = board.enPassentTarget();
                 if (enPassentTarget.isPresent()) {
                     Piece captured = board.getNullablePiece(enPassentTarget.get());
                     move = moveFactory.newEnPassentMove(fromSquare, toSquare, captured);
@@ -94,16 +94,16 @@ public class MoveParser {
                 break;
             case KING_CASTLING:
                 if (fromSquare.getRank() == 0) {
-                    move = moveFactory.newCastlingMove(fromSquare, toSquare, BoardCoordinate.H1, BoardCoordinate.F1);
+                    move = moveFactory.newCastlingMove(fromSquare, toSquare, Square.H1, Square.F1);
                 } else {
-                    move = moveFactory.newCastlingMove(fromSquare, toSquare, BoardCoordinate.H8, BoardCoordinate.F8);
+                    move = moveFactory.newCastlingMove(fromSquare, toSquare, Square.H8, Square.F8);
                 }
                 break;
             case QUEEN_CASTLING:
                 if (fromSquare.getRank() == 0) {
-                    move = moveFactory.newCastlingMove(fromSquare, toSquare, BoardCoordinate.A1, BoardCoordinate.D1);
+                    move = moveFactory.newCastlingMove(fromSquare, toSquare, Square.A1, Square.D1);
                 } else {
-                    move = moveFactory.newCastlingMove(fromSquare, toSquare, BoardCoordinate.A8, BoardCoordinate.D8);
+                    move = moveFactory.newCastlingMove(fromSquare, toSquare, Square.A8, Square.D8);
                 }
                 break;
             case CAPTURE:
@@ -120,7 +120,7 @@ public class MoveParser {
     }
 
 
-    private MoveEncoding determineEncoding(Board board, BoardCoordinate from, BoardCoordinate to) throws MoveFormatException, InvalidMoveException {
+    private MoveEncoding determineEncoding(Board board, Square from, Square to) throws MoveFormatException, InvalidMoveException {
 
         MoveEncoding result = MoveEncoding.QUIET;
 

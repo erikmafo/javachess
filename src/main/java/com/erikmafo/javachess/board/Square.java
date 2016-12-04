@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.board;
 
 
-public enum BoardCoordinate {
+public enum Square {
 
     OFF_BOARD(-1),
     A1(0), B1(1), C1(2), D1(3), E1(4), F1(5), G1(6), H1(7),
@@ -13,12 +13,12 @@ public enum BoardCoordinate {
     A7(96), B7(97), C7(98), D7(99), E7(100), F7(101), G7(102), H7(103),
     A8(112), B8(113), C8(114), D8(115), E8(116), F8(117), G8(118), H8(119);
 
-    private static final BoardCoordinate[] cachedValues = new BoardCoordinate[128];
+    private static final Square[] cachedValues = new Square[128];
 
     static {
-        for (BoardCoordinate boardCoordinate : values()) {
-            if (boardCoordinate != OFF_BOARD) {
-                cachedValues[boardCoordinate.index] = boardCoordinate;
+        for (Square square : values()) {
+            if (square != OFF_BOARD) {
+                cachedValues[square.index] = square;
             }
 
         }
@@ -30,7 +30,7 @@ public enum BoardCoordinate {
     private final int file;
 
 
-    BoardCoordinate(int index) {
+    Square(int index) {
         this.index = index;
         this.rank = index / 16;
         this.file = index % 16;
@@ -49,7 +49,7 @@ public enum BoardCoordinate {
         return file;
     }
 
-    public boolean isBetween(BoardCoordinate from, BoardCoordinate to) {
+    public boolean isBetween(Square from, Square to) {
         if (this == from || this == to) {
             return false;
         }
@@ -76,14 +76,14 @@ public enum BoardCoordinate {
 
 
     /**
-     * Returns the corresponding BoardCoordinate.
+     * Returns the corresponding Square.
      *
      * @param fileIndex - an integer between 0 and 7
      * @param rankIndex - an integer between 0 and 7
      * @return - a board coordinate
      * @throws IllegalArgumentException if the fileIndex or rankIndex is out of range
      */
-    public static BoardCoordinate valueOf(int fileIndex, int rankIndex) {
+    public static Square valueOf(int fileIndex, int rankIndex) {
         if (rankIndex < 0 || rankIndex > 7 || fileIndex < 0 || fileIndex > 7) {
             throw new IllegalArgumentException();
         }
@@ -91,7 +91,7 @@ public enum BoardCoordinate {
     }
 
 
-    public BoardCoordinate next(Offset offset) {
+    public Square next(Offset offset) {
         int newIndex = index + offset.getValue();
         if (!hasNext(offset)) {
             return OFF_BOARD;

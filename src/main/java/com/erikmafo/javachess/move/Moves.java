@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.move;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 public class Moves {
 
 
-    public static Move valueOf(Board board, BoardCoordinate from, BoardCoordinate to) {
+    public static Move valueOf(Board board, Square from, Square to) {
 
         List<Move> moves = board.getMoves(MoveGenerationStrategy.ALL_PSEUDO_LEGAL_MOVES);
 

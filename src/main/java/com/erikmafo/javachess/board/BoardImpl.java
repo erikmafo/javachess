@@ -17,9 +17,9 @@ import java.util.*;
 public class BoardImpl implements Board, MoveReceiver {
 
 
-    private final Map<BoardCoordinate, Piece> pieceEntryEnumMap = new EnumMap<>(BoardCoordinate.class);
+    private final Map<Square, Piece> pieceEntryEnumMap = new EnumMap<>(Square.class);
 
-    private final Map<Integer, BoardCoordinate> enPassentTargets = new HashMap<>();
+    private final Map<Integer, Square> enPassentTargets = new HashMap<>();
 
     private final Map<PieceColor, Boolean> hasCastled = new HashMap<>();
 
@@ -36,8 +36,8 @@ public class BoardImpl implements Board, MoveReceiver {
     private static final int A8_INDEX = 5;
 
     private Piece lastMovedPiece;
-    private BoardCoordinate lastMoveTo;
-    private BoardCoordinate lastMoveFrom;
+    private Square lastMoveTo;
+    private Square lastMoveFrom;
 
     private int moveCount = 0;
     private PieceColor colorToMove = PieceColor.WHITE;
@@ -55,7 +55,7 @@ public class BoardImpl implements Board, MoveReceiver {
     }
 
     @Override
-    public void movePiece(BoardCoordinate from, BoardCoordinate to) {
+    public void movePiece(Square from, Square to) {
 
         lastMovedPiece = pieceEntryEnumMap.remove(from);
         pieceEntryEnumMap.put(to, lastMovedPiece);
@@ -65,18 +65,18 @@ public class BoardImpl implements Board, MoveReceiver {
     }
 
     @Override
-    public void remove(BoardCoordinate boardCoordinate) {
-        pieceEntryEnumMap.remove(boardCoordinate);
+    public void remove(Square square) {
+        pieceEntryEnumMap.remove(square);
     }
 
     @Override
-    public void put(BoardCoordinate boardCoordinate, Piece piece) {
-        pieceEntryEnumMap.put(boardCoordinate, piece);
+    public void put(Square square, Piece piece) {
+        pieceEntryEnumMap.put(square, piece);
     }
 
     @Override
-    public void setEnPassentTarget(BoardCoordinate boardCoordinate) {
-        enPassentTargets.put(moveCount + 1, boardCoordinate);
+    public void setEnPassentTarget(Square square) {
+        enPassentTargets.put(moveCount + 1, square);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class BoardImpl implements Board, MoveReceiver {
     }
 
 
-    private int getCastlingSquareIndex(BoardCoordinate castlingSquare) {
+    private int getCastlingSquareIndex(Square castlingSquare) {
 
         if (castlingSquare == null) {
             return -1;
@@ -173,9 +173,9 @@ public class BoardImpl implements Board, MoveReceiver {
     }
 
     @Override
-    public BoardCoordinate getKingLocation(PieceColor kingColor) {
-        BoardCoordinate kingLocation = BoardCoordinate.OFF_BOARD;
-        for (BoardCoordinate square : pieceEntryEnumMap.keySet()) {
+    public Square getKingLocation(PieceColor kingColor) {
+        Square kingLocation = Square.OFF_BOARD;
+        for (Square square : pieceEntryEnumMap.keySet()) {
             if (pieceAt(square).filter(piece -> piece.is(kingColor, PieceType.KING)).isPresent()) {
                 kingLocation = square;
                 break;
@@ -185,13 +185,13 @@ public class BoardImpl implements Board, MoveReceiver {
     }
 
     @Override
-    public Optional<Piece> pieceAt(BoardCoordinate boardCoordinate) {
-        return Optional.ofNullable(getNullablePiece(boardCoordinate));
+    public Optional<Piece> pieceAt(Square square) {
+        return Optional.ofNullable(getNullablePiece(square));
     }
 
     @Override
-    public Piece getNullablePiece(BoardCoordinate boardCoordinate) {
-        return pieceEntryEnumMap.get(boardCoordinate);
+    public Piece getNullablePiece(Square square) {
+        return pieceEntryEnumMap.get(square);
     }
 
     @Override
@@ -200,13 +200,13 @@ public class BoardImpl implements Board, MoveReceiver {
     }
 
     @Override
-    public Optional<BoardCoordinate> enPassentTarget() {
+    public Optional<Square> enPassentTarget() {
         return Optional.ofNullable(enPassentTargets.getOrDefault(moveCount, null));
     }
 
     @Override
-    public boolean isOccupied(BoardCoordinate boardCoordinate) {
-        return pieceEntryEnumMap.containsKey(boardCoordinate);
+    public boolean isOccupied(Square square) {
+        return pieceEntryEnumMap.containsKey(square);
     }
 
     @Override
@@ -223,7 +223,7 @@ public class BoardImpl implements Board, MoveReceiver {
 
         List<Move> moves = new ArrayList<>();
 
-        for (BoardCoordinate square : pieceEntryEnumMap.keySet()) {
+        for (Square square : pieceEntryEnumMap.keySet()) {
             if (getNullablePiece(square).getColor().equals(colorToMove)) {
                 moves.addAll(moveGenerator.generateMoves(this, square));
             }
@@ -235,7 +235,7 @@ public class BoardImpl implements Board, MoveReceiver {
 
 
 
-    private boolean hasCastlingRight(PieceColor color, BoardCoordinate kingSquare, BoardCoordinate rookSquare) {
+    private boolean hasCastlingRight(PieceColor color, Square kingSquare, Square rookSquare) {
 
         int kingSquareIndex = getCastlingSquareIndex(kingSquare);
         int rookSquareIndex = getCastlingSquareIndex(rookSquare);
@@ -261,17 +261,17 @@ public class BoardImpl implements Board, MoveReceiver {
     @Override
     public boolean hasKingSideCastlingRight(PieceColor pieceColor) {
 
-        BoardCoordinate kingSquare;
-        BoardCoordinate rookSquare;
+        Square kingSquare;
+        Square rookSquare;
 
         switch (pieceColor) {
             case BLACK:
-                kingSquare = BoardCoordinate.E8;
-                rookSquare = BoardCoordinate.H8;
+                kingSquare = Square.E8;
+                rookSquare = Square.H8;
                 break;
             case WHITE:
-                kingSquare = BoardCoordinate.E1;
-                rookSquare = BoardCoordinate.H1;
+                kingSquare = Square.E1;
+                rookSquare = Square.H1;
                 break;
             default:
                 throw new AssertionError();
@@ -282,17 +282,17 @@ public class BoardImpl implements Board, MoveReceiver {
 
     @Override
     public boolean hasQueenSideCastlingRight(PieceColor pieceColor) {
-        BoardCoordinate kingSquare;
-        BoardCoordinate rookSquare;
+        Square kingSquare;
+        Square rookSquare;
 
         switch (pieceColor) {
             case BLACK:
-                kingSquare = BoardCoordinate.E8;
-                rookSquare = BoardCoordinate.A8;
+                kingSquare = Square.E8;
+                rookSquare = Square.A8;
                 break;
             case WHITE:
-                kingSquare = BoardCoordinate.E1;
-                rookSquare = BoardCoordinate.A1;
+                kingSquare = Square.E1;
+                rookSquare = Square.A1;
                 break;
             default:
                 throw new AssertionError();

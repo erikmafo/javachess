@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.search;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceType;
 
@@ -36,7 +36,7 @@ public class MaterialBoardEvaluation implements BoardToIntFunction {
         int sign = board.getColorToMove().isWhite() ? 1 : -1;
 
         int score = 0;
-        for (BoardCoordinate square : BoardCoordinate.values()) {
+        for (Square square : Square.values()) {
 
             if (board.isOccupied(square)) {
 

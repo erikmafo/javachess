@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.movegenerator;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.board.Offset;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.MoveFactory;
@@ -37,10 +37,10 @@ public class NonSlidingMoveGeneratorTest {
         when(board.getColorToMove()).thenReturn(PieceColor.WHITE);
         when(board.pieceAt(any())).thenReturn(Optional.ofNullable(null));
 
-        when(moveFactory.newQuietMove(any(BoardCoordinate.class), any(BoardCoordinate.class))).then(invocationOnMock -> {
+        when(moveFactory.newQuietMove(any(Square.class), any(Square.class))).then(invocationOnMock -> {
             String name = new StringBuilder()
-                    .append(invocationOnMock.getArgumentAt(0, BoardCoordinate.class))
-                    .append(invocationOnMock.getArgumentAt(1, BoardCoordinate.class))
+                    .append(invocationOnMock.getArgumentAt(0, Square.class))
+                    .append(invocationOnMock.getArgumentAt(1, Square.class))
                     .toString();
             Move move = mock(Move.class, name);
             return move;
@@ -52,18 +52,18 @@ public class NonSlidingMoveGeneratorTest {
     public Object[] knightMovesTestFixtures() {
 
         return new Object[]{
-                new Object[]{BoardCoordinate.C3, Offset.KNIGHT_LEAP_2DOWN_LEFT, BoardCoordinate.B1},
-                new Object[]{BoardCoordinate.C3, Offset.KNIGHT_LEAP_2DOWN_RIGHT, BoardCoordinate.D1},
-                new Object[]{BoardCoordinate.C3, Offset.KNIGHT_LEAP_2UP_LEFT, BoardCoordinate.B5},
-                new Object[]{BoardCoordinate.C3, Offset.KNIGHT_LEAP_2UP_RIGHT, BoardCoordinate.D5},
-                new Object[]{BoardCoordinate.C3, Offset.KNIGHT_LEAP_UP_2RIGHT, BoardCoordinate.E4}
+                new Object[]{Square.C3, Offset.KNIGHT_LEAP_2DOWN_LEFT, Square.B1},
+                new Object[]{Square.C3, Offset.KNIGHT_LEAP_2DOWN_RIGHT, Square.D1},
+                new Object[]{Square.C3, Offset.KNIGHT_LEAP_2UP_LEFT, Square.B5},
+                new Object[]{Square.C3, Offset.KNIGHT_LEAP_2UP_RIGHT, Square.D5},
+                new Object[]{Square.C3, Offset.KNIGHT_LEAP_UP_2RIGHT, Square.E4}
         };
     }
 
 
     @Test
     @Parameters(method = "knightMovesTestFixtures")
-    public void findKnightMoveOnEmtpyBoard(BoardCoordinate from, Offset offset, BoardCoordinate expectedTarget) throws Exception {
+    public void findKnightMoveOnEmtpyBoard(Square from, Offset offset, Square expectedTarget) throws Exception {
 
         boolean includeQuietMoves = true;
         NonSlidingMoveGenerator nonSlidingMoveGenerator = new NonSlidingMoveGenerator(moveFactory, includeQuietMoves, offset);

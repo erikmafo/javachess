@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.movegenerator;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.board.Offset;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.MoveFactory;
@@ -38,7 +38,7 @@ public class SlidingMoveGeneratorTest {
     @Test
     public void findRookMovesOnEmptyBoard() throws Exception {
 
-        BoardCoordinate from = BoardCoordinate.E4;
+        Square from = Square.E4;
         Offset slidingDirection = Offset.DOWN;
 
         SlidingMoveGenerator slidingMoveGenerator = new SlidingMoveGenerator(moveFactory, slidingDirection);
@@ -47,9 +47,9 @@ public class SlidingMoveGeneratorTest {
         Move e4e2 = mock(Move.class, "e4e2");
         Move e4e1 = mock(Move.class, "e4e1");
 
-        when(moveFactory.newQuietMove(from, BoardCoordinate.E3)).thenReturn(e4e3);
-        when(moveFactory.newQuietMove(from, BoardCoordinate.E2)).thenReturn(e4e2);
-        when(moveFactory.newQuietMove(from, BoardCoordinate.E1)).thenReturn(e4e1);
+        when(moveFactory.newQuietMove(from, Square.E3)).thenReturn(e4e3);
+        when(moveFactory.newQuietMove(from, Square.E2)).thenReturn(e4e2);
+        when(moveFactory.newQuietMove(from, Square.E1)).thenReturn(e4e1);
 
         List<Move> moves = slidingMoveGenerator.generateMoves(board, from);
 
@@ -59,7 +59,7 @@ public class SlidingMoveGeneratorTest {
     @Test
     public void findBishopMovesOnEmptyBoard() throws Exception {
 
-        BoardCoordinate from = BoardCoordinate.E4;
+        Square from = Square.E4;
         Offset slidingDirection = Offset.UP_LEFT;
 
         SlidingMoveGenerator slidingMoveGenerator = new SlidingMoveGenerator(moveFactory, slidingDirection);
@@ -69,10 +69,10 @@ public class SlidingMoveGeneratorTest {
         Move e4b7 = mock(Move.class, "e4b7");
         Move e4a8 = mock(Move.class, "e4a8");
 
-        when(moveFactory.newQuietMove(from, BoardCoordinate.D5)).thenReturn(e4d5);
-        when(moveFactory.newQuietMove(from, BoardCoordinate.C6)).thenReturn(e4c6);
-        when(moveFactory.newQuietMove(from, BoardCoordinate.B7)).thenReturn(e4b7);
-        when(moveFactory.newQuietMove(from, BoardCoordinate.A8)).thenReturn(e4a8);
+        when(moveFactory.newQuietMove(from, Square.D5)).thenReturn(e4d5);
+        when(moveFactory.newQuietMove(from, Square.C6)).thenReturn(e4c6);
+        when(moveFactory.newQuietMove(from, Square.B7)).thenReturn(e4b7);
+        when(moveFactory.newQuietMove(from, Square.A8)).thenReturn(e4a8);
 
         List<Move> moves = slidingMoveGenerator.generateMoves(board, from);
 

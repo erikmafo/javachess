@@ -1,7 +1,7 @@
 package com.erikmafo.javachess.move;
 
 import com.erikmafo.javachess.board.MoveReceiver;
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 
 /**
  * Created by erikmafo on 18.11.16.
@@ -23,12 +23,12 @@ public abstract class AbstractMove implements Move {
 
     private final int rank;
     protected final MoveReceiver moveReceiver;
-    protected final BoardCoordinate from;
-    protected final BoardCoordinate to;
+    protected final Square from;
+    protected final Square to;
 
 
 
-    protected AbstractMove(MoveReceiver moveReceiver, BoardCoordinate from, BoardCoordinate to, int rank) {
+    protected AbstractMove(MoveReceiver moveReceiver, Square from, Square to, int rank) {
         this.rank = rank;
         this.moveReceiver = moveReceiver;
         this.from = from;
@@ -36,12 +36,12 @@ public abstract class AbstractMove implements Move {
     }
 
     @Override
-    public BoardCoordinate getFrom() {
+    public Square getFrom() {
         return from;
     }
 
     @Override
-    public BoardCoordinate getTo() {
+    public Square getTo() {
         return to;
     }
 

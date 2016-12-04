@@ -1,11 +1,11 @@
 package com.erikmafo.javachess.ui;
 
-import com.erikmafo.javachess.board.BoardCoordinate;
+import com.erikmafo.javachess.board.Square;
 
 
 public class DragPiece {
 
-    BoardCoordinate boardCoordinate;
+    Square square;
 
     private boolean isSelected;
 
@@ -17,11 +17,11 @@ public class DragPiece {
         return isSelected;
     }
 
-    public void setBoardCoordinate(BoardCoordinate boardCoordinate) {
-        this.boardCoordinate = boardCoordinate;
+    public void setSquare(Square square) {
+        this.square = square;
     }
 
-    public BoardCoordinate getCoordinate() {
-        return boardCoordinate;
+    public Square getCoordinate() {
+        return square;
     }
 }
