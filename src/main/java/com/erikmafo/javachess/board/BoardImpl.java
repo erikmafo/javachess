@@ -37,6 +37,7 @@ public class BoardImpl implements Board, MoveReceiver {
 
     private Piece lastMovedPiece;
     private BoardCoordinate lastMoveTo;
+    private BoardCoordinate lastMoveFrom;
 
     private int moveCount = 0;
     private PieceColor colorToMove = PieceColor.WHITE;
@@ -58,6 +59,7 @@ public class BoardImpl implements Board, MoveReceiver {
 
         lastMovedPiece = pieceEntryEnumMap.remove(from);
         pieceEntryEnumMap.put(to, lastMovedPiece);
+        lastMoveFrom = from;
         lastMoveTo = to;
 
     }
@@ -157,7 +159,7 @@ public class BoardImpl implements Board, MoveReceiver {
         moveCount--;
         toggleColorToMove();
 
-        int index = getCastlingSquareIndex(lastMoveTo);
+        int index = getCastlingSquareIndex(lastMoveFrom);
 
         if (index > 0) {
             castlingSquaresMoveCount[index] -= 1;
@@ -280,7 +282,23 @@ public class BoardImpl implements Board, MoveReceiver {
 
     @Override
     public boolean hasQueenSideCastlingRight(PieceColor pieceColor) {
-        return false;
+        BoardCoordinate kingSquare;
+        BoardCoordinate rookSquare;
+
+        switch (pieceColor) {
+            case BLACK:
+                kingSquare = BoardCoordinate.E8;
+                rookSquare = BoardCoordinate.A8;
+                break;
+            case WHITE:
+                kingSquare = BoardCoordinate.E1;
+                rookSquare = BoardCoordinate.A1;
+                break;
+            default:
+                throw new AssertionError();
+        }
+
+        return hasCastlingRight(pieceColor, kingSquare, rookSquare);
     }
 
 

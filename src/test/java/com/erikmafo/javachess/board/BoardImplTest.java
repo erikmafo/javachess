@@ -77,7 +77,7 @@ public class BoardImplTest {
 
 
     @Test
-    public void shouldNotRemoveEnPassentTargetForCurrentTurn() throws Exception {
+    public void shouldKeepEnPassentTargetForCurrentTurn() throws Exception {
 
         BoardCoordinate square = BoardCoordinate.A3;
 
@@ -92,17 +92,6 @@ public class BoardImplTest {
 
     }
 
-
-    private Piece createPieceMock(PieceColor color, PieceType pieceType) {
-
-        Piece mock = mock(Piece.class, "" + color + " " + pieceType);
-
-        when(mock.getColor()).thenReturn(color);
-        when(mock.getType()).thenReturn(pieceType);
-
-        return mock;
-
-    }
 
 
     @Test
