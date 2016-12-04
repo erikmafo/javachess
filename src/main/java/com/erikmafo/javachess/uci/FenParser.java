@@ -27,11 +27,16 @@ public class FenParser {
         Board board = parse(fen);
 
         MoveParser moveParser = new MoveParser(new MoveFactory((BoardImpl) board));
-        // TODO: create new board interface that includes MoveReceiver
+        // TODO: create new board interface that includes MoveReceiver to avoid type cast
 
         for (String moveString : movesList) {
 
-            Move move = moveParser.parse(board, moveString, MoveParser.Format.LONG_ALGEBRAIC);
+            Move move = null;
+            try {
+                move = moveParser.parse(board, moveString, MoveParser.Format.LONG_ALGEBRAIC);
+            } catch (MoveFormatException | InvalidMoveException e) {
+                throw new FenParseException(e);
+            }
 
             move.play();
 

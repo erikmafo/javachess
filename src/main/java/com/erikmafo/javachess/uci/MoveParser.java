@@ -41,7 +41,7 @@ public class MoveParser {
     private final static String FILES = "abcdefgh";
     private final static String RANKS = "12345678";
 
-    public Move parse(Board board, String moveString, Format format) {
+    public Move parse(Board board, String moveString, Format format) throws InvalidMoveException {
 
         Move move;
 
@@ -57,7 +57,7 @@ public class MoveParser {
     }
 
 
-    private Move parseFromLongAlgebraic(Board board, String longAlgebraicMove) throws MoveFormatException {
+    private Move parseFromLongAlgebraic(Board board, String longAlgebraicMove) throws MoveFormatException, InvalidMoveException {
 
         String moveString = longAlgebraicMove.toLowerCase();
 
@@ -120,14 +120,14 @@ public class MoveParser {
     }
 
 
-    private MoveEncoding determineEncoding(Board board, BoardCoordinate from, BoardCoordinate to) throws MoveFormatException {
+    private MoveEncoding determineEncoding(Board board, BoardCoordinate from, BoardCoordinate to) throws MoveFormatException, InvalidMoveException {
 
         MoveEncoding result = MoveEncoding.QUIET;
 
         Piece piece = board.getNullablePiece(from);
 
         if (piece == null) {
-            return result; // No piece at from-square. Default to quiet move.
+            throw new InvalidMoveException("No piece is present at " + from); // No piece at from-square. Default to quiet move.
         }
 
         int absRankDiff = Math.abs(to.getRank() - from.getRank());
