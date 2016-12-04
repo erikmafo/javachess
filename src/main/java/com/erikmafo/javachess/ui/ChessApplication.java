@@ -315,7 +315,10 @@ public class ChessApplication extends Application {
                     @Override
                     protected Move call() throws Exception {
 
-                        SearchResult result = searchExecutor.submitSearch(board, new MaterialBoardEvaluation(), 5).get();
+                        BoardToIntFunction boardToIntFunction = new BoardToIntFunctionChain(
+                                new MaterialBoardEvaluation(), new BasicStrategicEvaluation());
+
+                        SearchResult result = searchExecutor.submitSearch(board, boardToIntFunction, 5).get();
 
                         return result.getBestMove();
                     }

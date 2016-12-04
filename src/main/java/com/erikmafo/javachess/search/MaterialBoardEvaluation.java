@@ -20,12 +20,12 @@ public class MaterialBoardEvaluation implements BoardToIntFunction {
      * <p>
      * This function associates the following value to each piece:
      * <ul>
-     * <li>Pawn: 1
-     * <li>Bishop: 3
-     * <li>Knight: 3
-     * <li>Rook: 5
-     * <li>Queen: 9
-     * <li>King: 1000
+     * <li>Pawn: 10
+     * <li>Bishop: 30
+     * <li>Knight: 30
+     * <li>Rook: 50
+     * <li>Queen: 90
+     * <li>King: 10000
      * </ul>
      *
      * @param board - the board to evaluate
@@ -56,22 +56,22 @@ public class MaterialBoardEvaluation implements BoardToIntFunction {
         int material;
         switch (pieceType) {
             case PAWN:
-                material = 1;
+                material = 10;
                 break;
             case BISHOP:
-                material = 3;
+                material = 30;
                 break;
             case KNIGHT:
-                material = 3;
+                material = 30;
                 break;
             case ROOK:
-                material = 5;
+                material = 50;
                 break;
             case QUEEN:
-                material = 9;
+                material = 90;
                 break;
             case KING:
-                material = 1000;
+                material = 10000;
                 break;
             default:
                 material = 0;
