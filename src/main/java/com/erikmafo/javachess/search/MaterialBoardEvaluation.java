@@ -5,32 +5,23 @@ import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceType;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by erikmafo on 26.11.16.
  */
 public class MaterialBoardEvaluation implements BoardToIntFunction {
 
 
-    /**
-     * The function shall evaluate the board and return an integer score.
-     * <p>
-     * A score greater than 0 is good for the active color and a score less
-     * than zero is good for the active colors opponent. A score equal to
-     * 0 means that the position is equal.
-     * <p>
-     * This function associates the following value to each piece:
-     * <ul>
-     * <li>Pawn: 10
-     * <li>Bishop: 30
-     * <li>Knight: 30
-     * <li>Rook: 50
-     * <li>Queen: 90
-     * <li>King: 10000
-     * </ul>
-     *
-     * @param board - the board to evaluate
-     * @return - an integer
-     */
+
+
+    private final Map<PieceType, Integer> pieceValues = new HashMap<>();
+    
+
+
+
+
     @Override
     public int applyAsInt(Board board) {
         int sign = board.getColorToMove().isWhite() ? 1 : -1;
@@ -74,8 +65,7 @@ public class MaterialBoardEvaluation implements BoardToIntFunction {
                 material = 10000;
                 break;
             default:
-                material = 0;
-                break;
+                throw new AssertionError();
         }
         return material;
     }

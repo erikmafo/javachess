@@ -9,7 +9,9 @@ import com.erikmafo.javachess.testingutils.PieceMocks;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
@@ -25,10 +27,13 @@ public class MaterialBoardEvaluationTest {
     private MaterialBoardEvaluation evaluation = new MaterialBoardEvaluation();
     private Board board = mock(Board.class);
 
+    private Set<Square> occupiedSquares = new HashSet<>();
+
     @Before
     public void setUp() throws Exception {
         when(board.pieceAt(any(Square.class))).thenReturn(Optional.empty());
         when(board.getColorToMove()).thenReturn(PieceColor.WHITE);
+        when(board.getOccupiedSquares()).thenReturn(occupiedSquares);
 
 
     }
@@ -38,6 +43,8 @@ public class MaterialBoardEvaluationTest {
         when(board.isOccupied(sq)).thenReturn(true);
         when(board.getNullablePiece(sq)).thenReturn(piece);
         when(board.pieceAt(sq)).thenReturn(Optional.ofNullable(piece));
+
+        occupiedSquares.add(sq);
     }
 
 
@@ -55,10 +62,10 @@ public class MaterialBoardEvaluationTest {
 
         putPiece(Square.E8, blackKing);
 
-        assertThat(evaluation.applyAsInt(board), is(3));
+        assertThat(evaluation.applyAsInt(board), is(30));
 
         when(board.getColorToMove()).thenReturn(PieceColor.BLACK);
 
-        assertThat(evaluation.applyAsInt(board), is(-3));
+        assertThat(evaluation.applyAsInt(board), is(-30));
     }
 }
