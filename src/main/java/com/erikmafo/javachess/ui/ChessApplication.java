@@ -125,8 +125,8 @@ public class ChessApplication extends Application {
         for (int i = 0; i < WIDTH; i++) {
             for (int j = 0; j < HEIGHT; j++) {
                 boolean light = (i + j) % 2 == 0;
-                Square square = new Square(light, i, j);
-                squares.getChildren().add(square);
+                SquareView squareView = new SquareView(light, i, j);
+                squares.getChildren().add(squareView);
             }
         }
 

@@ -6,9 +6,9 @@ import javafx.scene.shape.Rectangle;
 /**
  * Created by erikmafo on 13.11.16.
  */
-public class Square extends Rectangle {
+public class SquareView extends Rectangle {
 
-    public Square(boolean light, int x, int y) {
+    public SquareView(boolean light, int x, int y) {
 
 
         setWidth(ChessApplication.SQUARE_SIZE);
