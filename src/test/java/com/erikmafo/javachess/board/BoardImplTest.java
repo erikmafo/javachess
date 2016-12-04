@@ -93,7 +93,6 @@ public class BoardImplTest {
     }
 
 
-
     private Piece createPieceMock(PieceColor color, PieceType pieceType) {
 
         Piece mock = mock(Piece.class, "" + color + " " + pieceType);
@@ -177,6 +176,26 @@ public class BoardImplTest {
         boolean actual = board.hasKingSideCastlingRight(PieceColor.WHITE);
 
         assertThat(actual, is(true));
+
+    }
+
+    @Test
+    public void getKingLocation() throws Exception {
+
+
+        Piece blackKing = PieceMocks.newPieceMock(PieceColor.BLACK, PieceType.KING);
+        Piece blackPawn = PieceMocks.newPieceMock(PieceColor.BLACK, PieceType.PAWN);
+
+        Piece whiteKing = PieceMocks.newPieceMock(PieceColor.WHITE, PieceType.KING);
+
+        BoardCoordinate kingLocation = BoardCoordinate.E8;
+        board.put(kingLocation, blackKing);
+        board.put(BoardCoordinate.E7, blackPawn);
+
+        board.put(BoardCoordinate.E1, whiteKing);
+
+        assertThat(board.getKingLocation(PieceColor.BLACK), is(kingLocation));
+
 
     }
 }

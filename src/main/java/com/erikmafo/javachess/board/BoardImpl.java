@@ -174,7 +174,7 @@ public class BoardImpl implements Board, MoveReceiver {
     public BoardCoordinate getKingLocation(PieceColor kingColor) {
         BoardCoordinate kingLocation = BoardCoordinate.OFF_BOARD;
         for (BoardCoordinate square : pieceEntryEnumMap.keySet()) {
-            if (pieceAt(square).filter(piece -> piece.getColor().equals(kingColor)).isPresent()) {
+            if (pieceAt(square).filter(piece -> piece.is(kingColor, PieceType.KING)).isPresent()) {
                 kingLocation = square;
                 break;
             }
