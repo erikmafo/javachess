@@ -35,7 +35,7 @@ public class PawnMoveGenerator implements MoveGenerator {
 
         findPawnAttackMoves(moveFactory, board, pawnColor, from, moves);
         findPawnPromotionMoves(moveFactory, board, pawnColor, from, moves);
-        findEnPassentMove(moveFactory, board, from, moves);
+        findEnPassentMove(moveFactory, board, pawnColor,  from, moves);
         findQuietMoves(moveFactory, board, pawnColor, from, moves);
 
         return moves;
@@ -95,14 +95,15 @@ public class PawnMoveGenerator implements MoveGenerator {
     }
 
 
-    private void findEnPassentMove(MoveFactory moveFactory, Board board, BoardCoordinate from, List<Move> moves) {
+    private void findEnPassentMove(MoveFactory moveFactory, Board board, PieceColor color, BoardCoordinate from, List<Move> moves) {
         Optional<BoardCoordinate> enPassentTargetOptional = board.enPassentTarget();
         if (enPassentTargetOptional.isPresent()) {
             BoardCoordinate target = enPassentTargetOptional.get();
 
+            Offset oneUp = getUp(color);
             Offset offset = target.getFile() > from.getFile() ? Offset.RIGHT : Offset.LEFT;
 
-            if (from.next(offset).equals(target)) {
+            if (from.next(oneUp).next(offset).equals(target)) {
                 Piece captured = board.pieceAt(from.next(offset)).get();
                 moves.add(moveFactory.newEnPassentMove(from, target, captured));
             }
