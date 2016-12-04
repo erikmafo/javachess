@@ -301,5 +301,12 @@ public class BoardImpl implements Board, MoveReceiver {
         return hasCastlingRight(pieceColor, kingSquare, rookSquare);
     }
 
+    @Override
+    public Collection<Square> getOccupiedSquares() {
+
+        return new HashSet<>(pieceEntryEnumMap.keySet());
+
+    }
+
 
 }

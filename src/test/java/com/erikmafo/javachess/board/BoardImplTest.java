@@ -6,6 +6,11 @@ import com.erikmafo.javachess.pieces.PieceType;
 import com.erikmafo.javachess.testingutils.PieceMocks;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -20,6 +25,27 @@ public class BoardImplTest {
 
     private Piece piece = mock(Piece.class);
 
+
+    @Test
+    public void getOccupiedSquaresShouldReturnEmptyListWhenBoardIsEmpty() throws Exception {
+
+        assertThat(new HashSet<>(board.getOccupiedSquares()), is(Collections.emptySet()));
+
+    }
+
+
+    @Test
+    public void getOccupiedSquares() throws Exception {
+
+        List<Square> squares = Arrays.asList(Square.A3, Square.G6, Square.B3);
+
+        for (Square square : squares) {
+            board.put(square, mock(Piece.class));
+        }
+
+        assertThat(new HashSet<>(board.getOccupiedSquares()), is(new HashSet<>(squares)));
+
+    }
 
     @Test
     public void putAndRemove() throws Exception {

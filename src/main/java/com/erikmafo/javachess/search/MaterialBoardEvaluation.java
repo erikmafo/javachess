@@ -36,7 +36,7 @@ public class MaterialBoardEvaluation implements BoardToIntFunction {
         int sign = board.getColorToMove().isWhite() ? 1 : -1;
 
         int score = 0;
-        for (Square square : Square.values()) {
+        for (Square square : board.getOccupiedSquares()) {
 
             if (board.isOccupied(square)) {
 
