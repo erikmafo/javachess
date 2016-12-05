@@ -18,31 +18,30 @@ public enum Square {
     static {
         for (Square square : values()) {
             if (square != OFF_BOARD) {
-                cachedValues[square.index] = square;
+                cachedValues[square.x88Value] = square;
             }
 
         }
     }
 
-    // data
-    private final int index;
+    private final int x88Value;
     private final int rank;
     private final int file;
 
 
-    Square(int index) {
-        this.index = index;
-        this.rank = index / 16;
-        this.file = index % 16;
+    Square(int x88Value) {
+        this.x88Value = x88Value;
+        this.rank = x88Value / 16;
+        this.file = x88Value % 16;
     }
 
     public boolean hasNext(Offset direction) {
-        return ((index + direction.getValue()) & 0x88) == 0;
+        return ((x88Value + direction.getValue()) & 0x88) == 0;
     }
 
     private int next(int x88sq, int x88Offset) {
         int next = x88sq + x88Offset;
-        if ((next & 0x88) != 0 ) {
+        if ((next & 0x88) != 0) {
             return -1;
         }
         return next;
@@ -108,7 +107,7 @@ public enum Square {
      */
     public Square next(Offset offset) {
         int newIndex;
-        if ((newIndex = next(index, offset.getValue())) > -1) {
+        if ((newIndex = next(x88Value, offset.getValue())) > -1) {
             return cachedValues[newIndex];
         }
         return OFF_BOARD;
