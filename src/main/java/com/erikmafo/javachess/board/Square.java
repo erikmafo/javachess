@@ -37,7 +37,15 @@ public enum Square {
     }
 
     public boolean hasNext(Offset direction) {
-        return (index + direction.getValue() & 0x88) == 0;
+        return ((index + direction.getValue()) & 0x88) == 0;
+    }
+
+    private int next(int x88sq, int x88Offset) {
+        int next = x88sq + x88Offset;
+        if ((next & 0x88) != 0 ) {
+            return -1;
+        }
+        return next;
     }
 
 
@@ -91,12 +99,19 @@ public enum Square {
     }
 
 
+    /**
+     * Returns the unique <code>Square</code> that results from applying the specified {@link Offset} to
+     * the current square.
+     *
+     * @param offset
+     * @return a square, or <code>OFF_BOARD</code>
+     */
     public Square next(Offset offset) {
-        int newIndex = index + offset.getValue();
-        if (!hasNext(offset)) {
-            return OFF_BOARD;
+        int newIndex;
+        if ((newIndex = next(index, offset.getValue())) > -1) {
+            return cachedValues[newIndex];
         }
-        return cachedValues[newIndex];
+        return OFF_BOARD;
     }
 
     public boolean isOnBoard() {
