@@ -100,7 +100,7 @@ public enum Square {
 
 
     /**
-     * Returns the unique <code>Square</code> that results from applying the specified {@link Offset} to
+     * Returns the unique <code>Square</code> that results from applying the specified {@link BasicOffset} to
      * the current square.
      *
      * @param offset

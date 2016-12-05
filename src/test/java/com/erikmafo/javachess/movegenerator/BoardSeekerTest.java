@@ -1,6 +1,7 @@
 package com.erikmafo.javachess.movegenerator;
 
 import com.erikmafo.javachess.board.Board;
+import com.erikmafo.javachess.board.BasicOffset;
 import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.board.Offset;
 import com.erikmafo.javachess.pieces.Piece;
@@ -46,9 +47,9 @@ public class BoardSeekerTest {
     public Object[] slideSearchFixtures() {
 
         return new Object[] {
-                new Object[]{Optional.ofNullable(whitePawn), whitePawn, Square.G8, PieceColor.WHITE, Square.G6, Offset.UP},
-                new Object[]{Optional.empty(), whitePawn, Square.G8, PieceColor.BLACK, Square.G6, Offset.UP},
-                new Object[]{Optional.empty(), null, Square.OFF_BOARD, PieceColor.WHITE, Square.G6, Offset.UP}
+                new Object[]{Optional.ofNullable(whitePawn), whitePawn, Square.G8, PieceColor.WHITE, Square.G6, BasicOffset.UP},
+                new Object[]{Optional.empty(), whitePawn, Square.G8, PieceColor.BLACK, Square.G6, BasicOffset.UP},
+                new Object[]{Optional.empty(), null, Square.OFF_BOARD, PieceColor.WHITE, Square.G6, BasicOffset.UP}
 
 
         };

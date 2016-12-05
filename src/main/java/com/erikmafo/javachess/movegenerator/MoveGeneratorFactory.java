@@ -1,6 +1,8 @@
 package com.erikmafo.javachess.movegenerator;
 
+import com.erikmafo.javachess.board.KnightOffset;
 import com.erikmafo.javachess.board.Offset;
+import com.erikmafo.javachess.board.BasicOffset;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.MoveFactory;
 import com.erikmafo.javachess.pieces.PieceType;
@@ -41,23 +43,22 @@ public class MoveGeneratorFactory {
 
     private static MoveGenerator getQueenMoveGenerator(MoveFactory moveFactory) {
         return new SlidingMoveGenerator(
-                moveFactory, Offset.DOWN_LEFT, Offset.DOWN_RIGHT, Offset.UP_LEFT, Offset.UP_RIGHT,
-                Offset.UP, Offset.DOWN, Offset.RIGHT, Offset.LEFT);
+                moveFactory, BasicOffset.values());
     }
 
     private static MoveGenerator getBishopMoveGenerator(MoveFactory moveFactory) {
         return new SlidingMoveGenerator(
-                moveFactory, Offset.DOWN_LEFT, Offset.DOWN_RIGHT, Offset.UP_LEFT, Offset.UP_RIGHT);
+                moveFactory, BasicOffset.bishopValues());
     }
 
     private static MoveGenerator getRookMoveGenerator(MoveFactory moveFactory) {
-        return new SlidingMoveGenerator(moveFactory, Offset.UP, Offset.DOWN, Offset.RIGHT, Offset.LEFT);
+        return new SlidingMoveGenerator(moveFactory, BasicOffset.rookValues());
     }
 
 
     private static MoveGenerator getKnightMoveGenerator(MoveFactory moveFactory) {
 
-        Offset[] offsets = Offset.getKnightAttackOffsets().toArray(new Offset[8]);
+        Offset[] offsets = KnightOffset.values();
 
         MoveGenerator moveGenerator = new NonSlidingMoveGenerator(moveFactory, true, offsets);
 
@@ -70,11 +71,7 @@ public class MoveGeneratorFactory {
         CastlingMoveGenerator castlingMoveGenerator =
                 new CastlingMoveGenerator(moveFactory, new BoardSeeker());
 
-        NonSlidingMoveGenerator nonSlidingMoveGenerator =
-                new NonSlidingMoveGenerator(moveFactory, true,
-                        Offset.DOWN_LEFT, Offset.DOWN_RIGHT, Offset.UP_LEFT, Offset.UP_RIGHT,
-                        Offset.UP, Offset.DOWN, Offset.RIGHT, Offset.LEFT);
-
+        NonSlidingMoveGenerator nonSlidingMoveGenerator = new NonSlidingMoveGenerator(moveFactory, true, BasicOffset.values());
         return (board, from) -> {
             List<Move> moves = new ArrayList<>();
             moves.addAll(castlingMoveGenerator.generateMoves(board, from));

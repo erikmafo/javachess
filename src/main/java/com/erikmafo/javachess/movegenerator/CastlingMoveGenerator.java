@@ -1,8 +1,8 @@
 package com.erikmafo.javachess.movegenerator;
 
 import com.erikmafo.javachess.board.Board;
+import com.erikmafo.javachess.board.BasicOffset;
 import com.erikmafo.javachess.board.Square;
-import com.erikmafo.javachess.board.Offset;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.MoveFactory;
 import com.erikmafo.javachess.pieces.PieceColor;
@@ -119,10 +119,10 @@ public class CastlingMoveGenerator implements MoveGenerator {
 
         if (isKingSideCastlingLegal(board, color)) {
             moves.add(moveFactory.newCastlingMove(from, getKingSideCastlingTarget(color),
-                    getInitialKingSideRookCoordinate(color), from.next(Offset.RIGHT)));
+                    getInitialKingSideRookCoordinate(color), from.next(BasicOffset.RIGHT)));
         } else if (isQueenSideCastlingLegal(board, color)) {
             moves.add(moveFactory.newCastlingMove(from , getQueenSideCastlingTarget(color),
-                    getInitialQueenSideRookCoordinate(color), from.next(Offset.LEFT)));
+                    getInitialQueenSideRookCoordinate(color), from.next(BasicOffset.LEFT)));
         }
     }
 

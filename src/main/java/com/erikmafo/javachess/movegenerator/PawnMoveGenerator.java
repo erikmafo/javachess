@@ -1,6 +1,7 @@
 package com.erikmafo.javachess.movegenerator;
 
 import com.erikmafo.javachess.board.Board;
+import com.erikmafo.javachess.board.BasicOffset;
 import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.board.Offset;
 import com.erikmafo.javachess.move.Move;
@@ -19,8 +20,8 @@ import java.util.Optional;
 public class PawnMoveGenerator implements MoveGenerator {
 
     private final MoveFactory moveFactory;
-    private final Offset[] whiteAttackOffsets = {Offset.UP_LEFT, Offset.UP_RIGHT};
-    private final Offset[] blackAttackOffsets = {Offset.DOWN_LEFT, Offset.DOWN_RIGHT};
+    private final Offset[] whiteAttackOffsets = {BasicOffset.UP_LEFT, BasicOffset.UP_RIGHT};
+    private final Offset[] blackAttackOffsets = {BasicOffset.DOWN_LEFT, BasicOffset.DOWN_RIGHT};
 
     public PawnMoveGenerator(MoveFactory moveFactory) {
         this.moveFactory = moveFactory;
@@ -60,7 +61,7 @@ public class PawnMoveGenerator implements MoveGenerator {
     private int getEnPassentRank(PieceColor color) {return color.isWhite() ? 4 : 3; }
 
     private Offset getUp(PieceColor pawnColor) {
-        return pawnColor.isWhite() ? Offset.UP : Offset.DOWN;
+        return pawnColor.isWhite() ? BasicOffset.UP : BasicOffset.DOWN;
     }
 
 
@@ -107,9 +108,9 @@ public class PawnMoveGenerator implements MoveGenerator {
             Optional<Piece> capturedOptional = Optional.empty();
 
             if (fileDiff == 1) {
-                capturedOptional = board.pieceAt(from.next(Offset.RIGHT));
+                capturedOptional = board.pieceAt(from.next(BasicOffset.RIGHT));
             } else if (fileDiff == -1) {
-                capturedOptional = board.pieceAt(from.next(Offset.LEFT));
+                capturedOptional = board.pieceAt(from.next(BasicOffset.LEFT));
             }
 
             if (capturedOptional.isPresent()) {

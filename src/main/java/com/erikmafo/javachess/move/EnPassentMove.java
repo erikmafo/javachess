@@ -1,6 +1,7 @@
 package com.erikmafo.javachess.move;
 
 import com.erikmafo.javachess.board.MoveReceiver;
+import com.erikmafo.javachess.board.BasicOffset;
 import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.board.Offset;
 import com.erikmafo.javachess.pieces.Piece;
@@ -16,7 +17,7 @@ public class EnPassentMove extends AbstractMove {
     public EnPassentMove(MoveReceiver moveReceiver, Square from, Square to, Piece capturedPiece) {
         super(moveReceiver, from, to, Ranks.EN_PASSENT);
         this.capturedPiece = capturedPiece;
-        Offset offset = to.getRank() - from.getRank() > 0 ? Offset.DOWN : Offset.UP;
+        Offset offset = to.getRank() - from.getRank() > 0 ? BasicOffset.DOWN : BasicOffset.UP;
         capturePieceCoordinate = to.next(offset);
     }
 

@@ -1,8 +1,6 @@
 package com.erikmafo.javachess.movegenerator;
 
-import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.Square;
-import com.erikmafo.javachess.board.Offset;
+import com.erikmafo.javachess.board.*;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
 import com.erikmafo.javachess.pieces.PieceType;
@@ -16,21 +14,13 @@ import java.util.function.Predicate;
 public class BoardSeeker {
 
 
-    private final Offset[] knightOffsets = new Offset[8];
-    private final Offset[] rookOffsets = new Offset[4];
-    private final Offset[] bishopOffsets = new Offset[4];
-    private final Offset[] kingOffsets = new Offset[8];
-    private final Offset[] blackPawnOffsets = new Offset[2];
-    private final Offset[] whitePawnOffsets = new Offset[2];
+    private final Offset[] knightOffsets = KnightOffset.values();
+    private final Offset[] rookOffsets = BasicOffset.rookValues();
+    private final Offset[] bishopOffsets = BasicOffset.bishopValues();
+    private final Offset[] kingOffsets = BasicOffset.values();
+    private final Offset[] blackPawnOffsets = {BasicOffset.DOWN_LEFT, BasicOffset.DOWN_RIGHT};
+    private final Offset[] whitePawnOffsets = {BasicOffset.UP_LEFT, BasicOffset.UP_RIGHT};
 
-    public BoardSeeker() {
-        Offset.getKnightAttackOffsets().toArray(knightOffsets);
-        Offset.getRookAttackOffsets().toArray(rookOffsets);
-        Offset.getBishopAttackOffsets().toArray(bishopOffsets);
-        Offset.getKingAttackOffsets().toArray(kingOffsets);
-        Offset.getBlackPawnAttackOffsets().toArray(blackPawnOffsets);
-        Offset.getWhitePawnAttackOffsets().toArray(whitePawnOffsets);
-    }
 
     public boolean isAttackedBy(PieceColor opponent, Square square, Board board) {
 

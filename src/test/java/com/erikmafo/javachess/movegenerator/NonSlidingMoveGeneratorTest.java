@@ -1,8 +1,6 @@
 package com.erikmafo.javachess.movegenerator;
 
-import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.Square;
-import com.erikmafo.javachess.board.Offset;
+import com.erikmafo.javachess.board.*;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.MoveFactory;
 import com.erikmafo.javachess.pieces.PieceColor;
@@ -52,11 +50,11 @@ public class NonSlidingMoveGeneratorTest {
     public Object[] knightMovesTestFixtures() {
 
         return new Object[]{
-                new Object[]{Square.C3, Offset.KNIGHT_LEAP_2DOWN_LEFT, Square.B1},
-                new Object[]{Square.C3, Offset.KNIGHT_LEAP_2DOWN_RIGHT, Square.D1},
-                new Object[]{Square.C3, Offset.KNIGHT_LEAP_2UP_LEFT, Square.B5},
-                new Object[]{Square.C3, Offset.KNIGHT_LEAP_2UP_RIGHT, Square.D5},
-                new Object[]{Square.C3, Offset.KNIGHT_LEAP_UP_2RIGHT, Square.E4}
+                new Object[]{Square.C3, KnightOffset.KNIGHT_LEAP_2DOWN_LEFT, Square.B1},
+                new Object[]{Square.C3, KnightOffset.KNIGHT_LEAP_2DOWN_RIGHT, Square.D1},
+                new Object[]{Square.C3, KnightOffset.KNIGHT_LEAP_2UP_LEFT, Square.B5},
+                new Object[]{Square.C3, KnightOffset.KNIGHT_LEAP_2UP_RIGHT, Square.D5},
+                new Object[]{Square.C3, KnightOffset.KNIGHT_LEAP_UP_2RIGHT, Square.E4}
         };
     }
 

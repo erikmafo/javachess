@@ -1,6 +1,7 @@
 package com.erikmafo.javachess.movegenerator;
 
 import com.erikmafo.javachess.board.Board;
+import com.erikmafo.javachess.board.BasicOffset;
 import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.board.Offset;
 import com.erikmafo.javachess.move.Move;
@@ -39,7 +40,7 @@ public class SlidingMoveGeneratorTest {
     public void findRookMovesOnEmptyBoard() throws Exception {
 
         Square from = Square.E4;
-        Offset slidingDirection = Offset.DOWN;
+        Offset slidingDirection = BasicOffset.DOWN;
 
         SlidingMoveGenerator slidingMoveGenerator = new SlidingMoveGenerator(moveFactory, slidingDirection);
 
@@ -60,7 +61,7 @@ public class SlidingMoveGeneratorTest {
     public void findBishopMovesOnEmptyBoard() throws Exception {
 
         Square from = Square.E4;
-        Offset slidingDirection = Offset.UP_LEFT;
+        Offset slidingDirection = BasicOffset.UP_LEFT;
 
         SlidingMoveGenerator slidingMoveGenerator = new SlidingMoveGenerator(moveFactory, slidingDirection);
 

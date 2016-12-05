@@ -17,12 +17,12 @@ public class SquareTest {
 
     private Object[] hasNext_testFixtures() {
         return new Object[]{
-                new Object[]{Square.A1, Offset.LEFT, false},
-                new Object[]{Square.A1, Offset.DOWN_LEFT, false},
-                new Object[]{Square.A1, Offset.DOWN, false},
-                new Object[]{Square.A1, Offset.RIGHT, true},
-                new Object[]{Square.A1, Offset.UP_RIGHT, true},
-                new Object[]{Square.A1, Offset.UP, true}
+                new Object[]{Square.A1, BasicOffset.LEFT, false},
+                new Object[]{Square.A1, BasicOffset.DOWN_LEFT, false},
+                new Object[]{Square.A1, BasicOffset.DOWN, false},
+                new Object[]{Square.A1, BasicOffset.RIGHT, true},
+                new Object[]{Square.A1, BasicOffset.UP_RIGHT, true},
+                new Object[]{Square.A1, BasicOffset.UP, true}
         };
     }
 
@@ -38,11 +38,11 @@ public class SquareTest {
 
     private Object[] getNext_testFixtures() {
         return new Object[]{
-                new Object[]{Square.E4, Offset.UP, Square.E5},
-                new Object[]{Square.E4, Offset.RIGHT, Square.F4},
-                new Object[]{Square.E4, Offset.DOWN_LEFT, Square.D3},
-                new Object[]{Square.E4, Offset.DOWN, Square.E3},
-                new Object[]{Square.E4, Offset.DOWN_RIGHT, Square.F3}
+                new Object[]{Square.E4, BasicOffset.UP, Square.E5},
+                new Object[]{Square.E4, BasicOffset.RIGHT, Square.F4},
+                new Object[]{Square.E4, BasicOffset.DOWN_LEFT, Square.D3},
+                new Object[]{Square.E4, BasicOffset.DOWN, Square.E3},
+                new Object[]{Square.E4, BasicOffset.DOWN_RIGHT, Square.F3}
         };
     }
 

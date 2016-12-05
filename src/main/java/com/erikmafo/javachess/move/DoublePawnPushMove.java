@@ -1,6 +1,7 @@
 package com.erikmafo.javachess.move;
 
 import com.erikmafo.javachess.board.MoveReceiver;
+import com.erikmafo.javachess.board.BasicOffset;
 import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.board.Offset;
 
@@ -13,7 +14,7 @@ public class DoublePawnPushMove extends AbstractMove {
 
     protected DoublePawnPushMove(MoveReceiver moveReceiver, Square from, Square to) {
         super(moveReceiver, from, to, Ranks.DOUBLE_PAWN_PUSH);
-        Offset dir = from.getRank() > to.getRank() ? Offset.UP : Offset.DOWN;
+        Offset dir = from.getRank() > to.getRank() ? BasicOffset.UP : BasicOffset.DOWN;
         enPassentTarget = to.next(dir);
     }
 
