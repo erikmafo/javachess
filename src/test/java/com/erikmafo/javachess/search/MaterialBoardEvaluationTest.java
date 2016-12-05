@@ -62,10 +62,10 @@ public class MaterialBoardEvaluationTest {
 
         putPiece(Square.E8, blackKing);
 
-        assertThat(evaluation.applyAsInt(board), is(30));
+        assertThat(evaluation.applyAsInt(board), is(MaterialBoardEvaluation.DEFAULT_BISHOP_VALUE));
 
         when(board.getColorToMove()).thenReturn(PieceColor.BLACK);
 
-        assertThat(evaluation.applyAsInt(board), is(-30));
+        assertThat(evaluation.applyAsInt(board), is(-MaterialBoardEvaluation.DEFAULT_BISHOP_VALUE));
     }
 }

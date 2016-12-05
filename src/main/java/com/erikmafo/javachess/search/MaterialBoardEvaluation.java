@@ -5,21 +5,60 @@ import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceType;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by erikmafo on 26.11.16.
  */
-public class MaterialBoardEvaluation implements BoardToIntFunction {
+public final class MaterialBoardEvaluation implements BoardToIntFunction {
+
+    public static final int DEFAULT_PAWN_VALUE = 10;
+    public static final int DEFAULT_BISHOP_VALUE = 30;
+    public static final int DEFAULT_KNIGHT_VALUE = 28;
+    public static final int DEFAULT_ROOK_VALUE = 50;
+    public static final int DEFAULT_QUEEN_VALUE = 90;
+    public static final int DEFAULT_KING_VALUE = 10000;
+
+
+    private final int pawnValue;
+    private final int bishopValue;
+    private final int knightValue;
+    private final int rookValue;
+    private final int queenValue;
+    private final int kingValue;
+
+
+    MaterialBoardEvaluation(Map<PieceType, Integer> pieceValues) {
+        this.pawnValue = pieceValues.getOrDefault(PieceType.PAWN, DEFAULT_PAWN_VALUE);
+        this.bishopValue = pieceValues.getOrDefault(PieceType.BISHOP, DEFAULT_BISHOP_VALUE);
+        this.knightValue = pieceValues.getOrDefault(PieceType.KNIGHT, DEFAULT_KNIGHT_VALUE);
+        this.rookValue = pieceValues.getOrDefault(PieceType.ROOK, DEFAULT_ROOK_VALUE);
+        this.queenValue = pieceValues.getOrDefault(PieceType.QUEEN, DEFAULT_QUEEN_VALUE);
+        this.kingValue = pieceValues.getOrDefault(PieceType.KING, DEFAULT_KING_VALUE);
+    }
+
+    public MaterialBoardEvaluation() {
+        this(Collections.emptyMap());
+    }
 
 
 
+    public static class Builder {
 
-    private final Map<PieceType, Integer> pieceValues = new HashMap<>();
-    
+        private final Map<PieceType, Integer> values = new HashMap<>();
 
+        public Builder setValue(PieceType pieceType, int value) {
+            values.put(pieceType, value);
+            return this;
+        }
 
+        public MaterialBoardEvaluation build() {
+            return new MaterialBoardEvaluation(values);
+        }
+
+    }
 
 
     @Override
@@ -47,22 +86,22 @@ public class MaterialBoardEvaluation implements BoardToIntFunction {
         int material;
         switch (pieceType) {
             case PAWN:
-                material = 10;
+                material = pawnValue;
                 break;
             case BISHOP:
-                material = 30;
+                material = bishopValue;
                 break;
             case KNIGHT:
-                material = 30;
+                material = knightValue;
                 break;
             case ROOK:
-                material = 50;
+                material = rookValue;
                 break;
             case QUEEN:
-                material = 90;
+                material = queenValue;
                 break;
             case KING:
-                material = 10000;
+                material = kingValue;
                 break;
             default:
                 throw new AssertionError();
