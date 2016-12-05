@@ -2,6 +2,7 @@ package com.erikmafo.javachess.search;
 
 import com.erikmafo.javachess.board.Board;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class BoardToIntFunctionChain implements BoardToIntFunction{
 
 
     public BoardToIntFunctionChain(List<BoardToIntFunction> functions) {
-        this.functions = functions;
+        this.functions = new ArrayList<>(functions);
     }
 
     public BoardToIntFunctionChain(BoardToIntFunction... functions) {
@@ -34,4 +35,23 @@ public class BoardToIntFunctionChain implements BoardToIntFunction{
 
         return score;
     }
+
+
+    public static class Builder {
+
+        private final List<BoardToIntFunction> functions = new ArrayList<>();
+
+
+        public Builder addFunction(BoardToIntFunction function) {
+            functions.add(function);
+            return this;
+        }
+
+        public BoardToIntFunction build() {
+            return new BoardToIntFunctionChain(functions);
+        }
+
+
+    }
+
 }
