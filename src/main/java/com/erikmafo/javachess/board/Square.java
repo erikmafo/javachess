@@ -47,6 +47,9 @@ public enum Square {
         return next;
     }
 
+    public int getX88Value() {
+        return x88Value;
+    }
 
     public int getRank() {
         return rank;

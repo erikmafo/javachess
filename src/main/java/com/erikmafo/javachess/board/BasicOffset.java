@@ -40,5 +40,29 @@ public enum BasicOffset implements Offset {
     }
 
 
+    public static Offset valueOf(Square from, Square to) {
+        return directionBy0x88Diff[diff(from, to)];
+    }
+
+    private static int diff(Square sq1, Square sq2){
+        return  120 + sq2.getX88Value() - sq1.getX88Value();
+    }
+
+    private static final Offset[] directionBy0x88Diff;
+
+    static {
+        directionBy0x88Diff = new BasicOffset[240];
+        for (Square sq : Square.values()) {
+            for (Offset offset : BasicOffset.values()) {
+                Square current = sq;
+                while (current.hasNext(offset)) {
+                    current = current.next(offset);
+                    directionBy0x88Diff[diff(sq, current)] = offset;
+                }
+            }
+        }
+    }
+
+
 
 }
