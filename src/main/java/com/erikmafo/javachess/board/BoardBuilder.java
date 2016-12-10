@@ -6,6 +6,7 @@ import com.erikmafo.javachess.pieces.PieceColor;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by erikf on 22.05.2016.
@@ -42,7 +43,7 @@ public class BoardBuilder {
 
     public Board build() {
 
-        BoardImpl board = new BoardImpl(new MoveGeneratorFactory(), activeColor, castlingRights);
+        BoardImpl board = new BoardImpl(new MoveGeneratorFactory(), new ZobristTable(new Random(1)), activeColor, castlingRights);
 
         for (Square square : pieceEntries.keySet()) {
             board.put(square, pieceEntries.get(square));

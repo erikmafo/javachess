@@ -21,11 +21,13 @@ public class BoardImpl implements Board, MoveReceiver {
 
     private final Map<Integer, Square> enPassentTargets = new HashMap<>();
 
-    private final Map<PieceColor, Boolean> hasCastled = new HashMap<>();
+    private final Map<PieceColor, Boolean> hasCastled = new EnumMap<>(PieceColor.class);
 
     private final int[] castlingSquaresMoveCount = new int[6];
 
     private final MoveGeneratorFactory moveGeneratorFactory;
+
+    private final ZobristTable zobristTable;
 
     private static final int E1_INDEX = 0;
     private static final int H1_INDEX = 1;
@@ -42,14 +44,21 @@ public class BoardImpl implements Board, MoveReceiver {
     private int moveCount = 0;
     private PieceColor colorToMove = PieceColor.WHITE;
 
-    private Map<PieceColor, CastlingRight> initialCastlingRight = new HashMap<>();
+    private Map<PieceColor, CastlingRight> initialCastlingRight = new EnumMap<>(PieceColor.class);
 
     BoardImpl() {
         this.moveGeneratorFactory = new MoveGeneratorFactory();
+        this.zobristTable = new ZobristTable(1);
     }
 
-    BoardImpl(MoveGeneratorFactory moveGeneratorFactory, PieceColor colorToMove, Map<PieceColor, CastlingRight> initialCastlingRight) {
+    public BoardImpl(MoveGeneratorFactory moveGeneratorFactory, ZobristTable zobristTable) {
         this.moveGeneratorFactory = moveGeneratorFactory;
+        this.zobristTable = zobristTable;
+    }
+
+    BoardImpl(MoveGeneratorFactory moveGeneratorFactory, ZobristTable zobristTable, PieceColor colorToMove, Map<PieceColor, CastlingRight> initialCastlingRight) {
+        this.moveGeneratorFactory = moveGeneratorFactory;
+        this.zobristTable = zobristTable;
         this.colorToMove = colorToMove;
         this.initialCastlingRight = initialCastlingRight;
     }
@@ -62,6 +71,8 @@ public class BoardImpl implements Board, MoveReceiver {
         lastMoveFrom = from;
         lastMoveTo = to;
 
+        zobristTable.shiftPiece(from, lastMovedPiece);
+        zobristTable.shiftPiece(to, lastMovedPiece);
     }
 
     @Override
@@ -76,7 +87,12 @@ public class BoardImpl implements Board, MoveReceiver {
 
     @Override
     public void setEnPassentTarget(Square square) {
-        enPassentTargets.put(moveCount + 1, square);
+        Square prev = enPassentTargets.put(moveCount + 1, square);
+        if (square != null) {
+            zobristTable.shiftEnPassentTarget(square);
+        } else if (prev != null) {
+            zobristTable.shiftEnPassentTarget(prev);
+        }
     }
 
     @Override
@@ -108,7 +124,7 @@ public class BoardImpl implements Board, MoveReceiver {
             castlingSquaresMoveCount[index] += 1;
         }
 
-
+        zobristTable.shiftColorToMove();
     }
 
 
@@ -165,6 +181,7 @@ public class BoardImpl implements Board, MoveReceiver {
             castlingSquaresMoveCount[index] -= 1;
         }
 
+        zobristTable.shiftColorToMove();
     }
 
     @Override

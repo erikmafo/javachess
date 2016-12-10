@@ -1,19 +1,19 @@
 package com.erikmafo.javachess.board;
 
+import com.erikmafo.javachess.movegenerator.MoveGeneratorFactory;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
 import com.erikmafo.javachess.pieces.PieceType;
 import com.erikmafo.javachess.testingutils.PieceMocks;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
  * Created by erikmafo on 19.11.16.
@@ -21,18 +21,64 @@ import static org.mockito.Mockito.mock;
 public class BoardImplTest {
 
 
-    private BoardImpl board = new BoardImpl();
+
+    private ZobristTable zobristTable = mock(ZobristTable.class);
+    private MoveGeneratorFactory moveGeneratorFactory = mock(MoveGeneratorFactory.class);
+
+    private BoardImpl board = new BoardImpl(moveGeneratorFactory, zobristTable);
 
     private Piece piece = mock(Piece.class);
 
 
     @Test
-    public void getOccupiedSquaresShouldReturnEmptyListWhenBoardIsEmpty() throws Exception {
+    public void updateZobristWhenEnPassentTargetIsSet() throws Exception {
 
-        assertThat(new HashSet<>(board.getOccupiedSquares()), is(Collections.emptySet()));
+        
+        Square square = Square.C3;
 
+        board.setEnPassentTarget(square);
+
+        verify(zobristTable).shiftEnPassentTarget(square);
+        verifyNoMoreInteractions(zobristTable);
     }
 
+    @Test
+    public void updateZobristWhenCompletePlay() throws Exception {
+
+        board.completePlay();
+
+        verify(zobristTable).shiftColorToMove();
+        verifyNoMoreInteractions(zobristTable);
+    }
+
+    @Test
+    public void updateZobristWhenCompleteUndo() throws Exception {
+
+        board.completeUndo();
+
+        verify(zobristTable).shiftColorToMove();
+        verifyNoMoreInteractions(zobristTable);
+    }
+
+    @Test
+    public void updateZobristWhenMovingPiece() throws Exception {
+
+        Piece piece = PieceMocks.newPieceMock(PieceColor.WHITE, PieceType.PAWN);
+        Square from = Square.F3;
+        Square to = Square.F4;
+
+        board.put(from, piece);
+        board.movePiece(from, to);
+
+        verify(zobristTable).shiftPiece(from , piece);
+        verify(zobristTable).shiftPiece(to, piece);
+        verifyNoMoreInteractions(zobristTable);
+    }
+
+    @Test
+    public void getOccupiedSquaresShouldReturnEmptyListWhenBoardIsEmpty() throws Exception {
+        assertThat(new HashSet<>(board.getOccupiedSquares()), is(Collections.emptySet()));
+    }
 
     @Test
     public void getOccupiedSquares() throws Exception {
