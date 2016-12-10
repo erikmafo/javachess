@@ -5,10 +5,7 @@ import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by erikmafo on 19.11.16.
@@ -37,8 +34,12 @@ public interface Board {
 
     boolean hasQueenSideCastlingRight(PieceColor pieceColor);
 
-
     Collection<Square> getOccupiedSquares();
+
+    Iterator<Square> occupiedSquareIterator();
+
+    Iterator<Piece> pieceIterator();
+
 
 
 

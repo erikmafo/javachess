@@ -19,7 +19,7 @@ public class BoardImpl implements Board, MoveReceiver {
 
     private final Map<Square, Piece> pieceEntryEnumMap = new EnumMap<>(Square.class);
 
-    private final Map<Integer, Square> enPassentTargets = new HashMap<>();
+    private Square[] enPassentTargets = new Square[100];
 
     private final Map<PieceColor, Boolean> hasCastled = new HashMap<>();
 
@@ -76,12 +76,17 @@ public class BoardImpl implements Board, MoveReceiver {
 
     @Override
     public void setEnPassentTarget(Square square) {
-        enPassentTargets.put(moveCount + 1, square);
+
+        if (moveCount + 3 > enPassentTargets.length) {
+            enPassentTargets = Arrays.copyOf(enPassentTargets, enPassentTargets.length + 100);
+        }
+
+        enPassentTargets[moveCount + 1] = square;
     }
 
     @Override
     public void removeEnPassentTarget() {
-        enPassentTargets.remove(moveCount + 1);
+        setEnPassentTarget(null);
     }
 
     @Override
@@ -201,7 +206,7 @@ public class BoardImpl implements Board, MoveReceiver {
 
     @Override
     public Optional<Square> enPassentTarget() {
-        return Optional.ofNullable(enPassentTargets.getOrDefault(moveCount, null));
+        return Optional.ofNullable(enPassentTargets[moveCount]);
     }
 
     @Override
@@ -260,44 +265,15 @@ public class BoardImpl implements Board, MoveReceiver {
 
     @Override
     public boolean hasKingSideCastlingRight(PieceColor pieceColor) {
-
-        Square kingSquare;
-        Square rookSquare;
-
-        switch (pieceColor) {
-            case BLACK:
-                kingSquare = Square.E8;
-                rookSquare = Square.H8;
-                break;
-            case WHITE:
-                kingSquare = Square.E1;
-                rookSquare = Square.H1;
-                break;
-            default:
-                throw new AssertionError();
-        }
-
+        Square kingSquare = pieceColor.isWhite() ? Square.E1 : Square.E8;
+        Square rookSquare = kingSquare.next(BasicOffset.RIGHT, 3);
         return hasCastlingRight(pieceColor, kingSquare, rookSquare);
     }
 
     @Override
     public boolean hasQueenSideCastlingRight(PieceColor pieceColor) {
-        Square kingSquare;
-        Square rookSquare;
-
-        switch (pieceColor) {
-            case BLACK:
-                kingSquare = Square.E8;
-                rookSquare = Square.A8;
-                break;
-            case WHITE:
-                kingSquare = Square.E1;
-                rookSquare = Square.A1;
-                break;
-            default:
-                throw new AssertionError();
-        }
-
+        Square kingSquare = pieceColor.isWhite() ? Square.E1 : Square.E8;
+        Square rookSquare = kingSquare.next(BasicOffset.LEFT, 4);
         return hasCastlingRight(pieceColor, kingSquare, rookSquare);
     }
 
@@ -306,6 +282,36 @@ public class BoardImpl implements Board, MoveReceiver {
 
         return new HashSet<>(pieceEntryEnumMap.keySet());
 
+    }
+
+
+    private class BordIterator<T> implements Iterator<T> {
+
+        private final Iterator<T> iterator;
+
+        private BordIterator(Iterator<T> iterator) {
+            this.iterator = iterator;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return iterator.hasNext();
+        }
+
+        @Override
+        public T next() {
+            return iterator.next();
+        }
+    }
+
+    @Override
+    public Iterator<Square> occupiedSquareIterator() {
+        return new BordIterator<>(pieceEntryEnumMap.keySet().iterator());
+    }
+
+    @Override
+    public Iterator<Piece> pieceIterator() {
+        return new BordIterator<>(pieceEntryEnumMap.values().iterator());
     }
 
 

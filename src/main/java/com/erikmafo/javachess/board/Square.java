@@ -106,12 +106,24 @@ public enum Square {
      * @return a square, or <code>OFF_BOARD</code>
      */
     public Square next(Offset offset) {
+        return next(offset, 1);
+    }
+
+    /**
+     *
+     * @param offset
+     * @param times - an integer between 0 and 7
+     * @return
+     */
+    public Square next(Offset offset, int times) {
         int newIndex;
-        if ((newIndex = next(x88Value, offset.getValue())) > -1) {
+        if ((newIndex = next(x88Value, times * offset.getValue())) > -1) {
             return cachedValues[newIndex];
         }
         return OFF_BOARD;
     }
+
+
 
     public boolean isOnBoard() {
         return this != OFF_BOARD;
