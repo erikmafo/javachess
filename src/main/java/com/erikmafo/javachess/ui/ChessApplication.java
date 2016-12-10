@@ -25,9 +25,11 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.time.Clock;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by erikmafo on 13.11.16.
@@ -316,9 +318,11 @@ public class ChessApplication extends Application {
                     protected Move call() throws Exception {
 
                         BoardToIntFunction boardToIntFunction = new BoardToIntFunctionChain(
-                                new MaterialBoardEvaluation(), new BasicStrategicEvaluation());
+                                new MaterialBoardEvaluation());
 
-                        SearchResult result = searchExecutor.submitSearch(board, boardToIntFunction, 5).get();
+                        IterativeDeepening iterativeDeepening = new IterativeDeepening(board, new AlphaBetaSearch(new BoardSeeker()), Clock.systemUTC());
+
+                        SearchResult result = iterativeDeepening.execute(boardToIntFunction, 5, TimeUnit.SECONDS);
 
                         return result.getBestMove();
                     }
