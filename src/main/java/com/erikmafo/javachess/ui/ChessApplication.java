@@ -47,7 +47,7 @@ public class ChessApplication extends Application {
 
     public ChessApplication() {
         try {
-            this.board = new FenParser().parse(FenParser.START_POSITION);
+            board = new FenParser().parse(FenParser.START_POSITION);
         } catch (FenParseException e) {
             e.printStackTrace();
         }
