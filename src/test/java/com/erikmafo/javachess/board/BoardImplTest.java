@@ -40,6 +40,18 @@ public class BoardImplTest {
         verifyNoMoreInteractions(zobristCalculator);
     }
 
+
+    @Test
+    public void updateZobristWhenEnPassentTargetIsRemoved() throws Exception {
+
+        Square square = Square.C3;
+
+        board.setEnPassentTarget(square);
+        board.removeEnPassentTarget();
+
+        verify(zobristCalculator, times(2)).shiftEnPassentTarget(square);
+    }
+
     @Test
     public void updateZobristWhenCompletePlay() throws Exception {
 
@@ -68,7 +80,7 @@ public class BoardImplTest {
         board.put(from, piece);
         board.movePiece(from, to);
 
-        verify(zobristCalculator).shiftPiece(from , piece);
+        verify(zobristCalculator, times(2)).shiftPiece(from , piece);
         verify(zobristCalculator).shiftPiece(to, piece);
         verifyNoMoreInteractions(zobristCalculator);
     }
