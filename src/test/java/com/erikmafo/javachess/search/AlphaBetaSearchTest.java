@@ -24,11 +24,10 @@ import static org.mockito.Mockito.*;
 @RunWith(JUnitParamsRunner.class)
 public class AlphaBetaSearchTest {
 
-    private BoardSeeker boardSeeker = mock(BoardSeeker.class);
     private BoardToIntFunction evaluationFunction;
     private Board board = mock(Board.class);
 
-    private AlphaBetaSearch alphaBetaSearch = new AlphaBetaSearch(boardSeeker);
+    private AlphaBetaSearch alphaBetaSearch = new AlphaBetaSearch();
 
 
     private PieceColor firstToMove = PieceColor.WHITE;

@@ -71,35 +71,33 @@ public class BoardImpl implements Board, MoveReceiver {
 
     @Override
     public void movePiece(Square from, Square to) {
-
-        lastMovedPiece = pieceEntryEnumMap.remove(from);
-        pieceEntryEnumMap.put(to, lastMovedPiece);
+        lastMovedPiece = remove(from);
+        put(to, lastMovedPiece);
         lastMoveFrom = from;
         lastMoveTo = to;
-
-        zobristCalculator.shiftPiece(from, lastMovedPiece);
-        zobristCalculator.shiftPiece(to, lastMovedPiece);
     }
 
     @Override
-    public void remove(Square square) {
-        pieceEntryEnumMap.remove(square);
+    public Piece remove(Square square) {
+        Piece piece = pieceEntryEnumMap.remove(square);
+        zobristCalculator.shiftPiece(square, piece);
+        return piece;
     }
 
     @Override
-    public void put(Square square, Piece piece) {
-        pieceEntryEnumMap.put(square, piece);
+    public Piece put(Square square, Piece piece) {
+        Piece prev = pieceEntryEnumMap.put(square, piece);
+        if (prev != null) {
+            zobristCalculator.shiftPiece(square, prev);
+        }
+        zobristCalculator.shiftPiece(square, piece);
+        return prev;
     }
 
     @Override
     public void setEnPassentTarget(Square square) {
 
-        if (square != null) {
-            zobristCalculator.shiftEnPassentTarget(square);
-        } else {
-            Square prev = enPassentTargets[moveCount + 1];
-            zobristCalculator.shiftEnPassentTarget(prev);
-        }
+        zobristCalculator.shiftEnPassentTarget(square);
 
         if (moveCount + 3 > enPassentTargets.length) {
             enPassentTargets = Arrays.copyOf(enPassentTargets, enPassentTargets.length + 100);
@@ -110,7 +108,11 @@ public class BoardImpl implements Board, MoveReceiver {
 
     @Override
     public void removeEnPassentTarget() {
-        setEnPassentTarget(null);
+        Square prev = enPassentTargets[moveCount + 1];
+        enPassentTargets[moveCount + 1] = null;
+        if (prev != null) {
+            zobristCalculator.shiftEnPassentTarget(prev);
+        }
     }
 
     @Override
@@ -143,7 +145,6 @@ public class BoardImpl implements Board, MoveReceiver {
     public void completePlay() {
         complete(CompleteMode.PLAY);
     }
-
 
 
     @Override
@@ -188,12 +189,10 @@ public class BoardImpl implements Board, MoveReceiver {
     }
 
 
-
     private void toggleColorToMove() {
         colorToMove = colorToMove.isWhite() ? PieceColor.BLACK : PieceColor.WHITE;
         zobristCalculator.shiftColorToMove();
     }
-
 
 
     @Override
@@ -262,8 +261,6 @@ public class BoardImpl implements Board, MoveReceiver {
     }
 
 
-
-
     private boolean hasCastlingRight(PieceColor color, Square kingSquare, Square rookSquare) {
 
         int kingSquareIndex = getCastlingSquareIndex(kingSquare);
@@ -273,7 +270,7 @@ public class BoardImpl implements Board, MoveReceiver {
                 castlingSquaresMoveCount[kingSquareIndex] == 0 &&
                 castlingSquaresMoveCount[rookSquareIndex] == 0 &&
                 pieceAt(kingSquare).filter(this::isKing).isPresent() &&
-                pieceAt(rookSquare).filter(this::isRook).isPresent() ;
+                pieceAt(rookSquare).filter(this::isRook).isPresent();
 
     }
 
@@ -284,7 +281,6 @@ public class BoardImpl implements Board, MoveReceiver {
     private boolean isRook(Piece piece) {
         return PieceType.ROOK.equals(piece.getType());
     }
-
 
 
     @Override

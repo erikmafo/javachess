@@ -10,9 +10,9 @@ public interface MoveReceiver {
 
     void movePiece(Square from, Square to);
 
-    void remove(Square square);
+    Piece remove(Square square);
 
-    void put(Square square, Piece piece);
+    Piece put(Square square, Piece piece);
 
     void setEnPassentTarget(Square square);
 

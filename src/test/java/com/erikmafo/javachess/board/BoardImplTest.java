@@ -11,9 +11,7 @@ import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by erikmafo on 19.11.16.
@@ -73,6 +71,16 @@ public class BoardImplTest {
         verify(zobristCalculator).shiftPiece(from , piece);
         verify(zobristCalculator).shiftPiece(to, piece);
         verifyNoMoreInteractions(zobristCalculator);
+    }
+
+
+    @Test
+    public void removeEnPassentShouldNotCauseNullPointerException() throws Exception {
+
+        board.removeEnPassentTarget();
+
+        verify(zobristCalculator, never()).shiftEnPassentTarget(null);
+
     }
 
     @Test

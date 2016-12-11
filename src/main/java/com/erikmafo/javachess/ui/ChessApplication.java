@@ -25,9 +25,13 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.time.Clock;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by erikmafo on 13.11.16.
@@ -37,13 +41,6 @@ public class ChessApplication extends Application {
     public static final int SQUARE_SIZE = 60;
     public static final int WIDTH = 8;
     public static final int HEIGHT = 8;
-
-
-    private final SearchExecutor searchExecutor = new SearchExecutorImpl(
-            new AlphaBetaSearch(new BoardSeeker()),
-            Executors.newSingleThreadExecutor());
-
-
 
 
     private Board board;
@@ -315,10 +312,17 @@ public class ChessApplication extends Application {
                     @Override
                     protected Move call() throws Exception {
 
-                        BoardToIntFunction boardToIntFunction = new BoardToIntFunctionChain(
-                                new MaterialBoardEvaluation());
+                        BoardToIntFunction boardToIntFunction = new BoardToIntFunctionChain.Builder()
+                                .addFunction(new MaterialBoardEvaluation())
+                                .addFunction(new CastlingEvaluation())
+                                .build();
 
-                        SearchResult result = searchExecutor.submitSearch(board, boardToIntFunction, 5).get();
+                        SearchResult result = null;
+                        try {
+                            result = new AlphaBetaSearch().execute(board, boardToIntFunction, 5);
+                        } catch (RuntimeException ex) {
+                            Logger.getLogger(ChessApplication.class.getName()).log(Level.WARNING, null, ex);
+                        }
 
                         return result.getBestMove();
                     }

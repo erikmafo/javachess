@@ -39,17 +39,16 @@ public class SearchResult {
         if (this == o) return true;
         if (!(o instanceof SearchResult)) return false;
 
-        SearchResult result = (SearchResult) o;
+        SearchResult that = (SearchResult) o;
 
-        if (score != result.score) return false;
-        return principleVariation.equals(result.principleVariation);
-
+        if (score != that.score) return false;
+        return principleVariation != null ? principleVariation.equals(that.principleVariation) : that.principleVariation == null;
     }
 
     @Override
     public int hashCode() {
         int result = score;
-        result = 31 * result + principleVariation.hashCode();
+        result = 31 * result + (principleVariation != null ? principleVariation.hashCode() : 0);
         return result;
     }
 }
