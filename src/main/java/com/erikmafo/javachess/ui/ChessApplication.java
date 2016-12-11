@@ -318,11 +318,11 @@ public class ChessApplication extends Application {
                     protected Move call() throws Exception {
 
                         BoardToIntFunction boardToIntFunction = new BoardToIntFunctionChain(
-                                new MaterialBoardEvaluation());
+                                new MaterialBoardEvaluation(), new CastlingEvaluation());
 
-                        IterativeDeepening iterativeDeepening = new IterativeDeepening(board, new AlphaBetaSearch(new BoardSeeker()), Clock.systemUTC());
+                        MoveSearch moveSearch = new AlphaBetaSearch(new BoardSeeker());
 
-                        SearchResult result = iterativeDeepening.execute(boardToIntFunction, 5, TimeUnit.SECONDS);
+                        SearchResult result = moveSearch.execute(board, boardToIntFunction, 6);
 
                         return result.getBestMove();
                     }

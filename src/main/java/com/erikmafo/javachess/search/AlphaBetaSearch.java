@@ -72,17 +72,16 @@ public class AlphaBetaSearch implements MoveSearch {
 
             move.play();
 
-            if (!isChecked(color, board)) {
-                int score = - negMax(principleVariation, board, evaluation, -beta, -alpha, depthLeft - 1);
-                if (score >= beta) {
-                    principleVariation[principleVariation.length - depthLeft] = move;
-                    move.undo();
-                    return beta;
-                }
-                if (score > alpha) {
-                    principleVariation[principleVariation.length - depthLeft] = move;
-                    alpha = score;
-                }
+
+            int score = -negMax(principleVariation, board, evaluation, -beta, -alpha, depthLeft - 1);
+            if (score >= beta) {
+                principleVariation[principleVariation.length - depthLeft] = move;
+                move.undo();
+                return beta;
+            }
+            if (score > alpha) {
+                principleVariation[principleVariation.length - depthLeft] = move;
+                alpha = score;
             }
 
             move.undo();

@@ -8,7 +8,7 @@ import com.erikmafo.javachess.pieces.PieceColor;
  */
 public final class CastlingEvaluation implements BoardToIntFunction {
 
-    public static final int DEFAULT_CASTLING_ADVANTAGE = 8;
+    public static final int DEFAULT_CASTLING_ADVANTAGE = 30;
     public static final int DEFAULT_KING_SIDE_CASTLING_RIGHT_ADVANTAGE = 3;
     public static final int DEFAULT_QUEEN_SIDE_CASTLING_RIGHT_ADVANTAGE = 2;
 
