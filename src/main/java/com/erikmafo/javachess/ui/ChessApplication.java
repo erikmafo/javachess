@@ -17,6 +17,7 @@ import javafx.concurrent.Task;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,8 +26,10 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -316,9 +319,15 @@ public class ChessApplication extends Application {
 
                         SearchResult result = null;
                         try {
-                            result = new AlphaBetaSearch().execute(board, boardToIntFunction, 5);
+                            result = new AlphaBetaSearch().execute(board, boardToIntFunction, 6);
                         } catch (RuntimeException ex) {
-                            Logger.getLogger(ChessApplication.class.getName()).log(Level.WARNING, null, ex);
+                            Logger.getLogger(ChessApplication.class.getName()).log(Level.SEVERE, null, ex);
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Unfortunately the application has crashed");
+                            alert.setContentText(ex.getMessage());
+                            alert.setOnCloseRequest(e -> terminate());
+                            alert.showAndWait();
                         }
 
                         return result.getBestMove();
@@ -390,13 +399,25 @@ public class ChessApplication extends Application {
 
         primaryStage.setOnCloseRequest(t -> {
 
-            if (calculateComputerMoveTask != null) {
-                calculateComputerMoveTask.cancel();
-            }
-
-            Platform.exit();
+            terminate();
         });
 
+    }
+
+    private void terminate() {
+        Logger.getLogger(ChessApplication.class.getName()).log(Level.INFO, "Terminating the application...");
+
+        executorService.shutdown();
+
+        try {
+            executorService.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        executorService.shutdownNow();
+
+        Platform.exit();
     }
 
 
