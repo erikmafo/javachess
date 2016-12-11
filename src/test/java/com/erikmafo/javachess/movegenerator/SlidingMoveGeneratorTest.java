@@ -48,9 +48,9 @@ public class SlidingMoveGeneratorTest {
         Move e4e2 = mock(Move.class, "e4e2");
         Move e4e1 = mock(Move.class, "e4e1");
 
-        when(moveFactory.newQuietMove(from, Square.E3)).thenReturn(e4e3);
-        when(moveFactory.newQuietMove(from, Square.E2)).thenReturn(e4e2);
-        when(moveFactory.newQuietMove(from, Square.E1)).thenReturn(e4e1);
+        when(moveFactory.newQuietMove(board, from, Square.E3)).thenReturn(e4e3);
+        when(moveFactory.newQuietMove(board, from, Square.E2)).thenReturn(e4e2);
+        when(moveFactory.newQuietMove(board, from, Square.E1)).thenReturn(e4e1);
 
         List<Move> moves = slidingMoveGenerator.generateMoves(board, from);
 
@@ -70,10 +70,10 @@ public class SlidingMoveGeneratorTest {
         Move e4b7 = mock(Move.class, "e4b7");
         Move e4a8 = mock(Move.class, "e4a8");
 
-        when(moveFactory.newQuietMove(from, Square.D5)).thenReturn(e4d5);
-        when(moveFactory.newQuietMove(from, Square.C6)).thenReturn(e4c6);
-        when(moveFactory.newQuietMove(from, Square.B7)).thenReturn(e4b7);
-        when(moveFactory.newQuietMove(from, Square.A8)).thenReturn(e4a8);
+        when(moveFactory.newQuietMove(board, from, Square.D5)).thenReturn(e4d5);
+        when(moveFactory.newQuietMove(board, from, Square.C6)).thenReturn(e4c6);
+        when(moveFactory.newQuietMove(board, from, Square.B7)).thenReturn(e4b7);
+        when(moveFactory.newQuietMove(board, from, Square.A8)).thenReturn(e4a8);
 
         List<Move> moves = slidingMoveGenerator.generateMoves(board, from);
 

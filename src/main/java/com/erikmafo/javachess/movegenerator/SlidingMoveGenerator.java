@@ -40,11 +40,11 @@ public class SlidingMoveGenerator implements MoveGenerator {
                 Optional<Piece> targetPiece = board.pieceAt(target);
                 if (targetPiece.isPresent()) {
                     if (targetPiece.get().getColor().equals(opponent)) {
-                        moves.add(moveFactory.newCaptureMove(from, target, targetPiece.get()));
+                        moves.add(moveFactory.newCaptureMove(board, from, target, targetPiece.get()));
                     }
                     break;
                 } else {
-                    moves.add(moveFactory.newQuietMove(from, target));
+                    moves.add(moveFactory.newQuietMove(board, from, target));
                     target = target.next(offset);
                 }
             }

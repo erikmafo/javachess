@@ -57,7 +57,7 @@ public class PawnMoveGeneratorTest {
         when(board.pieceAt(capturePieceSquare)).thenReturn(Optional.ofNullable(captured));
 
         Move expected = mock(Move.class, "" + from + enPassentTarget);
-        when(moveFactory.newEnPassentMove(from, enPassentTarget, captured)).thenReturn(expected);
+        when(moveFactory.newEnPassentMove(board, from, enPassentTarget, captured)).thenReturn(expected);
 
         List<Move> moves = pawnMoveGenerator.generateMoves(board, from);
 
@@ -80,7 +80,7 @@ public class PawnMoveGeneratorTest {
         when(board.pieceAt(oppentPawnSquare)).thenReturn(Optional.ofNullable(opponentPawn));
 
         Move enPassentMove = mock(Move.class, "" + from + enPassentTarget);
-        when(moveFactory.newEnPassentMove(from, enPassentTarget, opponentPawn)).thenReturn(enPassentMove);
+        when(moveFactory.newEnPassentMove(board, from, enPassentTarget, opponentPawn)).thenReturn(enPassentMove);
 
         List<Move> moves = pawnMoveGenerator.generateMoves(board, from);
 
@@ -101,8 +101,8 @@ public class PawnMoveGeneratorTest {
         Move singlePush = mock(Move.class, "" + from + oneUp);
         Move doublePush = mock(Move.class, "" + from + twoUp);
 
-        when(moveFactory.newSinglePawnPushMove(from, oneUp)).thenReturn(singlePush);
-        when(moveFactory.newDoublePawnPushMove(from, twoUp)).thenReturn(doublePush);
+        when(moveFactory.newSinglePawnPushMove(board, from, oneUp)).thenReturn(singlePush);
+        when(moveFactory.newDoublePawnPushMove(board, from, twoUp)).thenReturn(doublePush);
 
         List<Move> moves = pawnMoveGenerator.generateMoves(board, from);
 

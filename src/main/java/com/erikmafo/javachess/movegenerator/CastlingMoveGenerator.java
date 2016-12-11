@@ -110,18 +110,18 @@ public class CastlingMoveGenerator implements MoveGenerator {
     @Override
     public List<Move> generateMoves(Board board, Square from) {
         List<Move> moves = new ArrayList<>();
-        appendCastlingMoves(moveFactory, board, from, moves);
+        appendCastlingMoves(board, from, moves);
         return moves;
     }
 
-    private void appendCastlingMoves(MoveFactory moveFactory, Board board, Square from, List<Move> moves) {
+    private void appendCastlingMoves(Board board, Square from, List<Move> moves) {
         PieceColor color = board.getColorToMove();
 
         if (isKingSideCastlingLegal(board, color)) {
-            moves.add(moveFactory.newCastlingMove(from, getKingSideCastlingTarget(color),
+            moves.add(moveFactory.newCastlingMove(board, from, getKingSideCastlingTarget(color),
                     getInitialKingSideRookCoordinate(color), from.next(BasicOffset.RIGHT)));
         } else if (isQueenSideCastlingLegal(board, color)) {
-            moves.add(moveFactory.newCastlingMove(from , getQueenSideCastlingTarget(color),
+            moves.add(moveFactory.newCastlingMove(board, from , getQueenSideCastlingTarget(color),
                     getInitialQueenSideRookCoordinate(color), from.next(BasicOffset.LEFT)));
         }
     }

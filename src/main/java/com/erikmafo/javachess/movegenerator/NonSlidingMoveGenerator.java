@@ -31,10 +31,10 @@ public class NonSlidingMoveGenerator implements MoveGenerator {
 
     @Override
     public List<Move> generateMoves(Board board, Square from) {
-        return getMoves(moveFactory, board, board.getColorToMove().getOpposite(), from, includeQuietMoves);
+        return getMoves(board, board.getColorToMove().getOpposite(), from, includeQuietMoves);
     }
 
-    private List<Move> getMoves(MoveFactory moveFactory, Board board, PieceColor opponent, Square from, boolean includeQuietMoves) {
+    private List<Move> getMoves(Board board, PieceColor opponent, Square from, boolean includeQuietMoves) {
         List<Move> moves = new ArrayList<>();
 
         for (Offset offset : attackOffsets) {
@@ -43,10 +43,10 @@ public class NonSlidingMoveGenerator implements MoveGenerator {
                 Optional<Piece> pieceOptional = board.pieceAt(target);
                 if (!pieceOptional.isPresent()) {
                     if (includeQuietMoves) {
-                        moves.add(moveFactory.newQuietMove(from, target));
+                        moves.add(moveFactory.newQuietMove(board, from, target));
                     }
                 } else if (pieceOptional.filter(piece -> piece.getColor().equals(opponent)).isPresent()) {
-                    moves.add(moveFactory.newCaptureMove(from, target, pieceOptional.get()));
+                    moves.add(moveFactory.newCaptureMove(board, from, target, pieceOptional.get()));
                 }
             }
         }

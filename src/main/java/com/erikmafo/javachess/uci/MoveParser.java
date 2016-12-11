@@ -89,31 +89,31 @@ public class MoveParser {
                 Optional<Square> enPassentTarget = board.enPassentTarget();
                 if (enPassentTarget.isPresent()) {
                     Piece captured = board.getNullablePiece(enPassentTarget.get());
-                    move = moveFactory.newEnPassentMove(fromSquare, toSquare, captured);
+                    move = moveFactory.newEnPassentMove(board, fromSquare, toSquare, captured);
                 }
                 break;
             case KING_CASTLING:
                 if (fromSquare.getRank() == 0) {
-                    move = moveFactory.newCastlingMove(fromSquare, toSquare, Square.H1, Square.F1);
+                    move = moveFactory.newCastlingMove(board, fromSquare, toSquare, Square.H1, Square.F1);
                 } else {
-                    move = moveFactory.newCastlingMove(fromSquare, toSquare, Square.H8, Square.F8);
+                    move = moveFactory.newCastlingMove(board, fromSquare, toSquare, Square.H8, Square.F8);
                 }
                 break;
             case QUEEN_CASTLING:
                 if (fromSquare.getRank() == 0) {
-                    move = moveFactory.newCastlingMove(fromSquare, toSquare, Square.A1, Square.D1);
+                    move = moveFactory.newCastlingMove(board, fromSquare, toSquare, Square.A1, Square.D1);
                 } else {
-                    move = moveFactory.newCastlingMove(fromSquare, toSquare, Square.A8, Square.D8);
+                    move = moveFactory.newCastlingMove(board, fromSquare, toSquare, Square.A8, Square.D8);
                 }
                 break;
             case CAPTURE:
-                move = moveFactory.newCaptureMove(fromSquare, toSquare, board.getNullablePiece(toSquare));
+                move = moveFactory.newCaptureMove(board, fromSquare, toSquare, board.getNullablePiece(toSquare));
                 break;
             case QUIET:
-                move = moveFactory.newQuietMove(fromSquare, toSquare);
+                move = moveFactory.newQuietMove(board, fromSquare, toSquare);
                 break;
             case DOUBLE_PAWN_PUSH:
-                move = moveFactory.newDoublePawnPushMove(fromSquare, toSquare);
+                move = moveFactory.newDoublePawnPushMove(board, fromSquare, toSquare);
                 break;
         }
         return move;

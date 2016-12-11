@@ -71,7 +71,7 @@ public class CastlingMoveGeneratorTest {
         when(boardSeeker.isAttackedBy(opponent, rookFrom, board)).thenReturn(false);
 
         Move kingSideCastlingMove = mock(Move.class, "O-O");
-        when(moveFactory.newCastlingMove(kingFrom, kingTo, rookFrom, rookTo)).thenReturn(kingSideCastlingMove);
+        when(moveFactory.newCastlingMove(board, kingFrom, kingTo, rookFrom, rookTo)).thenReturn(kingSideCastlingMove);
 
         List<Move> moves = castlingMoveGenerator.generateMoves(board, kingFrom);
 

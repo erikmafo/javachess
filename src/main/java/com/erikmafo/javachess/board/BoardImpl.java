@@ -14,7 +14,7 @@ import java.util.*;
 /**
  * Created by erikmafo on 19.11.16.
  */
-public class BoardImpl implements Board, MoveReceiver {
+public class BoardImpl implements Board {
 
 
     private static class CompleteMode {
@@ -245,7 +245,7 @@ public class BoardImpl implements Board, MoveReceiver {
     @Override
     public List<Move> getMoves(MoveGenerationStrategy strategy) {
 
-        MoveFactory moveFactory = new MoveFactory(this);
+        MoveFactory moveFactory = new MoveFactory();
 
         MoveGenerator moveGenerator = moveGeneratorFactory.newInstance(strategy, moveFactory);
 

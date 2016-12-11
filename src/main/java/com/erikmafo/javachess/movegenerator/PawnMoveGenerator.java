@@ -34,10 +34,10 @@ public class PawnMoveGenerator implements MoveGenerator {
 
         PieceColor pawnColor = board.getColorToMove();
 
-        findPawnAttackMoves(moveFactory, board, pawnColor, from, moves);
-        findPawnPromotionMoves(moveFactory, board, pawnColor, from, moves);
-        findEnPassentMove(moveFactory, board, pawnColor,  from, moves);
-        findQuietMoves(moveFactory, board, pawnColor, from, moves);
+        findPawnAttackMoves(board, pawnColor, from, moves);
+        findPawnPromotionMoves(board, pawnColor, from, moves);
+        findEnPassentMove(board, pawnColor,  from, moves);
+        findQuietMoves(board, pawnColor, from, moves);
 
         return moves;
     }
@@ -65,7 +65,7 @@ public class PawnMoveGenerator implements MoveGenerator {
     }
 
 
-    private void findPawnAttackMoves(MoveFactory moveFactory, Board board, PieceColor pawnColor, Square from, List<Move> moves) {
+    private void findPawnAttackMoves(Board board, PieceColor pawnColor, Square from, List<Move> moves) {
 
         for (Offset offset : getAttackOffsets(pawnColor)) {
 
@@ -76,13 +76,13 @@ public class PawnMoveGenerator implements MoveGenerator {
             PieceColor opponent = pawnColor.getOpposite();
 
             if (piece.filter(p -> p.getColor().equals(opponent)).isPresent()) {
-                moves.add(moveFactory.newCaptureMove(from, target, piece.get()));
+                moves.add(moveFactory.newCaptureMove(board, from, target, piece.get()));
             }
         }
 
     }
 
-    private void findPawnPromotionMoves(MoveFactory moveFactory, Board board, PieceColor pawnColor,
+    private void findPawnPromotionMoves(Board board, PieceColor pawnColor,
                                         Square pieceLocation, List<Move> moves) {
         if (pieceLocation.getRank() != getSeventRank(pawnColor)) {
             return;
@@ -91,14 +91,14 @@ public class PawnMoveGenerator implements MoveGenerator {
         Square oneUp = pieceLocation.next(getUp(pawnColor));
         if (oneUp.isOnBoard() && !board.pieceAt(oneUp).isPresent()) {
             Piece pawn = board.pieceAt(pieceLocation).get();
-            moves.add(moveFactory.newPawnPromotionMove(pieceLocation, oneUp, pawn,
+            moves.add(moveFactory.newPawnPromotionMove(board, pieceLocation, oneUp, pawn,
                     new Piece(pawn.getColor(), PieceType.QUEEN)));
         }
 
     }
 
 
-    private void findEnPassentMove(MoveFactory moveFactory, Board board, PieceColor color, Square from, List<Move> moves) {
+    private void findEnPassentMove(Board board, PieceColor color, Square from, List<Move> moves) {
         Optional<Square> enPassentTargetOptional = board.enPassentTarget();
         if (enPassentTargetOptional.isPresent() && from.getRank() == getEnPassentRank(color)) {
             Square target = enPassentTargetOptional.get();
@@ -114,7 +114,7 @@ public class PawnMoveGenerator implements MoveGenerator {
             }
 
             if (capturedOptional.isPresent()) {
-                moves.add(moveFactory.newEnPassentMove(from, target, capturedOptional.get()));
+                moves.add(moveFactory.newEnPassentMove(board, from, target, capturedOptional.get()));
             }
         }
 
@@ -122,20 +122,20 @@ public class PawnMoveGenerator implements MoveGenerator {
 
 
 
-    private void findQuietMoves(MoveFactory moveFactory, Board board, PieceColor pawnColor, Square from, List<Move> moves) {
+    private void findQuietMoves(Board board, PieceColor pawnColor, Square from, List<Move> moves) {
 
         // add single push
         boolean addedSinglePush = false;
         Square oneUp = from.next(getUp(pawnColor));
         if (oneUp.isOnBoard() && !board.isOccupied(oneUp)) {
-            moves.add(moveFactory.newSinglePawnPushMove(from, oneUp));
+            moves.add(moveFactory.newSinglePawnPushMove(board, from, oneUp));
             addedSinglePush = true;
         }
 
         // add double push
         Square twoUp = oneUp.next(getUp(pawnColor));
         if (from.getRank() == getSecondRank(pawnColor) && addedSinglePush && !board.isOccupied(twoUp)) {
-            moves.add(moveFactory.newDoublePawnPushMove(from, twoUp));
+            moves.add(moveFactory.newDoublePawnPushMove(board, from, twoUp));
         }
     }
 }

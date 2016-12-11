@@ -26,8 +26,7 @@ public class FenParser {
 
         Board board = parse(fen);
 
-        MoveParser moveParser = new MoveParser(new MoveFactory((BoardImpl) board));
-        // TODO: create new board interface that includes MoveReceiver to avoid type cast
+        MoveParser moveParser = new MoveParser(new MoveFactory());
 
         for (String moveString : movesList) {
 

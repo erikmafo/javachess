@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * Created by erikmafo on 19.11.16.
  */
-public interface Board {
+public interface Board extends MoveReceiver {
 
     PieceColor getColorToMove();
 

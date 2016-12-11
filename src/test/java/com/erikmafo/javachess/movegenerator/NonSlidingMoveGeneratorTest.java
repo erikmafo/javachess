@@ -17,6 +17,7 @@ import java.util.Optional;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -35,10 +36,10 @@ public class NonSlidingMoveGeneratorTest {
         when(board.getColorToMove()).thenReturn(PieceColor.WHITE);
         when(board.pieceAt(any())).thenReturn(Optional.ofNullable(null));
 
-        when(moveFactory.newQuietMove(any(Square.class), any(Square.class))).then(invocationOnMock -> {
+        when(moveFactory.newQuietMove(argThat(is(board)), any(Square.class), any(Square.class))).then(invocationOnMock -> {
             String name = new StringBuilder()
-                    .append(invocationOnMock.getArgumentAt(0, Square.class))
                     .append(invocationOnMock.getArgumentAt(1, Square.class))
+                    .append(invocationOnMock.getArgumentAt(2, Square.class))
                     .toString();
             Move move = mock(Move.class, name);
             return move;
@@ -66,7 +67,7 @@ public class NonSlidingMoveGeneratorTest {
         boolean includeQuietMoves = true;
         NonSlidingMoveGenerator nonSlidingMoveGenerator = new NonSlidingMoveGenerator(moveFactory, includeQuietMoves, offset);
         Move move = mock(Move.class, "" + from + expectedTarget);
-        when(moveFactory.newQuietMove(from, expectedTarget)).thenReturn(move);
+        when(moveFactory.newQuietMove(board, from, expectedTarget)).thenReturn(move);
 
         List<Move> moves = nonSlidingMoveGenerator.generateMoves(board, from);
 

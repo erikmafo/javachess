@@ -10,21 +10,15 @@ import com.erikmafo.javachess.utils.DoubleEnumKeyMap;
  */
 public class MoveFactory {
 
-    private final MoveReceiver moveReceiver;
-
     private final DoubleEnumKeyMap<Square, Square, Move> quietMoves = new DoubleEnumKeyMap<>(Square.class, Square.class);
 
-    public MoveFactory(MoveReceiver moveReceiver) {
-        this.moveReceiver = moveReceiver;
-    }
-
-    public Move newSinglePawnPushMove(Square from, Square to) {
+    public Move newSinglePawnPushMove(MoveReceiver moveReceiver, Square from, Square to) {
 
         return new QuietMove(moveReceiver, from, to);
     }
 
 
-    public Move newQuietMove(Square from, Square to) {
+    public Move newQuietMove(MoveReceiver moveReceiver, Square from, Square to) {
 
         Move move;
 
@@ -38,23 +32,23 @@ public class MoveFactory {
         return move;
     }
 
-    public Move newCaptureMove(Square from, Square to, Piece capturedPiece) {
+    public Move newCaptureMove(MoveReceiver moveReceiver, Square from, Square to, Piece capturedPiece) {
         return new CaptureMove(moveReceiver, from, to, capturedPiece);
     }
 
-    public Move newEnPassentMove(Square from, Square to, Piece capturedPiece) {
+    public Move newEnPassentMove(MoveReceiver moveReceiver, Square from, Square to, Piece capturedPiece) {
         return new EnPassentMove(moveReceiver, from, to, capturedPiece);
     }
 
-    public Move newCastlingMove(Square kingFrom, Square kingTo, Square rookFrom, Square rookTo) {
+    public Move newCastlingMove(MoveReceiver moveReceiver, Square kingFrom, Square kingTo, Square rookFrom, Square rookTo) {
         return new CastlingMove(moveReceiver, kingFrom, kingTo, rookFrom, rookTo);
     }
 
-    public Move newDoublePawnPushMove(Square from, Square to) {
+    public Move newDoublePawnPushMove(MoveReceiver moveReceiver, Square from, Square to) {
         return new DoublePawnPushMove(moveReceiver, from, to);
     }
 
-    public Move newPawnPromotionMove(Square from, Square to, Piece pawn, Piece promoteTo) {
+    public Move newPawnPromotionMove(MoveReceiver moveReceiver, Square from, Square to, Piece pawn, Piece promoteTo) {
         return new PawnPromotionMove(moveReceiver, from, to, pawn, promoteTo);
     }
 
