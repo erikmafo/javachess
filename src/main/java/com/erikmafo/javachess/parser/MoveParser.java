@@ -69,9 +69,9 @@ public class MoveParser {
 
         String to = moveString.substring(2);
 
-        Square fromSquare = Square.valueOf(from);
+        Square fromSquare = getSquare(from);
 
-        Square toSquare = Square.valueOf(to);
+        Square toSquare = getSquare(to);
 
         MoveEncoding moveEncoding = determineEncoding(board, fromSquare, toSquare);
 
@@ -79,6 +79,17 @@ public class MoveParser {
 
         return move;
     }
+
+    private Square getSquare(String sq) {
+        try {
+            return Square.valueOf(sq);
+        } catch (IllegalArgumentException ex) {
+            throw new MoveFormatException("No such square: " + sq, ex);
+        }
+    }
+
+
+
 
     private Move getMove(Board board, Square fromSquare, Square toSquare, MoveEncoding moveEncoding) {
         Move move = null;
