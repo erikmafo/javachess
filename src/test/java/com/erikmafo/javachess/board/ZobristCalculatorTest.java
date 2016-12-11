@@ -17,34 +17,34 @@ import static org.mockito.Mockito.when;
 /**
  * Created by erikf on 12/10/2016.
  */
-public class ZobristTableTest {
+public class ZobristCalculatorTest {
 
 
     private long longValue = 0b1010000101000101101000010100010110100001010001011010000101000101L;;
     private long zero = 0L;
     private Random random = mock(Random.class);
 
-    private ZobristTable zobristTable;
+    private ZobristCalculator zobristCalculator;
 
     @Before
     public void setUp() throws Exception {
 
          when(random.nextLong()).thenReturn(longValue);
 
-         zobristTable = new ZobristTable(random);
+         zobristCalculator = new ZobristCalculator(random);
 
     }
 
     @Test
     public void testShiftColorToMove() throws Exception {
 
-        zobristTable.shiftColorToMove();
+        zobristCalculator.shiftColorToMove();
 
-        assertThat(zobristTable.getValue(), is(longValue));
+        assertThat(zobristCalculator.getValue(), is(longValue));
 
-        zobristTable.shiftColorToMove();
+        zobristCalculator.shiftColorToMove();
 
-        assertThat(zobristTable.getValue(), is(zero));
+        assertThat(zobristCalculator.getValue(), is(zero));
     }
 
 
@@ -54,13 +54,13 @@ public class ZobristTableTest {
         Piece piece = PieceMocks.newPieceMock(PieceColor.BLACK, PieceType.BISHOP);
         Square square = Square.A1;
 
-        zobristTable.shiftPiece(square, piece);
+        zobristCalculator.shiftPiece(square, piece);
 
-        assertThat(zobristTable.getValue(), is(longValue));
+        assertThat(zobristCalculator.getValue(), is(longValue));
 
-        zobristTable.shiftPiece(square, piece);
+        zobristCalculator.shiftPiece(square, piece);
 
-        assertThat(zobristTable.getValue(), is(zero));
+        assertThat(zobristCalculator.getValue(), is(zero));
 
     }
 
@@ -70,12 +70,12 @@ public class ZobristTableTest {
         PieceColor color = PieceColor.BLACK;
         CastlingRight castlingRight = CastlingRight.BOTH;
 
-        zobristTable.shiftCastlingRight(color, castlingRight);
+        zobristCalculator.shiftCastlingRight(color, castlingRight);
 
-        assertThat(zobristTable.getValue(), is(longValue));
+        assertThat(zobristCalculator.getValue(), is(longValue));
 
-        zobristTable.shiftCastlingRight(color, castlingRight);
+        zobristCalculator.shiftCastlingRight(color, castlingRight);
 
-        assertThat(zobristTable.getValue(), is(zero));
+        assertThat(zobristCalculator.getValue(), is(zero));
     }
 }

@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Created by erikf on 12/10/2016.
  */
-public class ZobristTable {
+public class ZobristCalculator {
 
     private static final int NUMBER_OF_SQUARES = Square.values().length;
     private static final int NUMBER_OF_PIECE_TYPES = PieceType.values().length;
@@ -25,7 +25,7 @@ public class ZobristTable {
     private long value = 0;
 
 
-    public ZobristTable(Random random) {
+    public ZobristCalculator(Random random) {
 
         colorToMove = random.nextLong();
 
@@ -47,22 +47,51 @@ public class ZobristTable {
         }
     }
 
-    public ZobristTable(long seed) {
+    public ZobristCalculator(long seed) {
         this(new Random(seed));
     }
 
 
+
+    public static ZobristCalculator from(Board board, Random random) {
+
+        ZobristCalculator zobristCalculator = new ZobristCalculator(random);
+
+        for (Square square : board.getOccupiedSquares()) {
+            zobristCalculator.shiftPiece(square, board.getNullablePiece(square));
+        }
+
+        for (PieceColor color : PieceColor.values()) {
+            if (board.hasKingSideCastlingRight(color) && board.hasQueenSideCastlingRight(color)) {
+                zobristCalculator.shiftCastlingRight(color, CastlingRight.BOTH);
+            } else if (board.hasKingSideCastlingRight(color)) {
+                zobristCalculator.shiftCastlingRight(color, CastlingRight.SHORT);
+            } else if (board.hasQueenSideCastlingRight(color)) {
+                zobristCalculator.shiftCastlingRight(color, CastlingRight.LONG);
+            } else {
+                zobristCalculator.shiftCastlingRight(color, CastlingRight.NONE);
+            }
+        }
+
+        if (board.enPassentTarget().isPresent()) {
+            zobristCalculator.shiftEnPassentTarget(board.enPassentTarget().get());
+        }
+
+        if (PieceColor.BLACK.equals(board.getColorToMove())) {
+            zobristCalculator.shiftColorToMove();
+        }
+
+        return zobristCalculator;
+    }
 
 
     public void shiftPiece(Square square, Piece piece) {
         value ^= pieces[piece.getColor().ordinal()][piece.getType().ordinal()][square.ordinal()];
     }
 
-
     public void shiftEnPassentTarget(Square square) {
         value ^= enPassent[square.ordinal()];
     }
-
 
     public void shiftColorToMove() {
         value ^= colorToMove;

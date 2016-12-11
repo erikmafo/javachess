@@ -17,6 +17,8 @@ import java.util.*;
 public class BoardImpl implements Board, MoveReceiver {
 
 
+    public static final int COMPLETE_MODE_PLAY = 1;
+    public static final int COMPLETE_MODE_UNDO = -1;
     private final Map<Square, Piece> pieceEntryEnumMap = new EnumMap<>(Square.class);
 
     private final Map<Integer, Square> enPassentTargets = new HashMap<>();
@@ -27,7 +29,7 @@ public class BoardImpl implements Board, MoveReceiver {
 
     private final MoveGeneratorFactory moveGeneratorFactory;
 
-    private final ZobristTable zobristTable;
+    private final ZobristCalculator zobristCalculator;
 
     private static final int E1_INDEX = 0;
     private static final int H1_INDEX = 1;
@@ -48,17 +50,17 @@ public class BoardImpl implements Board, MoveReceiver {
 
     BoardImpl() {
         this.moveGeneratorFactory = new MoveGeneratorFactory();
-        this.zobristTable = new ZobristTable(1);
+        this.zobristCalculator = new ZobristCalculator(1);
     }
 
-    public BoardImpl(MoveGeneratorFactory moveGeneratorFactory, ZobristTable zobristTable) {
+    public BoardImpl(MoveGeneratorFactory moveGeneratorFactory, ZobristCalculator zobristCalculator) {
         this.moveGeneratorFactory = moveGeneratorFactory;
-        this.zobristTable = zobristTable;
+        this.zobristCalculator = zobristCalculator;
     }
 
-    BoardImpl(MoveGeneratorFactory moveGeneratorFactory, ZobristTable zobristTable, PieceColor colorToMove, Map<PieceColor, CastlingRight> initialCastlingRight) {
+    BoardImpl(MoveGeneratorFactory moveGeneratorFactory, ZobristCalculator zobristCalculator, PieceColor colorToMove, Map<PieceColor, CastlingRight> initialCastlingRight) {
         this.moveGeneratorFactory = moveGeneratorFactory;
-        this.zobristTable = zobristTable;
+        this.zobristCalculator = zobristCalculator;
         this.colorToMove = colorToMove;
         this.initialCastlingRight = initialCastlingRight;
     }
@@ -71,8 +73,8 @@ public class BoardImpl implements Board, MoveReceiver {
         lastMoveFrom = from;
         lastMoveTo = to;
 
-        zobristTable.shiftPiece(from, lastMovedPiece);
-        zobristTable.shiftPiece(to, lastMovedPiece);
+        zobristCalculator.shiftPiece(from, lastMovedPiece);
+        zobristCalculator.shiftPiece(to, lastMovedPiece);
     }
 
     @Override
@@ -89,9 +91,9 @@ public class BoardImpl implements Board, MoveReceiver {
     public void setEnPassentTarget(Square square) {
         Square prev = enPassentTargets.put(moveCount + 1, square);
         if (square != null) {
-            zobristTable.shiftEnPassentTarget(square);
+            zobristCalculator.shiftEnPassentTarget(square);
         } else if (prev != null) {
-            zobristTable.shiftEnPassentTarget(prev);
+            zobristCalculator.shiftEnPassentTarget(prev);
         }
     }
 
@@ -112,19 +114,29 @@ public class BoardImpl implements Board, MoveReceiver {
 
     }
 
-    @Override
-    public void completePlay() {
 
-        moveCount++;
+    private void complete(int completeMode) {
+        moveCount += completeMode;
         toggleColorToMove();
-
-        int index = getCastlingSquareIndex(lastMoveTo);
+        int index = getCastlingSquareIndex(completeMode > 0 ? lastMoveTo : lastMoveFrom);
 
         if (index > 0) {
-            castlingSquaresMoveCount[index] += 1;
+            castlingSquaresMoveCount[index] += completeMode;
         }
 
-        zobristTable.shiftColorToMove();
+        zobristCalculator.shiftColorToMove();
+    }
+
+    @Override
+    public void completePlay() {
+        complete(COMPLETE_MODE_PLAY);
+    }
+
+
+
+    @Override
+    public void completeUndo() {
+        complete(COMPLETE_MODE_UNDO);
     }
 
 
@@ -169,20 +181,7 @@ public class BoardImpl implements Board, MoveReceiver {
         colorToMove = colorToMove.isWhite() ? PieceColor.BLACK : PieceColor.WHITE;
     }
 
-    @Override
-    public void completeUndo() {
 
-        moveCount--;
-        toggleColorToMove();
-
-        int index = getCastlingSquareIndex(lastMoveFrom);
-
-        if (index > 0) {
-            castlingSquaresMoveCount[index] -= 1;
-        }
-
-        zobristTable.shiftColorToMove();
-    }
 
     @Override
     public PieceColor getColorToMove() {

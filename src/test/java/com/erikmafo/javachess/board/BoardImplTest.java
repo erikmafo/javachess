@@ -22,10 +22,10 @@ public class BoardImplTest {
 
 
 
-    private ZobristTable zobristTable = mock(ZobristTable.class);
+    private ZobristCalculator zobristCalculator = mock(ZobristCalculator.class);
     private MoveGeneratorFactory moveGeneratorFactory = mock(MoveGeneratorFactory.class);
 
-    private BoardImpl board = new BoardImpl(moveGeneratorFactory, zobristTable);
+    private BoardImpl board = new BoardImpl(moveGeneratorFactory, zobristCalculator);
 
     private Piece piece = mock(Piece.class);
 
@@ -38,8 +38,8 @@ public class BoardImplTest {
 
         board.setEnPassentTarget(square);
 
-        verify(zobristTable).shiftEnPassentTarget(square);
-        verifyNoMoreInteractions(zobristTable);
+        verify(zobristCalculator).shiftEnPassentTarget(square);
+        verifyNoMoreInteractions(zobristCalculator);
     }
 
     @Test
@@ -47,8 +47,8 @@ public class BoardImplTest {
 
         board.completePlay();
 
-        verify(zobristTable).shiftColorToMove();
-        verifyNoMoreInteractions(zobristTable);
+        verify(zobristCalculator).shiftColorToMove();
+        verifyNoMoreInteractions(zobristCalculator);
     }
 
     @Test
@@ -56,8 +56,8 @@ public class BoardImplTest {
 
         board.completeUndo();
 
-        verify(zobristTable).shiftColorToMove();
-        verifyNoMoreInteractions(zobristTable);
+        verify(zobristCalculator).shiftColorToMove();
+        verifyNoMoreInteractions(zobristCalculator);
     }
 
     @Test
@@ -70,9 +70,9 @@ public class BoardImplTest {
         board.put(from, piece);
         board.movePiece(from, to);
 
-        verify(zobristTable).shiftPiece(from , piece);
-        verify(zobristTable).shiftPiece(to, piece);
-        verifyNoMoreInteractions(zobristTable);
+        verify(zobristCalculator).shiftPiece(from , piece);
+        verify(zobristCalculator).shiftPiece(to, piece);
+        verifyNoMoreInteractions(zobristCalculator);
     }
 
     @Test
