@@ -24,12 +24,12 @@ import static org.mockito.Mockito.when;
 /**
  * Created by erikmafo on 20.11.16.
  */
-public class PawnMoveGeneratorTest {
+public class PawnMoveGeneratorDelegateTest {
 
 
     private MoveFactory moveFactory = mock(MoveFactory.class);
 
-    private MoveGenerator pawnMoveGenerator = new PawnMoveGenerator(moveFactory);
+    private MoveGeneratorDelegate pawnMoveGeneratorDelegate = new PawnMoveGeneratorDelegate(moveFactory);
 
     private Board board = mock(Board.class);
 
@@ -59,7 +59,7 @@ public class PawnMoveGeneratorTest {
         Move expected = mock(Move.class, "" + from + enPassentTarget);
         when(moveFactory.newEnPassentMove(board, from, enPassentTarget, captured)).thenReturn(expected);
 
-        List<Move> moves = pawnMoveGenerator.generateMoves(board, from);
+        List<Move> moves = pawnMoveGeneratorDelegate.generateMoves(board, from);
 
         assertThat(moves, hasItem(expected));
     }
@@ -82,7 +82,7 @@ public class PawnMoveGeneratorTest {
         Move enPassentMove = mock(Move.class, "" + from + enPassentTarget);
         when(moveFactory.newEnPassentMove(board, from, enPassentTarget, opponentPawn)).thenReturn(enPassentMove);
 
-        List<Move> moves = pawnMoveGenerator.generateMoves(board, from);
+        List<Move> moves = pawnMoveGeneratorDelegate.generateMoves(board, from);
 
         assertThat(moves, not(hasItem(enPassentMove)));
 
@@ -104,7 +104,7 @@ public class PawnMoveGeneratorTest {
         when(moveFactory.newSinglePawnPushMove(board, from, oneUp)).thenReturn(singlePush);
         when(moveFactory.newDoublePawnPushMove(board, from, twoUp)).thenReturn(doublePush);
 
-        List<Move> moves = pawnMoveGenerator.generateMoves(board, from);
+        List<Move> moves = pawnMoveGeneratorDelegate.generateMoves(board, from);
 
         assertThat(moves, is(Arrays.asList(singlePush, doublePush)));
     }

@@ -17,13 +17,13 @@ import java.util.Optional;
 /**
  * Created by erikmafo on 20.11.16.
  */
-public class PawnMoveGenerator implements MoveGenerator {
+public class PawnMoveGeneratorDelegate implements MoveGeneratorDelegate {
 
     private final MoveFactory moveFactory;
     private final Offset[] whiteAttackOffsets = {BasicOffset.UP_LEFT, BasicOffset.UP_RIGHT};
     private final Offset[] blackAttackOffsets = {BasicOffset.DOWN_LEFT, BasicOffset.DOWN_RIGHT};
 
-    public PawnMoveGenerator(MoveFactory moveFactory) {
+    public PawnMoveGeneratorDelegate(MoveFactory moveFactory) {
         this.moveFactory = moveFactory;
     }
 

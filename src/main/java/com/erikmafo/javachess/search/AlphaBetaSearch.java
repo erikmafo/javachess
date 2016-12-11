@@ -1,15 +1,11 @@
 package com.erikmafo.javachess.search;
 
 import com.erikmafo.javachess.board.Board;
-import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.move.Move;
-import com.erikmafo.javachess.movegenerator.BoardSeeker;
 import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
-import com.erikmafo.javachess.pieces.PieceColor;
+import com.erikmafo.javachess.movegenerator.MoveGeneratorDelegate;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class AlphaBetaSearch implements MoveSearch {

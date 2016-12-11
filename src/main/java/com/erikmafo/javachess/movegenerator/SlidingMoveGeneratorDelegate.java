@@ -15,13 +15,13 @@ import java.util.Optional;
 /**
  * Created by erikmafo on 20.11.16.
  */
-public class SlidingMoveGenerator implements MoveGenerator {
+public class SlidingMoveGeneratorDelegate implements MoveGeneratorDelegate {
 
 
     private final MoveFactory moveFactory;
     private final Offset[] attackOffsets;
 
-    public SlidingMoveGenerator(MoveFactory moveFactory, Offset... attackOffsets) {
+    public SlidingMoveGeneratorDelegate(MoveFactory moveFactory, Offset... attackOffsets) {
         this.moveFactory = moveFactory;
         this.attackOffsets = attackOffsets;
     }

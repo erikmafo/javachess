@@ -12,12 +12,12 @@ import java.util.*;
 /**
  * Created by erikmafo on 20.11.16.
  */
-public class CompositeMoveGenerator implements MoveGenerator {
+public class CompositeMoveGeneratorDelegate implements MoveGeneratorDelegate {
 
 
-    private final Map<PieceType, MoveGenerator> moveGenerators;
+    private final Map<PieceType, MoveGeneratorDelegate> moveGenerators;
 
-    public CompositeMoveGenerator(Map<PieceType, MoveGenerator> moveGenerators) {
+    public CompositeMoveGeneratorDelegate(Map<PieceType, MoveGeneratorDelegate> moveGenerators) {
         this.moveGenerators = new EnumMap<>(moveGenerators);
     }
 
@@ -40,15 +40,15 @@ public class CompositeMoveGenerator implements MoveGenerator {
 
     public static class Builder {
 
-        private final Map<PieceType, MoveGenerator> moveGenerators = new HashMap<>();
+        private final Map<PieceType, MoveGeneratorDelegate> moveGenerators = new HashMap<>();
 
-        public Builder setMoveGenerator(PieceType pieceType, MoveGenerator moveGenerator) {
-            moveGenerators.put(pieceType, moveGenerator);
+        public Builder setMoveGenerator(PieceType pieceType, MoveGeneratorDelegate moveGeneratorDelegate) {
+            moveGenerators.put(pieceType, moveGeneratorDelegate);
             return this;
         }
 
-        public MoveGenerator build() {
-            return new CompositeMoveGenerator(moveGenerators);
+        public MoveGeneratorDelegate build() {
+            return new CompositeMoveGeneratorDelegate(moveGenerators);
         }
 
     }

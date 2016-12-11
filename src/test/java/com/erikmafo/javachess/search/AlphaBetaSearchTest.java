@@ -2,9 +2,7 @@ package com.erikmafo.javachess.search;
 
 import com.erikmafo.javachess.board.Board;
 import com.erikmafo.javachess.move.Move;
-import com.erikmafo.javachess.movegenerator.BoardSeeker;
 import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
-import com.erikmafo.javachess.movegenerator.MoveGenerator;
 import com.erikmafo.javachess.pieces.PieceColor;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;

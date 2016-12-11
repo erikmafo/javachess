@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
  * Created by erikmafo on 20.11.16.
  */
 @RunWith(JUnitParamsRunner.class)
-public class NonSlidingMoveGeneratorTest {
+public class NonSlidingMoveGeneratorDelegateTest {
 
     private final Board board = mock(Board.class);
     private final MoveFactory moveFactory = mock(MoveFactory.class);
@@ -65,7 +65,7 @@ public class NonSlidingMoveGeneratorTest {
     public void findKnightMoveOnEmtpyBoard(Square from, Offset offset, Square expectedTarget) throws Exception {
 
         boolean includeQuietMoves = true;
-        NonSlidingMoveGenerator nonSlidingMoveGenerator = new NonSlidingMoveGenerator(moveFactory, includeQuietMoves, offset);
+        NonSlidingMoveGeneratorDelegate nonSlidingMoveGenerator = new NonSlidingMoveGeneratorDelegate(moveFactory, includeQuietMoves, offset);
         Move move = mock(Move.class, "" + from + expectedTarget);
         when(moveFactory.newQuietMove(board, from, expectedTarget)).thenReturn(move);
 

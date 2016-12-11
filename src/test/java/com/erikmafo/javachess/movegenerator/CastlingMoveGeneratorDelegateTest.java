@@ -26,14 +26,14 @@ import static org.mockito.Mockito.when;
  * Created by erikmafo on 20.11.16.
  */
 @RunWith(JUnitParamsRunner.class)
-public class CastlingMoveGeneratorTest {
+public class CastlingMoveGeneratorDelegateTest {
 
 
     private final Board board = mock(Board.class);
     private final MoveFactory moveFactory = mock(MoveFactory.class);
 
     private final BoardSeeker boardSeeker = mock(BoardSeeker.class);
-    private final CastlingMoveGenerator castlingMoveGenerator = new CastlingMoveGenerator(moveFactory, boardSeeker);
+    private final CastlingMoveGeneratorDelegate castlingMoveGenerator = new CastlingMoveGeneratorDelegate(moveFactory, boardSeeker);
 
     @Before
     public void setUp() throws Exception {

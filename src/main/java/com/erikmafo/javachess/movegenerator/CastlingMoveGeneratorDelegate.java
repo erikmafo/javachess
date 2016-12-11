@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by erikmafo on 19.11.16.
  */
-public class CastlingMoveGenerator implements MoveGenerator {
+public class CastlingMoveGeneratorDelegate implements MoveGeneratorDelegate {
 
 
     private final MoveFactory moveFactory;
@@ -27,7 +27,7 @@ public class CastlingMoveGenerator implements MoveGenerator {
 
     private final BoardSeeker boardSeeker;
 
-    CastlingMoveGenerator(MoveFactory moveFactory, BoardSeeker boardSeeker) {
+    CastlingMoveGeneratorDelegate(MoveFactory moveFactory, BoardSeeker boardSeeker) {
         this.moveFactory = moveFactory;
         this.boardSeeker = boardSeeker;
 

@@ -3,7 +3,7 @@ package com.erikmafo.javachess.board;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.MoveFactory;
 import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
-import com.erikmafo.javachess.movegenerator.MoveGenerator;
+import com.erikmafo.javachess.movegenerator.MoveGeneratorDelegate;
 import com.erikmafo.javachess.movegenerator.MoveGeneratorFactory;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
@@ -247,13 +247,13 @@ public class BoardImpl implements Board {
 
         MoveFactory moveFactory = new MoveFactory();
 
-        MoveGenerator moveGenerator = moveGeneratorFactory.newInstance(strategy, moveFactory);
+        MoveGeneratorDelegate moveGeneratorDelegate = moveGeneratorFactory.newInstance(strategy, moveFactory);
 
         List<Move> moves = new ArrayList<>();
 
         for (Square square : pieceEntryEnumMap.keySet()) {
             if (getNullablePiece(square).getColor().equals(colorToMove)) {
-                moves.addAll(moveGenerator.generateMoves(this, square));
+                moves.addAll(moveGeneratorDelegate.generateMoves(this, square));
             }
         }
 

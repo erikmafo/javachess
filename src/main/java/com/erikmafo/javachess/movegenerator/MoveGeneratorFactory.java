@@ -16,15 +16,15 @@ import java.util.List;
 public class MoveGeneratorFactory {
 
 
-    public MoveGenerator newInstance(MoveGenerationStrategy strategy, MoveFactory moveFactory) {
+    public MoveGeneratorDelegate newInstance(MoveGenerationStrategy strategy, MoveFactory moveFactory) {
         return newPseudoLegalMoveGenerator(moveFactory);
     }
 
 
 
-    private static MoveGenerator newPseudoLegalMoveGenerator(MoveFactory moveFactory) {
+    private static MoveGeneratorDelegate newPseudoLegalMoveGenerator(MoveFactory moveFactory) {
 
-        MoveGenerator moveGenerator = new CompositeMoveGenerator.Builder()
+        MoveGeneratorDelegate moveGeneratorDelegate = new CompositeMoveGeneratorDelegate.Builder()
                 .setMoveGenerator(PieceType.PAWN, getPawnMoveGenerator(moveFactory))
                 .setMoveGenerator(PieceType.BISHOP, getBishopMoveGenerator(moveFactory))
                 .setMoveGenerator(PieceType.ROOK, getRookMoveGenerator(moveFactory))
@@ -34,44 +34,44 @@ public class MoveGeneratorFactory {
                 .build();
 
 
-        return moveGenerator;
+        return moveGeneratorDelegate;
     }
 
-    private static PawnMoveGenerator getPawnMoveGenerator(MoveFactory moveFactory) {
-        return new PawnMoveGenerator(moveFactory);
+    private static PawnMoveGeneratorDelegate getPawnMoveGenerator(MoveFactory moveFactory) {
+        return new PawnMoveGeneratorDelegate(moveFactory);
     }
 
-    private static MoveGenerator getQueenMoveGenerator(MoveFactory moveFactory) {
-        return new SlidingMoveGenerator(
+    private static MoveGeneratorDelegate getQueenMoveGenerator(MoveFactory moveFactory) {
+        return new SlidingMoveGeneratorDelegate(
                 moveFactory, BasicOffset.values());
     }
 
-    private static MoveGenerator getBishopMoveGenerator(MoveFactory moveFactory) {
-        return new SlidingMoveGenerator(
+    private static MoveGeneratorDelegate getBishopMoveGenerator(MoveFactory moveFactory) {
+        return new SlidingMoveGeneratorDelegate(
                 moveFactory, BasicOffset.bishopValues());
     }
 
-    private static MoveGenerator getRookMoveGenerator(MoveFactory moveFactory) {
-        return new SlidingMoveGenerator(moveFactory, BasicOffset.rookValues());
+    private static MoveGeneratorDelegate getRookMoveGenerator(MoveFactory moveFactory) {
+        return new SlidingMoveGeneratorDelegate(moveFactory, BasicOffset.rookValues());
     }
 
 
-    private static MoveGenerator getKnightMoveGenerator(MoveFactory moveFactory) {
+    private static MoveGeneratorDelegate getKnightMoveGenerator(MoveFactory moveFactory) {
 
         Offset[] offsets = KnightOffset.values();
 
-        MoveGenerator moveGenerator = new NonSlidingMoveGenerator(moveFactory, true, offsets);
+        MoveGeneratorDelegate moveGeneratorDelegate = new NonSlidingMoveGeneratorDelegate(moveFactory, true, offsets);
 
-        return moveGenerator;
+        return moveGeneratorDelegate;
     }
 
 
-    private static MoveGenerator getKingMoveGenerator(MoveFactory moveFactory) {
+    private static MoveGeneratorDelegate getKingMoveGenerator(MoveFactory moveFactory) {
 
-        CastlingMoveGenerator castlingMoveGenerator =
-                new CastlingMoveGenerator(moveFactory, new BoardSeeker());
+        CastlingMoveGeneratorDelegate castlingMoveGenerator =
+                new CastlingMoveGeneratorDelegate(moveFactory, new BoardSeeker());
 
-        NonSlidingMoveGenerator nonSlidingMoveGenerator = new NonSlidingMoveGenerator(moveFactory, true, BasicOffset.values());
+        NonSlidingMoveGeneratorDelegate nonSlidingMoveGenerator = new NonSlidingMoveGeneratorDelegate(moveFactory, true, BasicOffset.values());
         return (board, from) -> {
             List<Move> moves = new ArrayList<>();
             moves.addAll(castlingMoveGenerator.generateMoves(board, from));

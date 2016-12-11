@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 /**
  * Created by erikmafo on 20.11.16.
  */
-public class SlidingMoveGeneratorTest {
+public class SlidingMoveGeneratorDelegateTest {
 
     private final Board board = mock(Board.class);
     private final MoveFactory moveFactory = mock(MoveFactory.class);
@@ -42,7 +42,7 @@ public class SlidingMoveGeneratorTest {
         Square from = Square.E4;
         Offset slidingDirection = BasicOffset.DOWN;
 
-        SlidingMoveGenerator slidingMoveGenerator = new SlidingMoveGenerator(moveFactory, slidingDirection);
+        SlidingMoveGeneratorDelegate slidingMoveGenerator = new SlidingMoveGeneratorDelegate(moveFactory, slidingDirection);
 
         Move e4e3 = mock(Move.class, "e4e3");
         Move e4e2 = mock(Move.class, "e4e2");
@@ -63,7 +63,7 @@ public class SlidingMoveGeneratorTest {
         Square from = Square.E4;
         Offset slidingDirection = BasicOffset.UP_LEFT;
 
-        SlidingMoveGenerator slidingMoveGenerator = new SlidingMoveGenerator(moveFactory, slidingDirection);
+        SlidingMoveGeneratorDelegate slidingMoveGenerator = new SlidingMoveGeneratorDelegate(moveFactory, slidingDirection);
 
         Move e4d5 = mock(Move.class, "e4d5");
         Move e4c6 = mock(Move.class, "e4c6");

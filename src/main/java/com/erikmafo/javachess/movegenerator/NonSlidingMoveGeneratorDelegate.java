@@ -15,7 +15,7 @@ import java.util.Optional;
 /**
  * Created by erikmafo on 19.11.16.
  */
-public class NonSlidingMoveGenerator implements MoveGenerator {
+public class NonSlidingMoveGeneratorDelegate implements MoveGeneratorDelegate {
 
     private final MoveFactory moveFactory;
     private final boolean includeQuietMoves;
@@ -23,7 +23,7 @@ public class NonSlidingMoveGenerator implements MoveGenerator {
 
 
 
-    public NonSlidingMoveGenerator(MoveFactory moveFactory, boolean includeQuietMoves, Offset... offsets) {
+    public NonSlidingMoveGeneratorDelegate(MoveFactory moveFactory, boolean includeQuietMoves, Offset... offsets) {
         this.moveFactory = moveFactory;
         this.includeQuietMoves = includeQuietMoves;
         this.attackOffsets = offsets;
