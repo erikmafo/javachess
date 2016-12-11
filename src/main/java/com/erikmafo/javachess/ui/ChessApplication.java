@@ -315,6 +315,7 @@ public class ChessApplication extends Application {
                         BoardToIntFunction boardToIntFunction = new BoardToIntFunctionChain.Builder()
                                 .addFunction(new MaterialBoardEvaluation())
                                 .addFunction(new CastlingEvaluation())
+                                .addFunction(new MobilityEvaluation())
                                 .build();
 
                         SearchResult result = null;

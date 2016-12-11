@@ -40,6 +40,45 @@ public class BoardSeeker {
     }
 
 
+
+    public MobilityCount getMobilityCount(Board board, Square from, boolean slide, Offset... offsets) {
+
+        int empty = 0;
+        int occupiedByWhite = 0;
+        int occupiedByBlack = 0;
+
+        for (Offset offset : offsets) {
+            Square current = from.next(offset);
+
+            while (current.isOnBoard()) {
+
+                if (board.isOccupied(current)) {
+                    Piece piece = board.getNullablePiece(current);
+                    if (piece.getColor().isWhite()) {
+                        occupiedByWhite++;
+                    } else {
+                        occupiedByBlack++;
+                    }
+                    break;
+                } else {
+                    empty++;
+                }
+
+                if (slide) {
+                    current = current.next(offset);
+                } else {
+                    break;
+                }
+
+            }
+        }
+
+        return new MobilityCount(empty, occupiedByWhite, occupiedByBlack);
+    }
+
+
+
+
     public Optional<Piece> search(Predicate<Piece> piecePredicate, Board board, Square start, boolean slide, Offset... offsets) {
 
         Optional<Piece> result = Optional.empty();

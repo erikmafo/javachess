@@ -29,6 +29,7 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnitParamsRunner.class)
 public class BoardSeekerTest {
 
+
     private BoardSeeker boardSeeker = new BoardSeeker();
 
     private Board board = mock(Board.class, "Board");
@@ -98,4 +99,21 @@ public class BoardSeekerTest {
         assertThat("" + targetPiece + " is not attacked because " + blockingPiece + " is blocking the " + slidingPiece,
                 isAttaked, is(false));
     }
+
+
+
+    @Test
+    public void getMobilityCount() throws Exception {
+
+        MobilityCount mobilityCount = boardSeeker.getMobilityCount(board, Square.H1, true, BasicOffset.UP);
+
+        assertThat(mobilityCount.getEmptySquares(), is(7));
+        assertThat(mobilityCount.getGetOccupiedByBlack(), is(0));
+        assertThat(mobilityCount.getOccupiedByWhite(), is(0));
+    }
+
+
+
+
+
 }
