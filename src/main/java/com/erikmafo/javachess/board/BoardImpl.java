@@ -17,15 +17,19 @@ import java.util.*;
 public class BoardImpl implements Board, MoveReceiver {
 
 
+    public static final int COMPLETE_MODE_PLAY = 1;
+    public static final int COMPLETE_MODE_UNDO = -1;
     private final Map<Square, Piece> pieceEntryEnumMap = new EnumMap<>(Square.class);
 
     private final Map<Integer, Square> enPassentTargets = new HashMap<>();
 
-    private final Map<PieceColor, Boolean> hasCastled = new HashMap<>();
+    private final Map<PieceColor, Boolean> hasCastled = new EnumMap<>(PieceColor.class);
 
     private final int[] castlingSquaresMoveCount = new int[6];
 
     private final MoveGeneratorFactory moveGeneratorFactory;
+
+    private final ZobristCalculator zobristCalculator;
 
     private static final int E1_INDEX = 0;
     private static final int H1_INDEX = 1;
@@ -42,14 +46,21 @@ public class BoardImpl implements Board, MoveReceiver {
     private int moveCount = 0;
     private PieceColor colorToMove = PieceColor.WHITE;
 
-    private Map<PieceColor, CastlingRight> initialCastlingRight = new HashMap<>();
+    private Map<PieceColor, CastlingRight> initialCastlingRight = new EnumMap<>(PieceColor.class);
 
     BoardImpl() {
         this.moveGeneratorFactory = new MoveGeneratorFactory();
+        this.zobristCalculator = new ZobristCalculator(1);
     }
 
-    BoardImpl(MoveGeneratorFactory moveGeneratorFactory, PieceColor colorToMove, Map<PieceColor, CastlingRight> initialCastlingRight) {
+    public BoardImpl(MoveGeneratorFactory moveGeneratorFactory, ZobristCalculator zobristCalculator) {
         this.moveGeneratorFactory = moveGeneratorFactory;
+        this.zobristCalculator = zobristCalculator;
+    }
+
+    BoardImpl(MoveGeneratorFactory moveGeneratorFactory, ZobristCalculator zobristCalculator, PieceColor colorToMove, Map<PieceColor, CastlingRight> initialCastlingRight) {
+        this.moveGeneratorFactory = moveGeneratorFactory;
+        this.zobristCalculator = zobristCalculator;
         this.colorToMove = colorToMove;
         this.initialCastlingRight = initialCastlingRight;
     }
@@ -62,6 +73,8 @@ public class BoardImpl implements Board, MoveReceiver {
         lastMoveFrom = from;
         lastMoveTo = to;
 
+        zobristCalculator.shiftPiece(from, lastMovedPiece);
+        zobristCalculator.shiftPiece(to, lastMovedPiece);
     }
 
     @Override
@@ -76,7 +89,12 @@ public class BoardImpl implements Board, MoveReceiver {
 
     @Override
     public void setEnPassentTarget(Square square) {
-        enPassentTargets.put(moveCount + 1, square);
+        Square prev = enPassentTargets.put(moveCount + 1, square);
+        if (square != null) {
+            zobristCalculator.shiftEnPassentTarget(square);
+        } else if (prev != null) {
+            zobristCalculator.shiftEnPassentTarget(prev);
+        }
     }
 
     @Override
@@ -96,19 +114,29 @@ public class BoardImpl implements Board, MoveReceiver {
 
     }
 
-    @Override
-    public void completePlay() {
 
-        moveCount++;
+    private void complete(int completeMode) {
+        moveCount += completeMode;
         toggleColorToMove();
-
-        int index = getCastlingSquareIndex(lastMoveTo);
+        int index = getCastlingSquareIndex(completeMode > 0 ? lastMoveTo : lastMoveFrom);
 
         if (index > 0) {
-            castlingSquaresMoveCount[index] += 1;
+            castlingSquaresMoveCount[index] += completeMode;
         }
 
+        zobristCalculator.shiftColorToMove();
+    }
 
+    @Override
+    public void completePlay() {
+        complete(COMPLETE_MODE_PLAY);
+    }
+
+
+
+    @Override
+    public void completeUndo() {
+        complete(COMPLETE_MODE_UNDO);
     }
 
 
@@ -153,19 +181,7 @@ public class BoardImpl implements Board, MoveReceiver {
         colorToMove = colorToMove.isWhite() ? PieceColor.BLACK : PieceColor.WHITE;
     }
 
-    @Override
-    public void completeUndo() {
 
-        moveCount--;
-        toggleColorToMove();
-
-        int index = getCastlingSquareIndex(lastMoveFrom);
-
-        if (index > 0) {
-            castlingSquaresMoveCount[index] -= 1;
-        }
-
-    }
 
     @Override
     public PieceColor getColorToMove() {

@@ -316,7 +316,7 @@ public class ChessApplication extends Application {
                     protected Move call() throws Exception {
 
                         BoardToIntFunction boardToIntFunction = new BoardToIntFunctionChain(
-                                new MaterialBoardEvaluation(), new BasicStrategicEvaluation());
+                                new MaterialBoardEvaluation());
 
                         SearchResult result = searchExecutor.submitSearch(board, boardToIntFunction, 5).get();
 
