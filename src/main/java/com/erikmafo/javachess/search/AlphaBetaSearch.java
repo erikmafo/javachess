@@ -2,8 +2,10 @@ package com.erikmafo.javachess.search;
 
 import com.erikmafo.javachess.board.Board;
 import com.erikmafo.javachess.move.Move;
+import com.erikmafo.javachess.move.MoveFactory;
 import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
-import com.erikmafo.javachess.movegenerator.MoveGeneratorDelegate;
+import com.erikmafo.javachess.movegenerator.MoveGenerator;
+import com.erikmafo.javachess.movegenerator.MoveGeneratorFactory;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +13,18 @@ import java.util.List;
 public class AlphaBetaSearch implements MoveSearch {
 
     private static final int MAX_VALUE = 1000000;
+
+
+    private final MoveGenerator moveGenerator;
+
+    public AlphaBetaSearch() {
+        this(new MoveGeneratorFactory().newInstance(MoveGenerationStrategy.ALL_PSEUDO_LEGAL_MOVES, new MoveFactory()));
+    }
+
+    public AlphaBetaSearch(MoveGenerator moveGenerator) {
+        this.moveGenerator = moveGenerator;
+    }
+
 
     @Override
     public SearchResult execute(Board board, BoardToIntFunction boardToIntFunction, int depth) {
@@ -41,7 +55,7 @@ public class AlphaBetaSearch implements MoveSearch {
             return evaluation.applyAsInt(board);
         }
 
-        List<Move> moves = board.getMoves(MoveGenerationStrategy.ALL_PSEUDO_LEGAL_MOVES);
+        List<Move> moves = moveGenerator.generateMoves(board);
 
         Move assumedBest = principleVariation[principleVariation.length - depthLeft];
 

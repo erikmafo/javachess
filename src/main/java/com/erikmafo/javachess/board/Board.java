@@ -28,8 +28,6 @@ public interface Board extends MoveReceiver {
 
     int getMoveCount();
 
-    List<Move> getMoves(MoveGenerationStrategy moveGenerationStrategy);
-
     boolean hasKingSideCastlingRight(PieceColor pieceColor);
 
     boolean hasQueenSideCastlingRight(PieceColor pieceColor);

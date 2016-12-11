@@ -377,15 +377,6 @@ public class ChessApplication extends Application {
     }
 
 
-    private List<Move> getMoves() {
-
-        List<Move> moves = board.getMoves(MoveGenerationStrategy.ALL_PSEUDO_LEGAL_MOVES);
-
-        return moves;
-
-    }
-
-
     @Override
     public void start(Stage primaryStage) throws Exception {
 

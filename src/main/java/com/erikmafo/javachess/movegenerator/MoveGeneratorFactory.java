@@ -16,15 +16,15 @@ import java.util.List;
 public class MoveGeneratorFactory {
 
 
-    public MoveGeneratorDelegate newInstance(MoveGenerationStrategy strategy, MoveFactory moveFactory) {
+    public MoveGenerator newInstance(MoveGenerationStrategy strategy, MoveFactory moveFactory) {
         return newPseudoLegalMoveGenerator(moveFactory);
     }
 
 
 
-    private static MoveGeneratorDelegate newPseudoLegalMoveGenerator(MoveFactory moveFactory) {
+    private static MoveGenerator newPseudoLegalMoveGenerator(MoveFactory moveFactory) {
 
-        MoveGeneratorDelegate moveGeneratorDelegate = new CompositeMoveGeneratorDelegate.Builder()
+        MoveGenerator moveGenerator = new CompositeMoveGenerator.Builder()
                 .setMoveGenerator(PieceType.PAWN, getPawnMoveGenerator(moveFactory))
                 .setMoveGenerator(PieceType.BISHOP, getBishopMoveGenerator(moveFactory))
                 .setMoveGenerator(PieceType.ROOK, getRookMoveGenerator(moveFactory))
@@ -34,7 +34,7 @@ public class MoveGeneratorFactory {
                 .build();
 
 
-        return moveGeneratorDelegate;
+        return moveGenerator;
     }
 
     private static PawnMoveGeneratorDelegate getPawnMoveGenerator(MoveFactory moveFactory) {

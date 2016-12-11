@@ -3,6 +3,7 @@ package com.erikmafo.javachess.search;
 import com.erikmafo.javachess.board.Board;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
+import com.erikmafo.javachess.movegenerator.MoveGenerator;
 import com.erikmafo.javachess.pieces.PieceColor;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -25,7 +26,8 @@ public class AlphaBetaSearchTest {
     private BoardToIntFunction evaluationFunction;
     private Board board = mock(Board.class);
 
-    private AlphaBetaSearch alphaBetaSearch = new AlphaBetaSearch();
+    private MoveGenerator moveGenerator = mock(MoveGenerator.class);
+    private AlphaBetaSearch alphaBetaSearch = new AlphaBetaSearch(moveGenerator);
 
 
     private PieceColor firstToMove = PieceColor.WHITE;
@@ -87,7 +89,7 @@ public class AlphaBetaSearchTest {
 
         Move bestMove = firstToMove.isWhite() ? goodForWhite : goodForBlack;
 
-        when(board.getMoves(any(MoveGenerationStrategy.class))).then(invocationOnMock -> Arrays.asList(goodForWhite, goodForBlack, neutral));
+        when(moveGenerator.generateMoves(board)).then(invocationOnMock -> Arrays.asList(goodForWhite, goodForBlack, neutral));
 
         SearchResult result = alphaBetaSearch.execute(board, evaluationFunction, 1);
 
@@ -99,7 +101,7 @@ public class AlphaBetaSearchTest {
     @Test
     public void findBestMoveForWhiteTwoStepsAhead() throws Exception {
 
-        when(board.getMoves(any(MoveGenerationStrategy.class))).then(invocationOnMock -> {
+        when(moveGenerator.generateMoves(board)).then(invocationOnMock -> {
 
             List<Move> moves;
 

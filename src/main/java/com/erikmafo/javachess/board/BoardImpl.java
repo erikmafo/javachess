@@ -242,25 +242,6 @@ public class BoardImpl implements Board {
         return moveCount;
     }
 
-    @Override
-    public List<Move> getMoves(MoveGenerationStrategy strategy) {
-
-        MoveFactory moveFactory = new MoveFactory();
-
-        MoveGeneratorDelegate moveGeneratorDelegate = moveGeneratorFactory.newInstance(strategy, moveFactory);
-
-        List<Move> moves = new ArrayList<>();
-
-        for (Square square : pieceEntryEnumMap.keySet()) {
-            if (getNullablePiece(square).getColor().equals(colorToMove)) {
-                moves.addAll(moveGeneratorDelegate.generateMoves(this, square));
-            }
-        }
-
-        return moves;
-    }
-
-
     private boolean hasCastlingRight(PieceColor color, Square kingSquare, Square rookSquare) {
 
         int kingSquareIndex = getCastlingSquareIndex(kingSquare);
