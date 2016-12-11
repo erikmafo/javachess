@@ -17,11 +17,15 @@ import java.util.*;
 public class BoardImpl implements Board, MoveReceiver {
 
 
-    public static final int COMPLETE_MODE_PLAY = 1;
-    public static final int COMPLETE_MODE_UNDO = -1;
+    private static class CompleteMode {
+        static final int PLAY = 1;
+        static final int UNDO = -1;
+    }
+
+
     private final Map<Square, Piece> pieceEntryEnumMap = new EnumMap<>(Square.class);
 
-    private final Map<Integer, Square> enPassentTargets = new HashMap<>();
+    private Square[] enPassentTargets = new Square[100];
 
     private final Map<PieceColor, Boolean> hasCastled = new EnumMap<>(PieceColor.class);
 
@@ -89,17 +93,24 @@ public class BoardImpl implements Board, MoveReceiver {
 
     @Override
     public void setEnPassentTarget(Square square) {
-        Square prev = enPassentTargets.put(moveCount + 1, square);
+
         if (square != null) {
             zobristCalculator.shiftEnPassentTarget(square);
-        } else if (prev != null) {
+        } else {
+            Square prev = enPassentTargets[moveCount + 1];
             zobristCalculator.shiftEnPassentTarget(prev);
         }
+
+        if (moveCount + 3 > enPassentTargets.length) {
+            enPassentTargets = Arrays.copyOf(enPassentTargets, enPassentTargets.length + 100);
+        }
+
+        enPassentTargets[moveCount + 1] = square;
     }
 
     @Override
     public void removeEnPassentTarget() {
-        enPassentTargets.remove(moveCount + 1);
+        setEnPassentTarget(null);
     }
 
     @Override
@@ -116,27 +127,28 @@ public class BoardImpl implements Board, MoveReceiver {
 
 
     private void complete(int completeMode) {
-        moveCount += completeMode;
-        toggleColorToMove();
-        int index = getCastlingSquareIndex(completeMode > 0 ? lastMoveTo : lastMoveFrom);
 
-        if (index > 0) {
-            castlingSquaresMoveCount[index] += completeMode;
+        moveCount += completeMode;
+
+        int castlingSquareIndex = getCastlingSquareIndex(completeMode > 0 ? lastMoveTo : lastMoveFrom);
+
+        if (castlingSquareIndex > 0) {
+            castlingSquaresMoveCount[castlingSquareIndex] += completeMode;
         }
 
-        zobristCalculator.shiftColorToMove();
+        toggleColorToMove();
     }
 
     @Override
     public void completePlay() {
-        complete(COMPLETE_MODE_PLAY);
+        complete(CompleteMode.PLAY);
     }
 
 
 
     @Override
     public void completeUndo() {
-        complete(COMPLETE_MODE_UNDO);
+        complete(CompleteMode.UNDO);
     }
 
 
@@ -179,6 +191,7 @@ public class BoardImpl implements Board, MoveReceiver {
 
     private void toggleColorToMove() {
         colorToMove = colorToMove.isWhite() ? PieceColor.BLACK : PieceColor.WHITE;
+        zobristCalculator.shiftColorToMove();
     }
 
 
@@ -217,7 +230,7 @@ public class BoardImpl implements Board, MoveReceiver {
 
     @Override
     public Optional<Square> enPassentTarget() {
-        return Optional.ofNullable(enPassentTargets.getOrDefault(moveCount, null));
+        return Optional.ofNullable(enPassentTargets[moveCount]);
     }
 
     @Override
@@ -276,44 +289,15 @@ public class BoardImpl implements Board, MoveReceiver {
 
     @Override
     public boolean hasKingSideCastlingRight(PieceColor pieceColor) {
-
-        Square kingSquare;
-        Square rookSquare;
-
-        switch (pieceColor) {
-            case BLACK:
-                kingSquare = Square.E8;
-                rookSquare = Square.H8;
-                break;
-            case WHITE:
-                kingSquare = Square.E1;
-                rookSquare = Square.H1;
-                break;
-            default:
-                throw new AssertionError();
-        }
-
+        Square kingSquare = pieceColor.isWhite() ? Square.E1 : Square.E8;
+        Square rookSquare = kingSquare.next(BasicOffset.RIGHT, 3);
         return hasCastlingRight(pieceColor, kingSquare, rookSquare);
     }
 
     @Override
     public boolean hasQueenSideCastlingRight(PieceColor pieceColor) {
-        Square kingSquare;
-        Square rookSquare;
-
-        switch (pieceColor) {
-            case BLACK:
-                kingSquare = Square.E8;
-                rookSquare = Square.A8;
-                break;
-            case WHITE:
-                kingSquare = Square.E1;
-                rookSquare = Square.A1;
-                break;
-            default:
-                throw new AssertionError();
-        }
-
+        Square kingSquare = pieceColor.isWhite() ? Square.E1 : Square.E8;
+        Square rookSquare = kingSquare.next(BasicOffset.LEFT, 4);
         return hasCastlingRight(pieceColor, kingSquare, rookSquare);
     }
 
@@ -322,6 +306,36 @@ public class BoardImpl implements Board, MoveReceiver {
 
         return new HashSet<>(pieceEntryEnumMap.keySet());
 
+    }
+
+
+    private class BordIterator<T> implements Iterator<T> {
+
+        private final Iterator<T> iterator;
+
+        private BordIterator(Iterator<T> iterator) {
+            this.iterator = iterator;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return iterator.hasNext();
+        }
+
+        @Override
+        public T next() {
+            return iterator.next();
+        }
+    }
+
+    @Override
+    public Iterator<Square> occupiedSquareIterator() {
+        return new BordIterator<>(pieceEntryEnumMap.keySet().iterator());
+    }
+
+    @Override
+    public Iterator<Piece> pieceIterator() {
+        return new BordIterator<>(pieceEntryEnumMap.values().iterator());
     }
 
 
