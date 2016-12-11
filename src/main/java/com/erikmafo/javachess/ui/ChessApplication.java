@@ -4,14 +4,13 @@ import com.erikmafo.javachess.board.Board;
 import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.Moves;
-import com.erikmafo.javachess.movegenerator.BoardSeeker;
 import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
 import com.erikmafo.javachess.pieces.PieceType;
 import com.erikmafo.javachess.search.*;
-import com.erikmafo.javachess.uci.FenParseException;
-import com.erikmafo.javachess.uci.FenParser;
+import com.erikmafo.javachess.parser.FenParseException;
+import com.erikmafo.javachess.parser.FenParser;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -25,11 +24,9 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.time.Clock;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

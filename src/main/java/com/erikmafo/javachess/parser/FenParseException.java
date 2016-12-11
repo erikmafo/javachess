@@ -1,4 +1,4 @@
-package com.erikmafo.javachess.uci;
+package com.erikmafo.javachess.parser;
 
 
 /**

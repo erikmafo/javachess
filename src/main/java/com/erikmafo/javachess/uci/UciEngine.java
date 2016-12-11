@@ -1,5 +1,7 @@
 package com.erikmafo.javachess.uci;
 
+import com.erikmafo.javachess.parser.FenParseException;
+
 import java.util.concurrent.CompletableFuture;
 
 /**

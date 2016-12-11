@@ -1,11 +1,10 @@
-package com.erikmafo.javachess.uci;
+package com.erikmafo.javachess.parser;
 
+import com.erikmafo.javachess.parser.FenParser;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by erikmafo on 04.12.16.

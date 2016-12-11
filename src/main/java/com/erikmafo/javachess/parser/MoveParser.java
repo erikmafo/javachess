@@ -1,4 +1,4 @@
-package com.erikmafo.javachess.uci;
+package com.erikmafo.javachess.parser;
 
 
 import com.erikmafo.javachess.board.Board;
@@ -59,7 +59,7 @@ public class MoveParser {
 
     private Move parseFromLongAlgebraic(Board board, String longAlgebraicMove) throws MoveFormatException, InvalidMoveException {
 
-        String moveString = longAlgebraicMove.toLowerCase();
+        String moveString = longAlgebraicMove.toUpperCase();
 
         if (moveString.length() != 4) {
             throw new MoveFormatException("Long algebraic move must consist of 4 characters");
@@ -67,11 +67,11 @@ public class MoveParser {
 
         String from = moveString.substring(0, 2);
 
-        String to = moveString.substring(3);
+        String to = moveString.substring(2);
 
-        Square fromSquare = Square.valueOf(from.toUpperCase());
+        Square fromSquare = Square.valueOf(from);
 
-        Square toSquare = Square.valueOf(to.toUpperCase());
+        Square toSquare = Square.valueOf(to);
 
         MoveEncoding moveEncoding = determineEncoding(board, fromSquare, toSquare);
 
