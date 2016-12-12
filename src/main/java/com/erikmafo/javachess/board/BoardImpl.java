@@ -316,4 +316,8 @@ public class BoardImpl implements Board {
     }
 
 
+    @Override
+    public long getTranspositionKey() {
+        return zobristCalculator.getValue();
+    }
 }

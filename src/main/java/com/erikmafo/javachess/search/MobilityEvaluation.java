@@ -47,9 +47,11 @@ public class MobilityEvaluation implements BoardToIntFunction {
 
             MobilityCount mobilityCount = null;
 
-            if (PieceType.QUEEN.equals(type)) {
+            /**f (PieceType.QUEEN.equals(type)) {
                 mobilityCount = boardSeeker.getMobilityCount(board, current, true, BasicOffset.values());
-            } else if (PieceType.ROOK.equals(type)) {
+            } else */
+
+            if (PieceType.ROOK.equals(type)) {
                 mobilityCount = boardSeeker.getMobilityCount(board, current, true, BasicOffset.rookValues());
             } else if (PieceType.BISHOP.equals(type)) {
                 mobilityCount = boardSeeker.getMobilityCount(board, current, true, BasicOffset.bishopValues());

@@ -39,6 +39,9 @@ public interface Board extends MoveReceiver {
     Iterator<Piece> pieceIterator();
 
 
+    long getTranspositionKey();
+
+
 
 
 }

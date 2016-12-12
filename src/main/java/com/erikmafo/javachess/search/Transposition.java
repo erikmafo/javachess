@@ -5,12 +5,12 @@ import com.erikmafo.javachess.move.Move;
 /**
  * Created by erikf on 12/11/2016.
  */
-public class Node {
+public class Transposition {
 
     public enum Flag {
         EXACT,
-        BETA,
-        ALPHA
+        UPPER_BOUND,
+        LOWER_BOUND
     }
 
     private final Flag flag;
@@ -20,7 +20,7 @@ public class Node {
     private final Move bestMove;
 
 
-    public Node(Flag flag, long key, int score, int depth, Move bestMove) {
+    public Transposition(Flag flag, long key, int score, int depth, Move bestMove) {
         this.flag = flag;
         this.key = key;
         this.score = score;

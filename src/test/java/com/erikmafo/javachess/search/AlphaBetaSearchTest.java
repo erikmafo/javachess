@@ -27,7 +27,8 @@ public class AlphaBetaSearchTest {
     private Board board = mock(Board.class);
 
     private MoveGenerator moveGenerator = mock(MoveGenerator.class);
-    private AlphaBetaSearch alphaBetaSearch = new AlphaBetaSearch(moveGenerator);
+    private TranspositionTable transpositionTable = mock(TranspositionTable.class);
+    private AlphaBetaSearch alphaBetaSearch = new AlphaBetaSearch(moveGenerator, transpositionTable);
 
 
     private PieceColor firstToMove = PieceColor.WHITE;
