@@ -25,6 +25,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.time.Clock;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -293,6 +294,12 @@ public class ChessApplication extends Application {
         int rank = findRank(y);
 
         Square from = dragPiece.getCoordinate();
+
+        if (file < 0 || file > 7 || rank < 0 || rank > 7) {
+            pieceView.relocate(findX(from.getFile()), findY(from.getRank()));
+            return;
+        }
+
         Square to = Square.valueOf(file, rank);
 
 
@@ -312,7 +319,7 @@ public class ChessApplication extends Application {
                     @Override
                     protected Move call() throws Exception {
 
-                        BoardToIntFunction boardToIntFunction = new BoardToIntFunctionChain.Builder()
+                        BoardToIntFunction evaluation = new BoardToIntFunctionChain.Builder()
                                 .addFunction(new MaterialBoardEvaluation())
                                 .addFunction(new CastlingEvaluation())
                                 .addFunction(new MobilityEvaluation())
@@ -320,7 +327,7 @@ public class ChessApplication extends Application {
 
                         SearchResult result = null;
                         try {
-                            result = new AlphaBetaSearch().execute(board, boardToIntFunction, 6);
+                            result = new AlphaBetaSearch().execute(board, evaluation, 6);
                         } catch (RuntimeException ex) {
                             Logger.getLogger(ChessApplication.class.getName()).log(Level.SEVERE, null, ex);
                             Alert alert = new Alert(Alert.AlertType.ERROR);
