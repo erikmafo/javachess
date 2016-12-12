@@ -84,16 +84,13 @@ public abstract class AbstractMove implements Move {
 
         AbstractMove that = (AbstractMove) o;
 
-        if (!moveReceiver.equals(that.moveReceiver)) return false;
         if (from != that.from) return false;
         return to == that.to;
-
     }
 
     @Override
     public int hashCode() {
-        int result = moveReceiver.hashCode();
-        result = 31 * result + from.hashCode();
+        int result = from.hashCode();
         result = 31 * result + to.hashCode();
         return result;
     }
