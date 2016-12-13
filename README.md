@@ -3,6 +3,8 @@ Simple chess engine written in Java
 
 ## Build instruction
 
+Install maven: http://maven.apache.org/install.html
+
 To build the application run:
 
 ```
