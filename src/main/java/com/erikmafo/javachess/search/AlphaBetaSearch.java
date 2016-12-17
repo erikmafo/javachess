@@ -20,8 +20,11 @@ public class AlphaBetaSearch implements MoveSearch {
     private final TranspositionTable transpositionTable;
 
     public AlphaBetaSearch() {
-        this(new MoveGeneratorFactory().newInstance(MoveGenerationStrategy.ALL_PSEUDO_LEGAL_MOVES, new MoveFactory()),
-                new TranspositionTable());
+        this(getDefaultMoveGenerator(), new TranspositionTable());
+    }
+
+    private static MoveGenerator getDefaultMoveGenerator() {
+        return new MoveGeneratorFactory().newInstance(MoveGenerationStrategy.ALL_PSEUDO_LEGAL_MOVES, new MoveFactory());
     }
 
     public AlphaBetaSearch(MoveGenerator moveGenerator, TranspositionTable transpositionTable) {
