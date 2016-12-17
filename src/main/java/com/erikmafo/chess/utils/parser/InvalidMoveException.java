@@ -1,4 +1,4 @@
-package com.erikmafo.chess.parser;
+package com.erikmafo.chess.utils.parser;
 
 /**
  * Created by erikmafo on 04.12.16.

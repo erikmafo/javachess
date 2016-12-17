@@ -2,8 +2,8 @@ package com.erikmafo.chess.uci;
 
 
 import com.erikmafo.chess.board.Board;
-import com.erikmafo.chess.parser.FenParseException;
-import com.erikmafo.chess.parser.FenParser;
+import com.erikmafo.chess.utils.parser.FenParseException;
+import com.erikmafo.chess.utils.parser.FenParser;
 import com.erikmafo.chess.search.SearchExecutor;
 
 import java.util.concurrent.CompletableFuture;

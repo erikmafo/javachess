@@ -1,6 +1,6 @@
 package com.erikmafo.chess.uci;
 
-import com.erikmafo.chess.parser.FenParseException;
+import com.erikmafo.chess.utils.parser.FenParseException;
 
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;

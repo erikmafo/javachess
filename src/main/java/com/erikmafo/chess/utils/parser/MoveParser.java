@@ -1,4 +1,4 @@
-package com.erikmafo.chess.parser;
+package com.erikmafo.chess.utils.parser;
 
 
 import com.erikmafo.chess.board.Board;
