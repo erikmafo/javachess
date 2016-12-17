@@ -80,7 +80,7 @@ public abstract class AbstractMove implements Move {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof AbstractMove)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         AbstractMove that = (AbstractMove) o;
 
