@@ -25,6 +25,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.time.Clock;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -313,7 +314,7 @@ public class ChessApplication extends Application {
 
                 playMove(move);
 
-                calculateComputerMoveTask = new Task() {
+                calculateComputerMoveTask = new Task<Move>() {
                     @Override
                     protected Move call() throws Exception {
 
@@ -324,19 +325,16 @@ public class ChessApplication extends Application {
                                 .addFunction(new PositionalEvaluation())
                                 .build();
 
+                        IterativeDeepening iterativeDeepening =
+                                new IterativeDeepening(board, new AlphaBetaSearch(), evaluation, Clock.systemUTC());
+
                         SearchResult result = null;
                         try {
-                            result = new AlphaBetaSearch().execute(board, evaluation, 6);
+                            result = iterativeDeepening.execute(7, 10, TimeUnit.SECONDS);
                         } catch (RuntimeException ex) {
                             Logger.getLogger(ChessApplication.class.getName()).log(Level.SEVERE, null, ex);
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Error");
-                            alert.setHeaderText("Unfortunately the application has crashed");
-                            alert.setContentText(ex.getMessage());
-                            alert.setOnCloseRequest(e -> terminate());
-                            alert.showAndWait();
+                            throw ex;
                         }
-
                         return result.getBestMove();
                     }
                 };
@@ -345,6 +343,15 @@ public class ChessApplication extends Application {
                 calculateComputerMoveTask.setOnSucceeded(successEvent -> {
                     Move computerMove = (Move) successEvent.getSource().getValue();
                     playMove(computerMove);
+                });
+
+
+                calculateComputerMoveTask.setOnFailed(ev -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Unfortunately the application has crashed");
+                    alert.setOnCloseRequest(e -> terminate());
+                    alert.showAndWait();
                 });
 
                 executorService.submit(calculateComputerMoveTask);

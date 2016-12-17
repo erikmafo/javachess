@@ -18,23 +18,25 @@ public class IterativeDeepening {
 
     private final Board board;
     private final MoveSearch moveSearch;
+    private final BoardToIntFunction evaluation;
     private final Clock clock;
 
 
-    public IterativeDeepening(Board board, MoveSearch moveSearch, Clock clock) {
+    public IterativeDeepening(Board board, MoveSearch moveSearch, BoardToIntFunction evaluation, Clock clock) {
         this.board = board;
         this.moveSearch = moveSearch;
+        this.evaluation = evaluation;
         this.clock = clock;
     }
 
 
-    public SearchResult execute(BoardToIntFunction evaluation, long duration, TimeUnit timeUnit) {
+    public SearchResult execute(int maxDepth, long duration, TimeUnit timeUnit) {
 
         Instant start = clock.instant();
 
         SearchResult searchResult = moveSearch.execute(board, evaluation, 1);
 
-        for (int i = 2; i < 1000; i++) {
+        for (int i = 2; i <= maxDepth; i++) {
 
             if (Duration.between(start, clock.instant()).toMillis() > timeUnit.toMillis(duration)) {
                 break;
