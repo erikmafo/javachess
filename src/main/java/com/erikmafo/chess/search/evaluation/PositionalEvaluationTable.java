@@ -1,7 +1,7 @@
 package com.erikmafo.chess.search.evaluation;
 
 import com.erikmafo.chess.board.Square;
-import com.erikmafo.chess.pieces.Piece;
+import com.erikmafo.chess.piece.Piece;
 
 /**
  * Created by erikf on 12/17/2016.

@@ -6,9 +6,9 @@ import com.erikmafo.chess.board.KnightOffset;
 import com.erikmafo.chess.board.Square;
 import com.erikmafo.chess.movegenerator.BoardSeeker;
 import com.erikmafo.chess.movegenerator.MobilityCount;
-import com.erikmafo.chess.pieces.Piece;
-import com.erikmafo.chess.pieces.PieceColor;
-import com.erikmafo.chess.pieces.PieceType;
+import com.erikmafo.chess.piece.Piece;
+import com.erikmafo.chess.piece.PieceColor;
+import com.erikmafo.chess.piece.PieceType;
 
 import java.util.Iterator;
 

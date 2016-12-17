@@ -5,7 +5,7 @@ import com.erikmafo.chess.board.Offset;
 import com.erikmafo.chess.board.BasicOffset;
 import com.erikmafo.chess.move.Move;
 import com.erikmafo.chess.move.MoveFactory;
-import com.erikmafo.chess.pieces.PieceType;
+import com.erikmafo.chess.piece.PieceType;
 
 import java.util.ArrayList;
 import java.util.List;

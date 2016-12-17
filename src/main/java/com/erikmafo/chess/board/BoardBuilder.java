@@ -1,8 +1,8 @@
 package com.erikmafo.chess.board;
 
 import com.erikmafo.chess.movegenerator.MoveGeneratorFactory;
-import com.erikmafo.chess.pieces.Piece;
-import com.erikmafo.chess.pieces.PieceColor;
+import com.erikmafo.chess.piece.Piece;
+import com.erikmafo.chess.piece.PieceColor;
 
 import java.util.HashMap;
 import java.util.Map;

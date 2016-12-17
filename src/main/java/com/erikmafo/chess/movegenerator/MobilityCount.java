@@ -1,6 +1,6 @@
 package com.erikmafo.chess.movegenerator;
 
-import com.erikmafo.chess.pieces.PieceColor;
+import com.erikmafo.chess.piece.PieceColor;
 
 /**
  * Created by erikmafo on 11.12.16.

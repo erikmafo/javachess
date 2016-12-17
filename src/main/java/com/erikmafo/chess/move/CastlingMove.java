@@ -2,7 +2,7 @@ package com.erikmafo.chess.move;
 
 import com.erikmafo.chess.board.MoveReceiver;
 import com.erikmafo.chess.board.Square;
-import com.erikmafo.chess.pieces.PieceColor;
+import com.erikmafo.chess.piece.PieceColor;
 
 /**
  * Created by erikmafo on 19.11.16.

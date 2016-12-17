@@ -2,7 +2,7 @@ package com.erikmafo.chess.move;
 
 import com.erikmafo.chess.board.MoveReceiver;
 import com.erikmafo.chess.board.Square;
-import com.erikmafo.chess.pieces.Piece;
+import com.erikmafo.chess.piece.Piece;
 import org.junit.Test;
 import org.mockito.InOrder;
 

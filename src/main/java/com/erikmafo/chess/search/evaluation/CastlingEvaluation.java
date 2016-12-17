@@ -1,7 +1,7 @@
 package com.erikmafo.chess.search.evaluation;
 
 import com.erikmafo.chess.board.Board;
-import com.erikmafo.chess.pieces.PieceColor;
+import com.erikmafo.chess.piece.PieceColor;
 
 /**
  * Created by erikmafo on 04.12.16.

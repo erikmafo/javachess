@@ -1,4 +1,4 @@
-package com.erikmafo.chess.pieces;
+package com.erikmafo.chess.piece;
 
 
 public enum PieceColor {

@@ -6,7 +6,7 @@ import com.erikmafo.chess.board.Square;
 import com.erikmafo.chess.board.Offset;
 import com.erikmafo.chess.move.Move;
 import com.erikmafo.chess.move.MoveFactory;
-import com.erikmafo.chess.pieces.PieceColor;
+import com.erikmafo.chess.piece.PieceColor;
 import org.junit.Before;
 import org.junit.Test;
 

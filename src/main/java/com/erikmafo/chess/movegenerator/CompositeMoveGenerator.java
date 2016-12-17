@@ -3,9 +3,9 @@ package com.erikmafo.chess.movegenerator;
 import com.erikmafo.chess.board.Board;
 import com.erikmafo.chess.board.Square;
 import com.erikmafo.chess.move.Move;
-import com.erikmafo.chess.pieces.Piece;
-import com.erikmafo.chess.pieces.PieceColor;
-import com.erikmafo.chess.pieces.PieceType;
+import com.erikmafo.chess.piece.Piece;
+import com.erikmafo.chess.piece.PieceColor;
+import com.erikmafo.chess.piece.PieceType;
 
 import java.util.*;
 

@@ -1,7 +1,7 @@
 package com.erikmafo.chess.ui;
 
-import com.erikmafo.chess.pieces.PieceColor;
-import com.erikmafo.chess.pieces.PieceType;
+import com.erikmafo.chess.piece.PieceColor;
+import com.erikmafo.chess.piece.PieceType;
 import javafx.scene.image.ImageView;
 
 /**

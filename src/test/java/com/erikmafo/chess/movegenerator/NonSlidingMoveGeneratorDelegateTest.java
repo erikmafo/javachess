@@ -3,7 +3,7 @@ package com.erikmafo.chess.movegenerator;
 import com.erikmafo.chess.board.*;
 import com.erikmafo.chess.move.Move;
 import com.erikmafo.chess.move.MoveFactory;
-import com.erikmafo.chess.pieces.PieceColor;
+import com.erikmafo.chess.piece.PieceColor;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Before;

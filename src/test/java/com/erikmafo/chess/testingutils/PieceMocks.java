@@ -1,8 +1,8 @@
 package com.erikmafo.chess.testingutils;
 
-import com.erikmafo.chess.pieces.Piece;
-import com.erikmafo.chess.pieces.PieceColor;
-import com.erikmafo.chess.pieces.PieceType;
+import com.erikmafo.chess.piece.Piece;
+import com.erikmafo.chess.piece.PieceColor;
+import com.erikmafo.chess.piece.PieceType;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
