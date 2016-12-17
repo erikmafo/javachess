@@ -1,4 +1,4 @@
-package com.erikmafo.javachess.search;
+package com.erikmafo.javachess.search.transposition;
 
 import com.erikmafo.javachess.move.Move;
 

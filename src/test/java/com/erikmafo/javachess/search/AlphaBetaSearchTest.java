@@ -5,6 +5,7 @@ import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.movegenerator.MoveGenerator;
 import com.erikmafo.javachess.pieces.PieceColor;
 import com.erikmafo.javachess.search.evaluation.BoardToIntFunction;
+import com.erikmafo.javachess.search.transposition.TranspositionTable;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Before;

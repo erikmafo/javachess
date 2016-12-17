@@ -7,6 +7,8 @@ import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
 import com.erikmafo.javachess.movegenerator.MoveGenerator;
 import com.erikmafo.javachess.movegenerator.MoveGeneratorFactory;
 import com.erikmafo.javachess.search.evaluation.BoardToIntFunction;
+import com.erikmafo.javachess.search.transposition.Transposition;
+import com.erikmafo.javachess.search.transposition.TranspositionTable;
 
 import java.util.Arrays;
 import java.util.List;

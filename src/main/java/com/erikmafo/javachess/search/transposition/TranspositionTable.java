@@ -1,4 +1,4 @@
-package com.erikmafo.javachess.search;
+package com.erikmafo.javachess.search.transposition;
 
 /**
  * Created by erikf on 12/11/2016.

@@ -1,5 +1,8 @@
-package com.erikmafo.javachess.search;
+package com.erikmafo.javachess.search.transposition;
 
+import com.erikmafo.javachess.search.transposition.HashFunction;
+import com.erikmafo.javachess.search.transposition.Transposition;
+import com.erikmafo.javachess.search.transposition.TranspositionTable;
 import org.junit.Before;
 import org.junit.Test;
 

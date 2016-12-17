@@ -1,4 +1,4 @@
-package com.erikmafo.javachess.search;
+package com.erikmafo.javachess.search.transposition;
 
 class HashFunction {
     private final int size;
