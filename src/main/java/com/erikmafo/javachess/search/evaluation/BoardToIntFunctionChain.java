@@ -1,4 +1,4 @@
-package com.erikmafo.javachess.search;
+package com.erikmafo.javachess.search.evaluation;
 
 import com.erikmafo.javachess.board.Board;
 
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by erikmafo on 04.12.16.
  */
-public class BoardToIntFunctionChain implements BoardToIntFunction{
+public class BoardToIntFunctionChain implements BoardToIntFunction {
 
 
     private final List<BoardToIntFunction> functions;

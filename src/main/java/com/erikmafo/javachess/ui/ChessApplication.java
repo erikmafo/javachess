@@ -4,13 +4,13 @@ import com.erikmafo.javachess.board.Board;
 import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.move.Move;
 import com.erikmafo.javachess.move.Moves;
-import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
 import com.erikmafo.javachess.pieces.PieceType;
 import com.erikmafo.javachess.search.*;
 import com.erikmafo.javachess.parser.FenParseException;
 import com.erikmafo.javachess.parser.FenParser;
+import com.erikmafo.javachess.search.evaluation.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -25,9 +25,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.time.Clock;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -322,7 +320,8 @@ public class ChessApplication extends Application {
                         BoardToIntFunction evaluation = new BoardToIntFunctionChain.Builder()
                                 .addFunction(new MaterialBoardEvaluation())
                                 .addFunction(new CastlingEvaluation())
-                                .addFunction(new MobilityEvaluation())
+                                //.addFunction(new MobilityEvaluation())
+                                .addFunction(new PositionalEvaluation())
                                 .build();
 
                         SearchResult result = null;

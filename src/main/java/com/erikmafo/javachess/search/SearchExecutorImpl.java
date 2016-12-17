@@ -1,6 +1,7 @@
 package com.erikmafo.javachess.search;
 
 import com.erikmafo.javachess.board.Board;
+import com.erikmafo.javachess.search.evaluation.BoardToIntFunction;
 
 import java.util.concurrent.*;
 

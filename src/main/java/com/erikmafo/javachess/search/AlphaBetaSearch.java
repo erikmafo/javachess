@@ -6,9 +6,9 @@ import com.erikmafo.javachess.move.MoveFactory;
 import com.erikmafo.javachess.movegenerator.MoveGenerationStrategy;
 import com.erikmafo.javachess.movegenerator.MoveGenerator;
 import com.erikmafo.javachess.movegenerator.MoveGeneratorFactory;
+import com.erikmafo.javachess.search.evaluation.BoardToIntFunction;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class AlphaBetaSearch implements MoveSearch {

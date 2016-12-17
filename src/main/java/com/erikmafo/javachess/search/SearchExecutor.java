@@ -1,8 +1,8 @@
 package com.erikmafo.javachess.search;
 
 import com.erikmafo.javachess.board.Board;
+import com.erikmafo.javachess.search.evaluation.BoardToIntFunction;
 
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 

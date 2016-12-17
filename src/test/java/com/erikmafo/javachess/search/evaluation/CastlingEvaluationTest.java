@@ -1,7 +1,8 @@
-package com.erikmafo.javachess.search;
+package com.erikmafo.javachess.search.evaluation;
 
 import com.erikmafo.javachess.board.Board;
 import com.erikmafo.javachess.pieces.PieceColor;
+import com.erikmafo.javachess.search.evaluation.CastlingEvaluation;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;

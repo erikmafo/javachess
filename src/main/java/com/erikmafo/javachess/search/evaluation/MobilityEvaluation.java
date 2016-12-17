@@ -1,4 +1,4 @@
-package com.erikmafo.javachess.search;
+package com.erikmafo.javachess.search.evaluation;
 
 import com.erikmafo.javachess.board.BasicOffset;
 import com.erikmafo.javachess.board.Board;

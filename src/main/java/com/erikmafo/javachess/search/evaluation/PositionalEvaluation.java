@@ -4,7 +4,6 @@ import com.erikmafo.javachess.board.Board;
 import com.erikmafo.javachess.board.Square;
 import com.erikmafo.javachess.pieces.Piece;
 import com.erikmafo.javachess.pieces.PieceColor;
-import com.erikmafo.javachess.search.BoardToIntFunction;
 
 import java.util.Iterator;
 
