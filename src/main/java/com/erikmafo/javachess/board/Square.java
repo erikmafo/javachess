@@ -27,12 +27,14 @@ public enum Square {
     private final int x88Value;
     private final int rank;
     private final int file;
+    private final int index64;
 
 
     Square(int x88Value) {
         this.x88Value = x88Value;
         this.rank = x88Value / 16;
         this.file = x88Value % 16;
+        this.index64 = 8 * rank + file;
     }
 
     public boolean hasNext(Offset direction) {
@@ -50,6 +52,8 @@ public enum Square {
     public int getX88Value() {
         return x88Value;
     }
+
+    public int getIndex64() { return index64; }
 
     public int getRank() {
         return rank;

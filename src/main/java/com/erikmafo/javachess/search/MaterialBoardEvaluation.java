@@ -14,12 +14,12 @@ import java.util.Map;
  */
 public final class MaterialBoardEvaluation implements BoardToIntFunction {
 
-    public static final int DEFAULT_PAWN_VALUE = 10;
-    public static final int DEFAULT_BISHOP_VALUE = 30;
-    public static final int DEFAULT_KNIGHT_VALUE = 28;
-    public static final int DEFAULT_ROOK_VALUE = 50;
-    public static final int DEFAULT_QUEEN_VALUE = 90;
-    public static final int DEFAULT_KING_VALUE = 10000;
+    public static final int DEFAULT_PAWN_VALUE = 100;
+    public static final int DEFAULT_BISHOP_VALUE = 300;
+    public static final int DEFAULT_KNIGHT_VALUE = 288;
+    public static final int DEFAULT_ROOK_VALUE = 500;
+    public static final int DEFAULT_QUEEN_VALUE = 900;
+    public static final int DEFAULT_KING_VALUE = 100000;
 
 
     private final int pawnValue;
