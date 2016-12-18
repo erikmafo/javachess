@@ -5,6 +5,7 @@ import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
@@ -42,7 +43,10 @@ public class SquareTest {
                 new Object[]{Square.E4, BasicOffset.RIGHT, Square.F4},
                 new Object[]{Square.E4, BasicOffset.DOWN_LEFT, Square.D3},
                 new Object[]{Square.E4, BasicOffset.DOWN, Square.E3},
-                new Object[]{Square.E4, BasicOffset.DOWN_RIGHT, Square.F3}
+                new Object[]{Square.E4, BasicOffset.DOWN_RIGHT, Square.F3},
+                new Object[]{Square.A1, BasicOffset.LEFT, Square.OFF_BOARD},
+                new Object[]{Square.A1, KnightOffset.KNIGHT_LEAP_2DOWN_LEFT, Square.OFF_BOARD},
+                new Object[]{Square.A1, KnightOffset.KNIGHT_LEAP_UP_2LEFT, Square.OFF_BOARD}
         };
     }
 
@@ -54,6 +58,15 @@ public class SquareTest {
         assertThat(square.next(offset), is(expected));
 
     }
+
+
+    @Test
+    public void shouldReturnOffBoardIfSlideToFar() {
+        Square square = Square.A1;
+        Square dest = square.next(BasicOffset.LEFT, 7);
+        assertThat(dest, is(Square.OFF_BOARD));
+    }
+
 
     @Test
     public void isBetween() throws Exception {
@@ -67,6 +80,28 @@ public class SquareTest {
         assertThat(result, is(false));
 
     }
+
+
+
+    private Object[] getIndex64Fixtures() {
+        return new Object[] {
+                new Object[] {Square.A1, 0},
+                new Object[] {Square.H1, 7},
+                new Object[] {Square.A8, 56},
+                new Object[] {Square.H8, 63}
+        };
+    }
+
+
+    @Test
+    @Parameters(method = "getIndex64Fixtures")
+    public void shouldSetCorrectIndex64(Square square, int expectedIndex64) {
+        assertThat(square.getIndex64(), is(expectedIndex64));
+    }
+
+
+
+
 
 
 }

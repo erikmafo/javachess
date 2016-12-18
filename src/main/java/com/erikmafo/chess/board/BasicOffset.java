@@ -1,6 +1,10 @@
 package com.erikmafo.chess.board;
 
-
+/**
+ * Contains all slideable {@link Offset}'s .
+ *
+ * @author Erik Folstad
+ */
 public enum BasicOffset implements Offset {
 
     UP(16),

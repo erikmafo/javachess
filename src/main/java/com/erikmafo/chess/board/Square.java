@@ -1,6 +1,10 @@
 package com.erikmafo.chess.board;
 
-
+/**
+ * Represents a chess square.
+ *
+ * @author Erik Folstad
+ */
 public enum Square {
 
     OFF_BOARD(-1),
@@ -37,8 +41,14 @@ public enum Square {
         this.index64 = 8 * rank + file;
     }
 
-    public boolean hasNext(Offset direction) {
-        return ((x88Value + direction.getValue()) & 0x88) == 0;
+    /**
+     * Returns whether there exists a square that results from applying the specified offset.
+     *
+     * @param offset
+     * @return a boolean
+     */
+    public boolean hasNext(Offset offset) {
+        return ((x88Value + offset.getValue()) & 0x88) == 0;
     }
 
     private int next(int x88sq, int x88Offset) {
@@ -49,20 +59,48 @@ public enum Square {
         return next;
     }
 
+    /**
+     * Gets the 0x88 representation of this board.
+     *
+     * @return an integer between 0 and 119
+     */
     public int getX88Value() {
         return x88Value;
     }
 
+    /**
+     * @return an integer between 0 and 63
+     */
     public int getIndex64() { return index64; }
 
+    /**
+     * Gets the rank index of this square.
+     *
+     * @return an integer between 0 and 7
+     */
     public int getRank() {
         return rank;
     }
 
+    /**
+     * Gets the file index of this square
+     *
+     * @return an integer between 0 and 7
+     */
     public int getFile() {
         return file;
     }
 
+    /**
+     * Returns whether this square is between two specified.
+     *
+     * This is true if and only if a queen is able to slide between
+     * these squares and would have to pass this square on the way.
+     *
+     * @param from a square
+     * @param to a square
+     * @return a boolean
+     */
     public boolean isBetween(Square from, Square to) {
         if (this == from || this == to) {
             return false;
@@ -106,21 +144,24 @@ public enum Square {
 
 
     /**
-     * Returns the unique <code>Square</code> that results from applying the specified {@link BasicOffset} to
-     * the current square.
+     * Returns the unique <code>Square</code> that results from applying the specified {@link Offset} to
+     * this square.
      *
-     * @param offset
-     * @return a square, or <code>OFF_BOARD</code>
+     * @param offset the offset to be applied
+     * @return a square, or <literal>OFF_BOARD</literal>
      */
     public Square next(Offset offset) {
         return next(offset, 1);
     }
 
     /**
+     * Applies the offset a specified number of times to this square.
+     * <br/>
+     * If the second argument is negative the offset is applied in the opposite direction.
      *
-     * @param offset
-     * @param times - an integer between 0 and 7
-     * @return
+     * @param offset the offset to apply to this square
+     * @param times  an integer between -7 and 7
+     * @return the square that results from applying an offset a given number of times, or <literal>OFF_BOARD</literal>
      */
     public Square next(Offset offset, int times) {
         int newIndex;
@@ -131,7 +172,11 @@ public enum Square {
     }
 
 
-
+    /**
+     * Returns whether this is a valid square.
+     *
+     * @return true if this square is not equal to <code>OFF_BOARD</code> and false otherwise
+     */
     public boolean isOnBoard() {
         return this != OFF_BOARD;
     }
