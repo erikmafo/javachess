@@ -51,6 +51,8 @@ public class PositionalEvaluationTable {
                 score = getKingScore(square, gamePhase);
                 break;
             case ROOK:
+                score = getRookScore(piece, square);
+                break;
             case QUEEN:
                 score = 0;
                 break;
@@ -59,6 +61,21 @@ public class PositionalEvaluationTable {
         }
 
 
+        return score;
+    }
+
+    private int getRookScore(Piece piece, Square square) {
+        int score;
+        switch (piece.getColor()) {
+            case BLACK:
+                score = blackRookTable[square.getIndex64()];
+                break;
+            case WHITE:
+                score = whiteRookTable[square.getIndex64()];
+                break;
+            default:
+                throw new AssertionError();
+        }
         return score;
     }
 
@@ -144,6 +161,45 @@ public class PositionalEvaluationTable {
                     -20,-10,-40,-10,-10,-40,-10,-20,
             };
 
+
+    private static short[] whiteRookTable = new short[]
+            {
+                    0,  0,  0,  0,  0,  0,  0,  0,
+                    5, 10, 10, 10, 10, 10, 10,  5,
+                    -5,  0,  0,  0,  0,  0,  0, -5,
+                    -5,  0,  0,  0,  0,  0,  0, -5,
+                    -5,  0,  0,  0,  0,  0,  0, -5,
+                    -5,  0,  0,  0,  0,  0,  0, -5,
+                    -5,  0,  0,  0,  0,  0,  0, -5,
+                    0,  0,  0,  5,  5,  0,  0,  0
+            };
+
+
+    private static short[] blackRookTable = new short[]
+            {
+                    0,  0,  0,  5,  5,  0,  0,  0,
+                    -5,  0,  0,  0,  0,  0,  0, -5,
+                    -5,  0,  0,  0,  0,  0,  0, -5,
+                    -5,  0,  0,  0,  0,  0,  0, -5,
+                    -5,  0,  0,  0,  0,  0,  0, -5,
+                    -5,  0,  0,  0,  0,  0,  0, -5,
+                    5, 10, 10, 10, 10, 10, 10,  5,
+                    0,  0,  0,  0,  0,  0,  0,  0
+
+            };
+
+    private static short[] queenTable = new short[]
+            {
+                    -20,-10,-10, -5, -5,-10,-10,-20,
+                    -10,  0,  0,  0,  0,  0,  0,-10,
+                    -10,  0,  5,  5,  5,  5,  0,-10,
+                    -5,  0,  5,  5,  5,  5,  0, -5,
+                     0,  0,  5,  5,  5,  5,  0, -5,
+                    -10,  5,  5,  5,  5,  5,  0,-10,
+                    -10,  0,  5,  0,  0,  0,  0,-10,
+                    -20,-10,-10, -5, -5,-10,-10,-20
+            };
+
     private static short[] kingTable = new short[]
             {
                     -30, -40, -40, -50, -50, -40, -40, -30,
@@ -167,6 +223,11 @@ public class PositionalEvaluationTable {
                     -30,-30,  0,  0,  0,  0,-30,-30,
                     -50,-30,-30,-30,-30,-30,-30,-50
             };
+
+
+
+
+
 
 
 }
