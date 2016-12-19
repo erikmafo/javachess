@@ -38,14 +38,14 @@ public enum Square {
         this.x88Value = x88Value;
         this.rank = x88Value / 16;
         this.file = x88Value % 16;
-        this.index64 = 8 * rank + file;
+        this.index64 = (8 * rank) + file;
     }
 
     /**
      * Returns whether there exists a square that results from applying the specified offset.
      *
-     * @param offset
-     * @return a boolean
+     * @param offset the offset to apply
+     * @return true if there is a square at the specified offset from this square, or false otherwise
      */
     public boolean hasNext(Offset offset) {
         return ((x88Value + offset.getValue()) & 0x88) == 0;
@@ -92,14 +92,14 @@ public enum Square {
     }
 
     /**
-     * Returns whether this square is between two specified.
+     * Returns whether this square is between the two specified squares.
      *
-     * This is true if and only if a queen is able to slide between
-     * these squares and would have to pass this square on the way.
+     * This is true if and only if a queen could slide from the first square then to this square and and then to the
+     * second square in one move on an empty board.
      *
      * @param from a square
      * @param to a square
-     * @return a boolean
+     * @return true if this square lies between the two specified squares, or false otherwise.
      */
     public boolean isBetween(Square from, Square to) {
         if (this == from || this == to) {
