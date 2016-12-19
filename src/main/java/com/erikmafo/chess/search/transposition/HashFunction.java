@@ -1,6 +1,8 @@
 package com.erikmafo.chess.search.transposition;
 
-class HashFunction {
+import java.util.function.LongToIntFunction;
+
+class HashFunction implements LongToIntFunction {
     private final int size;
 
     public HashFunction(int size) {
@@ -18,7 +20,7 @@ class HashFunction {
      * @param key any long value
      * @return a non-negative integer
      */
-    public int map(long key) {
+    public int applyAsInt(long key) {
         return (int) (mod(key, size));
     }
 

@@ -23,14 +23,14 @@ public class TranspositionTable {
     }
 
     public void store(Transposition transposition) {
-        transpositions[hashFunction.map(transposition.getKey())] = transposition;
+        transpositions[hashFunction.applyAsInt(transposition.getKey())] = transposition;
     }
 
 
     public Transposition retrieve(long key) {
 
 
-        Transposition transposition = transpositions[hashFunction.map(key)];
+        Transposition transposition = transpositions[hashFunction.applyAsInt(key)];
 
         if (transposition != null && transposition.getKey() != key) {
             return null;

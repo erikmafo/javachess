@@ -46,9 +46,9 @@ public class TranspositionTableTest {
 
         when(transposition.getKey()).thenReturn(key);
 
-        when(hashFunction.map(key)).thenReturn(0);
+        when(hashFunction.applyAsInt(key)).thenReturn(0);
 
-        when(hashFunction.map(otherKey)).thenReturn(0);
+        when(hashFunction.applyAsInt(otherKey)).thenReturn(0);
 
         assertThat(transpositionTable.retrieve(otherKey), is(nullValue()));
     }
