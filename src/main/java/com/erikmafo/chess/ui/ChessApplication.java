@@ -330,7 +330,7 @@ public class ChessApplication extends Application {
 
                         SearchResult result = null;
                         try {
-                            result = iterativeDeepening.execute(7, 10, TimeUnit.SECONDS);
+                            result = iterativeDeepening.execute(6, 10, TimeUnit.SECONDS);
                         } catch (RuntimeException ex) {
                             Logger.getLogger(ChessApplication.class.getName()).log(Level.SEVERE, null, ex);
                             throw ex;
