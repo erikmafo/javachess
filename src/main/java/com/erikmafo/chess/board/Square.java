@@ -1,5 +1,8 @@
 package com.erikmafo.chess.board;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Represents a chess square.
  *
@@ -51,6 +54,7 @@ public enum Square {
         return ((x88Value + offset.getValue()) & 0x88) == 0;
     }
 
+    @Contract(pure = true)
     private int next(int x88sq, int x88Offset) {
         int next = x88sq + x88Offset;
         if ((next & 0x88) != 0) {
@@ -101,6 +105,7 @@ public enum Square {
      * @param to a square
      * @return true if this square lies between the two specified squares, or false otherwise.
      */
+    @Contract(pure = true)
     public boolean isBetween(Square from, Square to) {
         if (this == from || this == to) {
             return false;
@@ -135,6 +140,7 @@ public enum Square {
      * @return - a board coordinate
      * @throws IllegalArgumentException if the fileIndex or rankIndex is out of range
      */
+    @NotNull
     public static Square valueOf(int fileIndex, int rankIndex) {
         if (rankIndex < 0 || rankIndex > 7 || fileIndex < 0 || fileIndex > 7) {
             throw new IllegalArgumentException();
@@ -150,6 +156,7 @@ public enum Square {
      * @param offset the offset to be applied
      * @return a square, or <literal>OFF_BOARD</literal>
      */
+    @NotNull
     public Square next(Offset offset) {
         return next(offset, 1);
     }
@@ -163,6 +170,7 @@ public enum Square {
      * @param times  an integer between -7 and 7
      * @return the square that results from applying an offset a given number of times, or <literal>OFF_BOARD</literal>
      */
+    @NotNull
     public Square next(Offset offset, int times) {
         int newIndex;
         if ((newIndex = next(x88Value, times * offset.getValue())) > -1) {
@@ -177,6 +185,7 @@ public enum Square {
      *
      * @return true if this square is not equal to <code>OFF_BOARD</code> and false otherwise
      */
+    @Contract(pure = true)
     public boolean isOnBoard() {
         return this != OFF_BOARD;
     }

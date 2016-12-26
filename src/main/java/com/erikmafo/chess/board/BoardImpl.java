@@ -4,6 +4,7 @@ import com.erikmafo.chess.movegenerator.MoveGeneratorFactory;
 import com.erikmafo.chess.piece.Piece;
 import com.erikmafo.chess.piece.PieceColor;
 import com.erikmafo.chess.piece.PieceType;
+import org.jetbrains.annotations.Contract;
 
 import java.util.*;
 
@@ -149,6 +150,7 @@ public class BoardImpl implements Board {
     }
 
 
+    @Contract(pure = true)
     private int getCastlingSquareIndex(Square castlingSquare) {
 
         if (castlingSquare == null) {

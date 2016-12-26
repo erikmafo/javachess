@@ -1,5 +1,7 @@
 package com.erikmafo.chess.search.transposition;
 
+import org.jetbrains.annotations.Contract;
+
 import java.util.function.LongToIntFunction;
 
 class HashFunction implements LongToIntFunction {
@@ -9,6 +11,8 @@ class HashFunction implements LongToIntFunction {
         this.size = size;
     }
 
+
+    @Contract(pure = true)
     private long mod(long a, int b) {
         long c = a % b;
         return (c < 0) ? c + b : c;

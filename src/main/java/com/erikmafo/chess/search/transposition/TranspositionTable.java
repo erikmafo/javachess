@@ -1,5 +1,7 @@
 package com.erikmafo.chess.search.transposition;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Created by erikf on 12/11/2016.
  */
@@ -27,6 +29,7 @@ public class TranspositionTable {
     }
 
 
+    @Nullable
     public Transposition retrieve(long key) {
 
 
