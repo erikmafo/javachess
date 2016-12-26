@@ -87,7 +87,7 @@ public class ChessApplication extends Application {
         for (String colorName : pieceColorNames) {
             for (String pieceTypeName : pieceTypeNames) {
 
-                String imageFile = "/" + colorName + pieceTypeName + ".png";
+                String imageFile = "/com/erikmafo/chess/piece/" + colorName + pieceTypeName + ".png";
                 Image image = new Image(getClass().getResourceAsStream(imageFile));
                 PieceColor color = PieceColor.valueOf(colorName.toUpperCase());
                 PieceType pieceType = PieceType.valueOf(pieceTypeName.toUpperCase());
