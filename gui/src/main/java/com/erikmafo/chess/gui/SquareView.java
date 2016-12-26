@@ -1,4 +1,4 @@
-package com.erikmafo.chess.ui;
+package com.erikmafo.chess.gui;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;

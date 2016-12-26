@@ -1,4 +1,4 @@
-package com.erikmafo.chess.ui;
+package com.erikmafo.chess.gui;
 
 import com.erikmafo.chess.board.Board;
 import com.erikmafo.chess.board.Square;

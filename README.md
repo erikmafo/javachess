@@ -5,13 +5,13 @@ Simple chess engine written in Java
 
 Install maven: http://maven.apache.org/install.html
 
-To build the application run:
+To build the project cd to the root directory and run:
 
 ```
-mvn package
+mvn install
 ```
 then to start the GUI:
 
 ```
-java -jar target/javachess-1.0-SNAPSHOT.jar
+java -jar gui/target/gui-1.0-SNAPSHOT.jar
 ```
