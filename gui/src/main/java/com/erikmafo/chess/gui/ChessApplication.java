@@ -82,12 +82,12 @@ public class ChessApplication extends Application {
         pieceImages.put(PieceColor.WHITE, new HashMap<>());
 
         String[] pieceColorNames = {"black", "white"};
-        String[] pieceTypeNames = {"Pawn", "Bishop", "Knight", "Rook", "Queen", "King"};
+        String[] pieceTypeNames = {"pawn", "bishop", "knight", "rook", "queen", "king"};
 
         for (String colorName : pieceColorNames) {
             for (String pieceTypeName : pieceTypeNames) {
 
-                String imageFile = "/com/erikmafo/chess/piece/" + colorName + pieceTypeName + ".png";
+                String imageFile = "/com/erikmafo/chess/piece/" + colorName + "_" + pieceTypeName + ".png";
                 Image image = new Image(getClass().getResourceAsStream(imageFile));
                 PieceColor color = PieceColor.valueOf(colorName.toUpperCase());
                 PieceType pieceType = PieceType.valueOf(pieceTypeName.toUpperCase());
