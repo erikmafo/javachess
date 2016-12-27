@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Button?>
+
+
+<?import com.erikmafo.chess.gui.view.ChessboardView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import com.erikmafo.chess.gui.view.ChessboardView?>
+<?import javafx.scene.layout.Pane?>
+<BorderPane minWidth="800" minHeight="500" fx:id="root" stylesheets="/css/main.css" xmlns:fx="http://javafx.com/fxml" fx:controller="com.erikmafo.chess.gui.controller.Controller">
+
+    <top>
+        <Text styleClass="title" text="Simple chess player" BorderPane.alignment="CENTER"/>
+    </top>
+
+    <left>
+
+        <Pane prefHeight="30" prefWidth="30"/>
+
+    </left>
+
+
+    <center>
+        <AnchorPane styleClass="anchor-pane">
+            <ChessboardView fx:id="chessboard"
+                            onSquarePressed="#handleSquarePressed"
+                            onSquareClicked="#handleSquareClicked"
+                            prefWidth="300"
+                            prefHeight="300"/>
+        </AnchorPane>
+    </center>
+
+
+    <right>
+
+        <HBox prefWidth="100">
+
+            <ListView fx:id="whiteMoveHistory">
+                <items>
+
+                </items>
+
+            </ListView>
+
+            <ListView fx:id="blackMoveHistory">
+                <items>
+
+                </items>
+            </ListView>
+
+        </HBox>
+
+    </right>
+
+
+    <bottom>
+        <HBox BorderPane.alignment="BOTTOM_RIGHT">
+            <Button text="Undo" onAction="#handleUndoPressed"/>
+            <Button text="Restart" onAction="#handleRestartPressed"/>
+        </HBox>
+    </bottom>
+
+
+</BorderPane>

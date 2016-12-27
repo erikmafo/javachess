@@ -1,0 +1,30 @@
+
+.root {
+    -fx-font-family: Papyrus;
+    -fx-textAlignment: center;
+    -fx-alignment: center;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+}
+
+
+
+.title {
+
+    -fx-font-size: 40;
+
+}
+
+
+.black-square {
+    -fx-fill: BLACK;
+}
+
+.white-square {
+    -fx-fill: GREY;
+}
+
+.square:hover {
+    -fx-fill: RED;
+}
+
