@@ -6,8 +6,13 @@ import com.erikmafo.chess.move.Move;
 import com.erikmafo.chess.move.MoveFactory;
 import com.erikmafo.chess.piece.Piece;
 import com.erikmafo.chess.piece.PieceColor;
+import com.erikmafo.chess.piece.PieceType;
+import com.erikmafo.chess.testingutils.PieceMocks;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,9 +26,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by erikmafo on 20.11.16.
- */
+
+@RunWith(JUnitParamsRunner.class)
 public class PawnMoveGeneratorDelegateTest {
 
 
@@ -43,12 +47,13 @@ public class PawnMoveGeneratorDelegateTest {
     }
 
     @Test
-    public void findEnPassentMoveWhenEnPassentTargetIsSet() throws Exception {
+    @Parameters({
+            "WHITE, B5, A6, A5",
+            "BLACK, B4, A3, A4"
+    })
+    public void findEnPassentMoveWhenEnPassentTargetIsSet(
+            PieceColor colorToMove, Square from, Square enPassentTarget, Square capturePieceSquare) throws Exception {
 
-        PieceColor colorToMove = PieceColor.WHITE;
-        Square from = Square.B5;
-        Square enPassentTarget = Square.A6;
-        Square capturePieceSquare = Square.A5;
         when(board.enPassentTarget()).thenReturn(Optional.ofNullable(enPassentTarget));
 
         when(board.getColorToMove()).thenReturn(colorToMove);
@@ -66,7 +71,7 @@ public class PawnMoveGeneratorDelegateTest {
 
 
     @Test
-    public void onlyFindEnPasssentMoveFromValidRank() throws Exception {
+    public void shouldOnlyFindEnPasssentMoveFromValidRank() throws Exception {
 
         PieceColor colorToMove = PieceColor.WHITE;
         Square from = Square.B2;
@@ -89,14 +94,12 @@ public class PawnMoveGeneratorDelegateTest {
     }
 
     @Test
-    public void findPawnPushMoves() throws Exception {
+    @Parameters({
+            "WHITE, E2, E3, E4",
+            "BLACK, E7, E6, E5"})
+    public void shouldFindDoublePawnPushFromInitialSquare(PieceColor colorToMove, Square from, Square oneUp, Square twoUp) throws Exception {
 
-        PieceColor colorToMove = PieceColor.WHITE;
         when(board.getColorToMove()).thenReturn(colorToMove);
-        Square from = Square.E2;
-
-        Square oneUp = Square.E3;
-        Square twoUp = Square.E4;
 
         Move singlePush = mock(Move.class, "" + from + oneUp);
         Move doublePush = mock(Move.class, "" + from + twoUp);
@@ -109,7 +112,28 @@ public class PawnMoveGeneratorDelegateTest {
         assertThat(moves, is(Arrays.asList(singlePush, doublePush)));
     }
 
+    @Test
+    @Parameters({
+            "WHITE, E3, D4",
+            "WHITE, E3, F4",
+            "BLACK, E6, D5",
+            "BLACK, E6, F5"
+    })
+    public void shouldFindWhitePawnAttackMoves(
+            PieceColor pawnColor, Square from, Square opponentSquare) throws Exception {
 
+        Piece pawn = PieceMocks.newPieceMock(pawnColor, PieceType.PAWN);
+        Piece opponent = PieceMocks.newPieceMock(pawnColor.getOpposite(), PieceType.BISHOP);
 
+        when(board.getColorToMove()).thenReturn(pawnColor);
+        when(board.getNullablePiece(from)).thenReturn(pawn);
+        when(board.getNullablePiece(opponentSquare)).thenReturn(opponent);
 
+        Move attackMove = mock(Move.class, "pawn attack move");
+        when(moveFactory.newCaptureMove(board, from, opponentSquare, opponent)).thenReturn(attackMove);
+
+        List<Move> moves = pawnMoveGeneratorDelegate.generateMoves(board, from);
+
+        assertThat(moves, hasItem(attackMove));
+    }
 }

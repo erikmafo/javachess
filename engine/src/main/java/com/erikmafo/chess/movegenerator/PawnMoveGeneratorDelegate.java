@@ -55,7 +55,7 @@ public class PawnMoveGeneratorDelegate implements MoveGeneratorDelegate {
     }
 
     private int getSecondRank(PieceColor color) {
-        return color.isWhite() ? 1 : 7;
+        return color.isWhite() ? 1 : 6;
     }
 
     private int getEnPassentRank(PieceColor color) {return color.isWhite() ? 4 : 3; }
@@ -71,12 +71,12 @@ public class PawnMoveGeneratorDelegate implements MoveGeneratorDelegate {
 
             Square target = from.next(offset);
 
-            Optional<Piece> piece = board.pieceAt(target);
+            Piece piece = board.getNullablePiece(target);
 
             PieceColor opponent = pawnColor.getOpposite();
 
-            if (piece.filter(p -> p.getColor().equals(opponent)).isPresent()) {
-                moves.add(moveFactory.newCaptureMove(board, from, target, piece.get()));
+            if (piece != null && piece.getColor().equals(opponent)) {
+                moves.add(moveFactory.newCaptureMove(board, from, target, piece));
             }
         }
 
