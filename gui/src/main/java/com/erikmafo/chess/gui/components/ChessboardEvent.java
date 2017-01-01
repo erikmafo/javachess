@@ -1,4 +1,4 @@
-package com.erikmafo.chess.gui.view;
+package com.erikmafo.chess.gui.components;
 
 import javafx.beans.NamedArg;
 import javafx.event.Event;
@@ -18,22 +18,23 @@ public class ChessboardEvent extends Event {
     public static final EventType<ChessboardEvent> SQUARE_CLICKED = new EventType<>(ANY, "SQUARE_CLICKED");
     public static final EventType<ChessboardEvent> PIECE_CLICKED = new EventType<>(ANY, "PIECE_CLICKED");
 
-    public static final EventType<ChessboardEvent> PIECE_RELEASED = new EventType<>(ANY, "PIECE_RELEASED");
-
 
     private final int file;
     private final int rank;
+    private final BoardLocation boardLocation;
 
-    public ChessboardEvent(@NamedArg("eventType") EventType<? extends Event> eventType, int file, int rank) {
+    public ChessboardEvent(@NamedArg("eventType") EventType<? extends Event> eventType, BoardLocation boardLocation) {
         super(eventType);
-        this.file = file;
-        this.rank = rank;
+        this.file = boardLocation.getFile();
+        this.rank = boardLocation.getRank();
+        this.boardLocation = boardLocation;
     }
 
-    public ChessboardEvent(@NamedArg("source") Object source, @NamedArg("target") EventTarget target, @NamedArg("eventType") EventType<? extends Event> eventType, int file, int rank) {
+    public ChessboardEvent(@NamedArg("source") Object source, @NamedArg("target") EventTarget target, @NamedArg("eventType") EventType<? extends Event> eventType, BoardLocation boardLocation) {
         super(source, target, eventType);
-        this.file = file;
-        this.rank = rank;
+        this.file = boardLocation.getFile();
+        this.rank = boardLocation.getRank();
+        this.boardLocation = boardLocation;
     }
 
     public int getFile() {
@@ -43,4 +44,10 @@ public class ChessboardEvent extends Event {
     public int getRank() {
         return rank;
     }
+
+    public BoardLocation getBoardLocation() {
+        return boardLocation;
+    }
+
+
 }

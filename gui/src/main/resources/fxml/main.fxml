@@ -7,11 +7,10 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Button?>
 
-
-<?import com.erikmafo.chess.gui.view.ChessboardView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import com.erikmafo.chess.gui.view.ChessboardView?>
+<?import com.erikmafo.chess.gui.components.Chessboard?>
 <?import javafx.scene.layout.Pane?>
+
 <BorderPane minWidth="800" minHeight="500" fx:id="root" stylesheets="/css/main.css" xmlns:fx="http://javafx.com/fxml" fx:controller="com.erikmafo.chess.gui.controller.Controller">
 
     <top>
@@ -27,11 +26,13 @@
 
     <center>
         <AnchorPane styleClass="anchor-pane">
-            <ChessboardView fx:id="chessboard"
-                            onSquarePressed="#handleSquarePressed"
-                            onSquareClicked="#handleSquareClicked"
-                            prefWidth="300"
-                            prefHeight="300"/>
+            <Chessboard fx:id="chessboard"
+                        onSquarePressed="#handleSquarePressed"
+                        onSquareClicked="#handleSquareClicked"
+                        onPieceClicked="#handlePieceClicked"
+                        onPieceDropped="#handlePieceDropped"
+                        prefWidth="300"
+                        prefHeight="300"/>
         </AnchorPane>
     </center>
 
