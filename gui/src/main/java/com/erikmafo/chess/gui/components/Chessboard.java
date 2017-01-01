@@ -283,7 +283,7 @@ public class Chessboard extends Pane {
                 mouseEvent -> {
                     // remember initial mouse cursor coordinates
                     // and node position
-                    if (piece.isIsDraggable()) {
+                    if (piece.isDraggable()) {
                         dragContext.mouseAnchorX = mouseEvent.getX();
                         dragContext.mouseAnchorY = mouseEvent.getY();
                         dragContext.initialTranslateX = piece.getTranslateX();
@@ -299,7 +299,7 @@ public class Chessboard extends Pane {
         wrapGroup.addEventFilter(
                 MouseEvent.MOUSE_DRAGGED,
                 mouseEvent -> {
-                    if (piece.isIsDraggable()) {
+                    if (piece.isDraggable()) {
                         // shift node from its initial position by delta
                         // calculated from mouse cursor movement
                         piece.setTranslateX(
@@ -317,7 +317,7 @@ public class Chessboard extends Pane {
                 MouseEvent.MOUSE_RELEASED,
                 event -> {
 
-                    if (piece.isIsDraggable()) {
+                    if (piece.isDraggable()) {
                         int file = getFileIndex(event.getX());
                         int rank = getRankIndex(event.getY());
 

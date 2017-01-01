@@ -55,7 +55,7 @@ public class PieceImageView extends ImageView {
         return new Image(getClass().getResourceAsStream("/images/pieces/" + color + "_" + pieceType + ".png"));
     }
 
-    public boolean isIsDraggable() {
+    public boolean isDraggable() {
         return isDraggable.get();
     }
 

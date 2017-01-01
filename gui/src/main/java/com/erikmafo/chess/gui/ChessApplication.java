@@ -99,6 +99,7 @@ public class ChessApplication extends Application {
 
 
     public static void main(String[] args) {
+
         Application.launch(ChessApplication.class);
     }
 
