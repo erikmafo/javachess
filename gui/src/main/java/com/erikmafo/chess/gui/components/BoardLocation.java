@@ -34,4 +34,18 @@ public class BoardLocation {
         result = 31 * result + rank;
         return result;
     }
+
+
+    private final char[] files = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+
+    public String getName() {
+        return "" + files[file] + (rank +1);
+    }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
+
 }

@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -107,23 +109,11 @@ public class Chessboard extends Pane {
 
 
     private DoubleBinding rankCoordinate(int rank) {
-        return layoutYProperty().add(squareSizeProperty.multiply(7 - rank));
+        return content.layoutYProperty().add(squareSizeProperty.multiply(7 - rank));
     }
 
     private DoubleBinding fileCoordinate(int file) {
-        return layoutXProperty().add(squareSizeProperty.multiply(file));
-    }
-
-    private Rectangle getSquare(int file, int rank) {
-        String id = "(" + file + "," + rank + ")";
-        Rectangle square = null;
-        for (Node node : getChildren()) {
-            if (id.equals(node.getId())) {
-                square = (Rectangle) node;
-                break;
-            }
-        }
-        return square;
+        return content.layoutXProperty().add(squareSizeProperty.multiply(file));
     }
 
 
@@ -195,52 +185,53 @@ public class Chessboard extends Pane {
 
 
     public void relocate(BoardLocation from, BoardLocation to) {
-        pieceImageViewMap.put(to, pieceImageViewMap.get(from));
+
+        if (pieceImageViewMap.containsKey(from)) {
+            PieceImageView piece = pieceImageViewMap.get(from);
+            piece.layoutXProperty().bind(fileCoordinate(to.getFile()));
+            piece.layoutYProperty().bind(rankCoordinate(to.getRank()));
+            pieceImageViewMap.put(to, piece);
+        }
+
+
     }
 
     public void put(BoardLocation boardLocation, PieceImageView pieceImageView) {
+
+        PieceImageView current = pieceImageViewMap.get(boardLocation);
+
+        assert pieceImageView != null;
+
+        if (current != null) {
+            if (current.isSamePiece(pieceImageView)) {
+                return;
+            }
+            remove(boardLocation);
+        }
+
         pieceImageViewMap.put(boardLocation, pieceImageView);
         content.getChildren().add(makeDraggable(pieceImageView));
         pieceImageView.layoutXProperty().bind(fileCoordinate(boardLocation.getFile()));
         pieceImageView.layoutYProperty().bind(rankCoordinate(boardLocation.getRank()));
         pieceImageView.fitHeightProperty().bind(squareSizeProperty);
         pieceImageView.fitWidthProperty().bind(squareSizeProperty);
-        pieceImageView.isDraggableProperty().bind(
-                Bindings.equal(colorToMoveProperty, pieceImageView.colorProperty()));
+        pieceImageView.isDraggableProperty().bind(Bindings.equal(colorToMoveProperty, pieceImageView.colorProperty()));
     }
 
 
     public boolean remove(BoardLocation boardLocation) {
 
-        pieceImageViewMap.remove(boardLocation);
+        Node piece = pieceImageViewMap.remove(boardLocation);
 
-        Optional<Node> optional = getPieceWrapper(boardLocation);
+        boolean removed = false;
 
-        boolean res = false;
-
-        if (optional.isPresent()) {
-            res = content.getChildren().remove(optional.get());
+        if (piece != null) {
+            content.getChildren().remove(piece.getParent());
+            removed = true;
         }
 
-        return res;
+        return removed;
     }
-
-    private Optional<Node> getPieceWrapper(BoardLocation boardLocation) {
-        double x = getX(boardLocation.getFile());
-        double y = getY(boardLocation.getRank());
-
-        double delta = squareSizeProperty.get() / 2;
-        return content.getChildren().stream().filter(node ->
-                    "PieceWrapper".equals(node.getId()) &&
-                            approxEquals(x, node.getLayoutX(), delta) &&
-                            approxEquals(y, node.getLayoutY(), delta)).findFirst();
-    }
-
-
-    private boolean approxEquals(double d1, double d2, double delta) {
-        return Math.abs(d1 - d2) < delta;
-    }
-
 
     private double getX(int file) {
         return getSquareSize() * file;
@@ -263,7 +254,6 @@ public class Chessboard extends Pane {
     private Node makeDraggable(final PieceImageView piece) {
         final DragContext dragContext = new DragContext();
         final Group wrapGroup = new Group(piece);
-        wrapGroup.setId("PieceWrapper");
 
         wrapGroup.addEventFilter(
                 MouseEvent.ANY,
@@ -328,9 +318,7 @@ public class Chessboard extends Pane {
                         pieceDroppedHandler.handle(chessboardEvent);
 
                         if (chessboardEvent.isPieceDropAccepted()) {
-                            relocate(chessboardEvent.getInitialLocation(), chessboardEvent.getBoardLocation());
-                            piece.layoutXProperty().bind(fileCoordinate(file));
-                            piece.layoutYProperty().bind(rankCoordinate(rank));
+                            relocate(chessboardEvent.getInitialLocation(), chessboardEvent.getDropLocation());
                         }
 
                         piece.setTranslateX(0);

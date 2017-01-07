@@ -10,9 +10,7 @@
 
 
 .title {
-
-    -fx-font-size: 40;
-
+    -fx-font-size: 20;
 }
 
 
@@ -24,7 +22,4 @@
     -fx-fill: GREY;
 }
 
-.square:hover {
-    -fx-fill: RED;
-}
 

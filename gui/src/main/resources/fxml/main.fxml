@@ -4,18 +4,24 @@
 <?import javafx.scene.text.Text?>
 
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Button?>
 
 <?import javafx.scene.layout.AnchorPane?>
 <?import com.erikmafo.chess.gui.components.Chessboard?>
 <?import javafx.scene.layout.Pane?>
 
-<?import com.erikmafo.chess.gui.components.GameBoard?>
-<BorderPane minWidth="800" minHeight="500" fx:id="root" stylesheets="/css/main.css" xmlns:fx="http://javafx.com/fxml" fx:controller="com.erikmafo.chess.gui.controller.MainController">
+<BorderPane
+        minWidth="800"
+        minHeight="600"
+        fx:id="root"
+        stylesheets="/css/main.css"
+        xmlns:fx="http://javafx.com/fxml"
+        fx:controller="com.erikmafo.chess.gui.controller.Controller">
 
     <top>
-        <Text styleClass="title" text="Simple chess player" BorderPane.alignment="CENTER"/>
+        <Text styleClass="title"
+              text="Chess App"
+              BorderPane.alignment="CENTER"/>
     </top>
 
     <left>
@@ -27,32 +33,18 @@
 
     <center>
         <AnchorPane styleClass="anchor-pane">
-            <GameBoard fx:id="gameBoard"
-                        prefWidth="300"
-                        prefHeight="300"/>
+            <Chessboard fx:id="chessboard"
+                        prefWidth="400"
+                        prefHeight="400"
+                        onSquareClicked="#handleSquareClicked"
+                        onPieceClicked="#handlePieceClicked"
+                        onPieceDropped="#handlePieceDropped"
+            />
         </AnchorPane>
     </center>
 
 
     <right>
-
-        <HBox prefWidth="100">
-
-            <ListView fx:id="whiteMoveHistory">
-                <items>
-
-                </items>
-
-            </ListView>
-
-            <ListView fx:id="blackMoveHistory">
-                <items>
-
-                </items>
-            </ListView>
-
-        </HBox>
-
     </right>
 
 

@@ -21,20 +21,20 @@ public class ChessboardEvent extends Event {
 
     private final int file;
     private final int rank;
-    private final BoardLocation boardLocation;
+    private final BoardLocation location;
 
-    public ChessboardEvent(@NamedArg("eventType") EventType<? extends Event> eventType, BoardLocation boardLocation) {
+    public ChessboardEvent(@NamedArg("eventType") EventType<? extends Event> eventType, BoardLocation location) {
         super(eventType);
-        this.file = boardLocation.getFile();
-        this.rank = boardLocation.getRank();
-        this.boardLocation = boardLocation;
+        this.file = location.getFile();
+        this.rank = location.getRank();
+        this.location = location;
     }
 
-    public ChessboardEvent(@NamedArg("source") Object source, @NamedArg("target") EventTarget target, @NamedArg("eventType") EventType<? extends Event> eventType, BoardLocation boardLocation) {
+    public ChessboardEvent(@NamedArg("source") Object source, @NamedArg("target") EventTarget target, @NamedArg("eventType") EventType<? extends Event> eventType, BoardLocation location) {
         super(source, target, eventType);
-        this.file = boardLocation.getFile();
-        this.rank = boardLocation.getRank();
-        this.boardLocation = boardLocation;
+        this.file = location.getFile();
+        this.rank = location.getRank();
+        this.location = location;
     }
 
     public int getFile() {
@@ -45,8 +45,8 @@ public class ChessboardEvent extends Event {
         return rank;
     }
 
-    public BoardLocation getBoardLocation() {
-        return boardLocation;
+    public BoardLocation getLocation() {
+        return location;
     }
 
 

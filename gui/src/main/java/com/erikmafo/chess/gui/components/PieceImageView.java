@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  * Created by erikmafo on 27.12.16.
@@ -20,8 +21,6 @@ public class PieceImageView extends ImageView {
 
     private final StringProperty color;
     private final String pieceType;
-
-
 
     private final BooleanProperty isDraggable = new SimpleBooleanProperty();
 
@@ -77,5 +76,10 @@ public class PieceImageView extends ImageView {
 
     public String getPieceType() {
         return pieceType;
+    }
+
+
+    public boolean isSamePiece(PieceImageView other) {
+        return Objects.equals(color, other.color) && Objects.equals(color, other.color);
     }
 }
