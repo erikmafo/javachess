@@ -12,8 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -21,7 +19,6 @@ import javafx.scene.shape.Rectangle;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Created by erikmafo on 26.12.16.
@@ -36,7 +33,6 @@ public class Chessboard extends Pane {
     @FXML
     private Pane content;
 
-    private EventHandler<ChessboardEvent> squarePressedHandler;
     private EventHandler<ChessboardEvent> squareClickedHandler;
     private EventHandler<ChessboardEvent> pieceClickedHandler;
     private EventHandler<PieceDroppedEvent> pieceDroppedHandler;
@@ -63,12 +59,8 @@ public class Chessboard extends Pane {
 
         generateSquares();
 
-        content.setOnMousePressed(event -> {
-            fireEvent(newChessboardEvent(ChessboardEvent.SQUARE_PRESSED, event));
-        });
-
         content.setOnMouseClicked(event -> {
-            fireEvent(newChessboardEvent(ChessboardEvent.SQUARE_CLICKED, event));
+            squareClickedHandler.handle(newChessboardEvent(ChessboardEvent.SQUARE_CLICKED, event));
         });
 
 
@@ -127,24 +119,11 @@ public class Chessboard extends Pane {
 
     public void setOnSquareClicked(EventHandler<ChessboardEvent> onSquareClicked) {
         this.squareClickedHandler = onSquareClicked;
-        setEventHandler(ChessboardEvent.SQUARE_CLICKED, onSquareClicked);
-    }
-
-
-    public EventHandler<ChessboardEvent> getOnSquarePressed() {
-        return squarePressedHandler;
-    }
-
-    public void setOnSquarePressed(EventHandler<ChessboardEvent> onSquarePressed) {
-        this.squarePressedHandler = onSquarePressed;
-        setEventHandler(ChessboardEvent.SQUARE_PRESSED, onSquarePressed);
     }
 
 
     public void setOnPieceClicked(EventHandler<ChessboardEvent> onPieceClicked) {
         this.pieceClickedHandler = onPieceClicked;
-        setEventHandler(ChessboardEvent.PIECE_CLICKED, onPieceClicked);
-
     }
 
     public EventHandler<ChessboardEvent> getOnPieceClicked() {
@@ -232,15 +211,6 @@ public class Chessboard extends Pane {
 
         return removed;
     }
-
-    private double getX(int file) {
-        return getSquareSize() * file;
-    }
-
-    private double getY(int rank) {
-        return getSquareSize() * (7 - rank);
-    }
-
 
     private int getFileIndex(double x) {
         return (int) (x / getSquareSize());
