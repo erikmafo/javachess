@@ -8,29 +8,23 @@ import com.erikmafo.chess.gui.model.EngineSearchResult;
 import com.erikmafo.chess.piece.Piece;
 import com.erikmafo.chess.piece.PieceColor;
 import com.erikmafo.chess.utils.parser.FenParseException;
-import com.erikmafo.chess.utils.parser.FenParser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import org.jetbrains.annotations.NotNull;
 
-import java.net.URL;
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.concurrent.Executors;
 
 /**
  * Created by erikmafo on 27.12.16.
  */
-public class Controller implements Initializable {
-
-    public static final String START_FEN = "START_FEN";
+public class Controller {
 
     @FXML
     private ListView<String> turnHistory;
@@ -43,8 +37,12 @@ public class Controller implements Initializable {
 
     private BoardLocation clickedPieceLocation;
 
+    @Inject
     private ChessEngine engine;
-    private String startFen;
+
+    @Inject
+    private String startPositionFen;
+
     private final List<ChessMove> moveList = new ArrayList<>();
 
     private String playerColor = "white";
@@ -82,14 +80,13 @@ public class Controller implements Initializable {
         update();
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+
+    /**
+     * Called by the fxml loader on startup
+     */
+    public void initialize() {
 
         turnHistory.setItems(turnHistoryItems);
-
-        startFen = resources.getString(START_FEN);
-
-        engine = new ChessEngine(new FenParser(), Executors.newSingleThreadExecutor());
 
         update();
     }
@@ -174,9 +171,9 @@ public class Controller implements Initializable {
 
     private void update() {
         try {
-            engine.setPosition(startFen, moveList);
+            engine.setPosition(startPositionFen, moveList);
         } catch (FenParseException e) {
-            e.printStackTrace(); // should not happen since startFen is always valid
+            e.printStackTrace(); // should not happen since startPositionFen is always valid
         }
         updateChessboard();
     }

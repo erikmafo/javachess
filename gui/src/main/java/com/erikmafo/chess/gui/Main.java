@@ -1,17 +1,17 @@
 package com.erikmafo.chess.gui;
 
 import com.erikmafo.chess.gui.controller.Controller;
+import com.erikmafo.chess.gui.model.ChessEngine;
+import com.erikmafo.chess.gui.utils.FXControllerFactory;
 import com.erikmafo.chess.utils.parser.FenParser;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.JavaFXBuilderFactory;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.jetbrains.annotations.NotNull;
 
-import java.net.URL;
 import java.util.*;
+import java.util.concurrent.Executors;
 
 /**
  * Created by erikmafo on 27.12.16.
@@ -25,7 +25,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
 
         fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
-        fxmlLoader.setResources(getResources());
+        fxmlLoader.setControllerFactory(new FXControllerFactory(getContext()));
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));
@@ -33,10 +33,17 @@ public class Main extends Application {
     }
 
 
-    private ResourceBundle getResources() {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put(Controller.START_FEN, FenParser.START_POSITION);
-        return new SimpleResourceBundle(properties);
+    private Map<String, Object> getContext() {
+
+        Map<String, Object> context = new HashMap<>();
+
+        FenParser fenParser = new FenParser();
+        ChessEngine chessEngine = new ChessEngine(fenParser, Executors.newSingleThreadExecutor());
+
+        context.put("engine", chessEngine);
+        context.put("startPositionFen", FenParser.START_POSITION);
+
+        return context;
     }
 
 
