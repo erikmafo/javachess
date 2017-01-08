@@ -18,14 +18,13 @@ import java.util.concurrent.Executors;
  */
 public class Main extends Application {
 
-
-    private FXMLLoader fxmlLoader;
+    private FXControllerFactory fxControllerFactory = new FXControllerFactory(getContext());
 
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
-        fxmlLoader.setControllerFactory(new FXControllerFactory(getContext()));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
+        fxmlLoader.setControllerFactory(fxControllerFactory);
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));
@@ -49,9 +48,7 @@ public class Main extends Application {
 
     @Override
     public void stop() {
-
-        ((Controller) fxmlLoader.getController()).shutdown();
-
+        fxControllerFactory.destroy();
     }
 
 

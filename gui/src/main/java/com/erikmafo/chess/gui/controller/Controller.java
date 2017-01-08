@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +93,7 @@ public class Controller {
     }
 
 
+    @PreDestroy
     public void shutdown() {
         engine.shutdown();
     }
