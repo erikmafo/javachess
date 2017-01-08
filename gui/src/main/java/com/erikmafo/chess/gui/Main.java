@@ -1,8 +1,7 @@
 package com.erikmafo.chess.gui;
 
-import com.erikmafo.chess.gui.controller.Controller;
 import com.erikmafo.chess.gui.model.ChessEngine;
-import com.erikmafo.chess.gui.utils.FXControllerFactory;
+import com.erikmafo.chess.gui.utils.FXFactory;
 import com.erikmafo.chess.utils.parser.FenParser;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,13 +17,12 @@ import java.util.concurrent.Executors;
  */
 public class Main extends Application {
 
-    private FXControllerFactory fxControllerFactory = new FXControllerFactory(getContext());
+    private FXFactory fxFactory = new FXFactory(getContext());
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
-        fxmlLoader.setControllerFactory(fxControllerFactory);
+        fxmlLoader.setControllerFactory(fxFactory);
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));
@@ -48,7 +46,7 @@ public class Main extends Application {
 
     @Override
     public void stop() {
-        fxControllerFactory.destroy();
+        fxFactory.destroy();
     }
 
 

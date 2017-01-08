@@ -18,14 +18,14 @@ import java.util.Map;
 /**
  * Created by erikmafo on 08.01.17.
  */
-public class FXControllerFactory implements Callback<Class<?>,Object> {
+public class FXFactory implements Callback<Class<?>,Object> {
 
 
     private final Map<String, Object> context;
 
     private final List<WeakReference> instances = new ArrayList<>();
 
-    public FXControllerFactory(Map<String, Object> context) {
+    public FXFactory(Map<String, Object> context) {
         this.context = context;
     }
 
@@ -60,7 +60,8 @@ public class FXControllerFactory implements Callback<Class<?>,Object> {
 
 
     /**
-     * Invokes the no-arg method annotated with {@link PreDestroy} on all instances created by this factory.
+     * Invokes any no-arg method annotated with {@link PreDestroy} on all instances that have been
+     * created by this factory and are still alive.
      */
     public void destroy() {
 
