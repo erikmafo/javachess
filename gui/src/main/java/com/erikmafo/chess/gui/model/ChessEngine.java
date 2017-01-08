@@ -26,7 +26,6 @@ import java.util.logging.Logger;
  */
 public class ChessEngine {
 
-
     private Board board;
     private final FenParser fenParser;
     private final ExecutorService executorService;
@@ -112,7 +111,7 @@ public class ChessEngine {
 
                 SearchResult result;
                 try {
-                    result = iterativeDeepening.execute(3, 10, TimeUnit.SECONDS);
+                    result = iterativeDeepening.execute(6, 10, TimeUnit.SECONDS);
                 } catch (RuntimeException ex) {
                     Logger.getLogger(ChessEngine.class.getName()).log(Level.SEVERE, null, ex);
                     throw ex;
@@ -135,6 +134,6 @@ public class ChessEngine {
 
 
     public void shutdown() {
-        executorService.shutdown();
+        executorService.shutdownNow();
     }
 }

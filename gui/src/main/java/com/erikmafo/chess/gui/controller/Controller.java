@@ -6,12 +6,16 @@ import com.erikmafo.chess.gui.model.ChessEngine;
 import com.erikmafo.chess.gui.model.ChessMove;
 import com.erikmafo.chess.gui.model.EngineSearchResult;
 import com.erikmafo.chess.piece.Piece;
+import com.erikmafo.chess.piece.PieceColor;
 import com.erikmafo.chess.utils.parser.FenParseException;
 import com.erikmafo.chess.utils.parser.FenParser;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
@@ -26,42 +30,62 @@ import java.util.concurrent.Executors;
  */
 public class Controller implements Initializable {
 
-
     public static final String START_FEN = "START_FEN";
 
-
+    @FXML
+    private ListView<String> turnHistory;
+    @FXML
+    private ObservableList<String> turnHistoryItems = FXCollections.observableArrayList();
     @FXML
     private Chessboard chessboard;
+
+    private Task<EngineSearchResult> searchResultTask;
+
     private BoardLocation clickedPieceLocation;
 
     private ChessEngine engine;
     private String startFen;
     private final List<ChessMove> moveList = new ArrayList<>();
 
+    private String playerColor = "white";
 
-    public void handleSquarePressed(ChessboardEvent event) {
-        System.out.println("mouse pressed at (" + event.getFile()+ ", " + event.getRank() + ")");
-    }
 
     public void handleRestartPressed(ActionEvent actionEvent) {
 
+        stopCalculating();
         moveList.clear();
+        turnHistoryItems.clear();
         update();
 
     }
 
     public void handleUndoPressed(ActionEvent actionEvent) {
 
-        if (moveList.size() > 0) {
-            moveList.remove(moveList.size() - 1);
-            update();
+        stopCalculating();
+
+        if (!turnHistoryItems.isEmpty()) {
+            turnHistoryItems.remove(turnHistoryItems.size() - 1);
         }
 
+        if (playerColor.equals(chessboard.getColorToMove())) {
+            if (moveList.size() > 1) {
+                moveList.remove(moveList.size() - 1);
+                moveList.remove(moveList.size() - 1);
+            }
 
+        } else {
+            if (moveList.size() > 0) {
+                moveList.remove(moveList.size() - 1);
+            }
+        }
+
+        update();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        turnHistory.setItems(turnHistoryItems);
 
         startFen = resources.getString(START_FEN);
 
@@ -134,6 +158,17 @@ public class Controller implements Initializable {
 
     private void play(ChessMove move) {
         moveList.add(move);
+
+        String moveAsLongAlgebraic = move.toLongAlgebraic();
+
+        if (PieceColor.WHITE.equals(engine.getColorToMove())) {
+            turnHistoryItems.add(moveAsLongAlgebraic);
+        } else {
+            int index = turnHistoryItems.size() - 1;
+            String newEntry = turnHistoryItems.get(index) + " " + moveAsLongAlgebraic;
+            turnHistoryItems.set(index, newEntry);
+        }
+
         update();
     }
 
@@ -141,7 +176,7 @@ public class Controller implements Initializable {
         try {
             engine.setPosition(startFen, moveList);
         } catch (FenParseException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // should not happen since startFen is always valid
         }
         updateChessboard();
     }
@@ -160,9 +195,25 @@ public class Controller implements Initializable {
     }
 
 
+    private boolean isCalculationInProgress() {
+        return searchResultTask != null && searchResultTask.isRunning();
+    }
+
+    private void stopCalculating() {
+        if (isCalculationInProgress()) {
+            searchResultTask.cancel();
+            searchResultTask = null;
+        }
+    }
+
     private void handlePlayerMove(ChessMove playerMove) {
+
+        if (isCalculationInProgress()) {
+            return;
+        }
+
         play(playerMove);
-        Task<EngineSearchResult> searchResultTask = engine.go();
+        searchResultTask = engine.go();
         searchResultTask.setOnSucceeded(evt -> {
             EngineSearchResult result = searchResultTask.getValue();
             play(result.getBestMove());
