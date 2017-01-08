@@ -161,11 +161,11 @@ public class Chessboard extends Pane {
     }
 
 
-    public String getColorToMoveProperty() {
+    public String getColorToMove() {
         return colorToMoveProperty.get();
     }
 
-    public StringProperty colorToMovePropertyProperty() {
+    public StringProperty colorToMoveProperty() {
         return colorToMoveProperty;
     }
 
@@ -311,14 +311,16 @@ public class Chessboard extends Pane {
                         int file = getFileIndex(event.getX());
                         int rank = getRankIndex(event.getY());
 
-                        PieceDroppedEvent chessboardEvent = new PieceDroppedEvent(
-                                new BoardLocation(getFileIndex(piece.getLayoutX()), getRankIndex(piece.getLayoutY())),
-                                new BoardLocation(file, rank));
+                        if (isValidSquare(file, rank)) {
+                            PieceDroppedEvent chessboardEvent = new PieceDroppedEvent(
+                                    new BoardLocation(getFileIndex(piece.getLayoutX()), getRankIndex(piece.getLayoutY())),
+                                    new BoardLocation(file, rank));
 
-                        pieceDroppedHandler.handle(chessboardEvent);
+                            pieceDroppedHandler.handle(chessboardEvent);
 
-                        if (chessboardEvent.isPieceDropAccepted()) {
-                            relocate(chessboardEvent.getInitialLocation(), chessboardEvent.getDropLocation());
+                            if (chessboardEvent.isPieceDropAccepted()) {
+                                relocate(chessboardEvent.getInitialLocation(), chessboardEvent.getDropLocation());
+                            }
                         }
 
                         piece.setTranslateX(0);
@@ -330,6 +332,10 @@ public class Chessboard extends Pane {
 
         return wrapGroup;
 
+    }
+
+    private boolean isValidSquare(int file, int rank) {
+        return file >=0 && file <=7 && rank >= 0 && rank <= 7;
     }
 
 
