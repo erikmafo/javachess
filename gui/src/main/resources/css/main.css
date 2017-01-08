@@ -1,0 +1,25 @@
+
+.root {
+    -fx-font-family: Papyrus;
+    -fx-textAlignment: center;
+    -fx-alignment: center;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+}
+
+
+
+.title {
+    -fx-font-size: 20;
+}
+
+
+.black-square {
+    -fx-fill: #763906;
+}
+
+.white-square {
+    -fx-fill: GREY;
+}
+
+

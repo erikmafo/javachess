@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Button?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import com.erikmafo.chess.gui.components.Chessboard?>
+<?import javafx.scene.layout.Pane?>
+
+<?import javafx.scene.control.ListView?>
+<BorderPane
+        minWidth="800"
+        minHeight="600"
+        fx:id="root"
+        stylesheets="/css/main.css"
+        xmlns:fx="http://javafx.com/fxml"
+        fx:controller="com.erikmafo.chess.gui.controller.Controller">
+
+    <top>
+        <Text styleClass="title"
+              text="Chess App"
+              BorderPane.alignment="CENTER"/>
+    </top>
+
+    <left>
+
+        <Pane prefHeight="30" prefWidth="30"/>
+
+    </left>
+
+
+    <center>
+        <AnchorPane styleClass="anchor-pane">
+            <Chessboard fx:id="chessboard"
+                        prefWidth="400"
+                        prefHeight="400"
+                        onSquareClicked="#handleSquareClicked"
+                        onPieceClicked="#handlePieceClicked"
+                        onPieceDropped="#handlePieceDropped"
+            />
+        </AnchorPane>
+    </center>
+
+
+    <right>
+        <ListView fx:id="turnHistory" />
+    </right>
+
+
+    <bottom>
+        <HBox BorderPane.alignment="BOTTOM_RIGHT">
+            <Button text="Undo" onAction="#handleUndoPressed"/>
+            <Button text="Restart" onAction="#handleRestartPressed"/>
+        </HBox>
+    </bottom>
+
+
+</BorderPane>
