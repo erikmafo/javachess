@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/erikmafo/javachess.png)](https://travis-ci.org/erikmafo/javachess)
+
 # javachess
 Simple chess engine written in Java
 
