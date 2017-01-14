@@ -15,5 +15,5 @@ mvn install
 then to start the GUI:
 
 ```
-java -jar gui/target/gui-1.0-SNAPSHOT.jar
+java -jar gui/target/gui-[version].jar
 ```
