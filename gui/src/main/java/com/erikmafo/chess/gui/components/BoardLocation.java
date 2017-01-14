@@ -1,8 +1,16 @@
 package com.erikmafo.chess.gui.components;
 
+import java.util.Arrays;
+
 public class BoardLocation {
     private final int file;
     private final int rank;
+
+
+    public BoardLocation(String name) {
+        file = Arrays.binarySearch(files, name.charAt(0));
+        rank = Character.getNumericValue(name.charAt(1)) - 1;
+    }
 
     public BoardLocation(int file, int rank) {
         this.file = file;

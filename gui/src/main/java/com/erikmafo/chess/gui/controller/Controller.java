@@ -117,7 +117,7 @@ public class Controller {
             }
         }
 
-        chessboard.setColorToMoveProperty(engine.getColorToMove().toString().toLowerCase());
+        chessboard.setColorToMove(engine.getColorToMove().toString().toLowerCase());
 
     }
 

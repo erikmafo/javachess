@@ -15,8 +15,10 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +40,6 @@ public class Chessboard extends Pane {
     private EventHandler<PieceDroppedEvent> pieceDroppedHandler;
 
     public Chessboard() {
-        super();
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/chessboard.fxml"));
 
@@ -78,6 +79,9 @@ public class Chessboard extends Pane {
     }
 
 
+    private final char[] files = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+
+
     private void generateSquares() {
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
@@ -89,7 +93,7 @@ public class Chessboard extends Pane {
 
     private Rectangle createSquare(int file, int rank) {
         Rectangle square = new Rectangle();
-        square.setId("(" + file + "," + rank + ")");
+        square.setId("" + files[file] + (rank + 1));
         square.layoutXProperty().bind(fileCoordinate(file));
         square.layoutYProperty().bind(rankCoordinate(rank));
         square.widthProperty().bind(squareSizeProperty);
@@ -148,20 +152,9 @@ public class Chessboard extends Pane {
         return colorToMoveProperty;
     }
 
-    public void setColorToMoveProperty(String colorToMoveProperty) {
-        this.colorToMoveProperty.set(colorToMoveProperty);
+    public void setColorToMove(String colorToMove) {
+        this.colorToMoveProperty.set(colorToMove);
     }
-
-
-    public void toogleColorToMove() {
-        if ("white".equals(colorToMoveProperty.get())) {
-            colorToMoveProperty.set("black");
-        } else {
-            colorToMoveProperty.set("white");
-        }
-    }
-
-
 
     public void relocate(BoardLocation from, BoardLocation to) {
 
@@ -174,6 +167,25 @@ public class Chessboard extends Pane {
 
 
     }
+
+
+
+    /**
+     * Puts the piece on the square with the specified name, e.g. "e2", "a4".
+     *
+     * @param square the name of the square
+     * @param pieceImageView the piece to put on the specified square
+     */
+    public void put(String square, PieceImageView pieceImageView)  {
+
+        Node node = findSquare(square.toLowerCase());
+
+        if (node != null) {
+            put(new BoardLocation(square), pieceImageView);
+        }
+    }
+
+
 
     public void put(BoardLocation boardLocation, PieceImageView pieceImageView) {
 
@@ -195,6 +207,21 @@ public class Chessboard extends Pane {
         pieceImageView.fitHeightProperty().bind(squareSizeProperty);
         pieceImageView.fitWidthProperty().bind(squareSizeProperty);
         pieceImageView.isDraggableProperty().bind(Bindings.equal(colorToMoveProperty, pieceImageView.colorProperty()));
+
+    }
+
+
+    @Nullable
+    private Node findSquare(String square) {
+        Node node = null;
+
+        for (Node child : content.getChildren()) {
+            if (square.equals(child.getId())) {
+                node = child;
+                break;
+            }
+        }
+        return node;
     }
 
 
@@ -229,12 +256,15 @@ public class Chessboard extends Pane {
                 MouseEvent.ANY,
                 mouseEvent -> mouseEvent.consume());
 
+
         wrapGroup.addEventFilter(
                 MouseEvent.MOUSE_CLICKED,
-                event -> fireEvent(new ChessboardEvent(
-                        ChessboardEvent.PIECE_CLICKED,
-                        new BoardLocation(getFileIndex(piece.getLayoutX()), getRankIndex(piece.getLayoutY()))) )
-        );
+                event -> {
+                    pieceClickedHandler.handle(new ChessboardEvent(
+                            ChessboardEvent.PIECE_CLICKED,
+                            new BoardLocation(getFileIndex(piece.getLayoutX()), getRankIndex(piece.getLayoutY()))));
+
+                });
 
 
 
@@ -248,10 +278,6 @@ public class Chessboard extends Pane {
                         dragContext.mouseAnchorY = mouseEvent.getY();
                         dragContext.initialTranslateX = piece.getTranslateX();
                         dragContext.initialTranslateY = piece.getTranslateY();
-
-                        fireEvent(new ChessboardEvent(
-                                ChessboardEvent.PIECE_PRESSED,
-                                new BoardLocation(getFileIndex(piece.getLayoutX()), getRankIndex(piece.getLayoutY()))));
                     }
 
                 });
