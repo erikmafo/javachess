@@ -21,9 +21,8 @@ public class BoardImplTest {
 
 
     private ZobristCalculator zobristCalculator = mock(ZobristCalculator.class);
-    private MoveGeneratorFactory moveGeneratorFactory = mock(MoveGeneratorFactory.class);
 
-    private BoardImpl board = new BoardImpl(moveGeneratorFactory, zobristCalculator);
+    private BoardImpl board = new BoardImpl(zobristCalculator);
 
     private Piece piece = mock(Piece.class);
 

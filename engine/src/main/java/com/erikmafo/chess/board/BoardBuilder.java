@@ -43,7 +43,7 @@ public class BoardBuilder {
 
     public Board build() {
 
-        BoardImpl board = new BoardImpl(new MoveGeneratorFactory(), new ZobristCalculator(new Random(1)), activeColor, castlingRights);
+        BoardImpl board = new BoardImpl(new ZobristCalculator(new Random(1)), activeColor, castlingRights);
 
         for (Square square : pieceEntries.keySet()) {
             board.put(square, pieceEntries.get(square));

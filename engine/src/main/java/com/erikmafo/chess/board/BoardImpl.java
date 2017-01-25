@@ -28,8 +28,6 @@ public class BoardImpl implements Board {
 
     private final int[] castlingSquaresMoveCount = new int[6];
 
-    private final MoveGeneratorFactory moveGeneratorFactory;
-
     private final ZobristCalculator zobristCalculator;
 
     private static final int E1_INDEX = 0;
@@ -50,17 +48,14 @@ public class BoardImpl implements Board {
     private Map<PieceColor, CastlingRight> initialCastlingRight = new EnumMap<>(PieceColor.class);
 
     BoardImpl() {
-        this.moveGeneratorFactory = new MoveGeneratorFactory();
         this.zobristCalculator = new ZobristCalculator(1);
     }
 
-    public BoardImpl(MoveGeneratorFactory moveGeneratorFactory, ZobristCalculator zobristCalculator) {
-        this.moveGeneratorFactory = moveGeneratorFactory;
+    public BoardImpl(ZobristCalculator zobristCalculator) {
         this.zobristCalculator = zobristCalculator;
     }
 
-    BoardImpl(MoveGeneratorFactory moveGeneratorFactory, ZobristCalculator zobristCalculator, PieceColor colorToMove, Map<PieceColor, CastlingRight> initialCastlingRight) {
-        this.moveGeneratorFactory = moveGeneratorFactory;
+    BoardImpl(ZobristCalculator zobristCalculator, PieceColor colorToMove, Map<PieceColor, CastlingRight> initialCastlingRight) {
         this.zobristCalculator = zobristCalculator;
         this.colorToMove = colorToMove;
         this.initialCastlingRight = initialCastlingRight;
