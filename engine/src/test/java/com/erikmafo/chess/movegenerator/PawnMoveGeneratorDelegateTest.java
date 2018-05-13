@@ -123,7 +123,7 @@ public class PawnMoveGeneratorDelegateTest {
             PieceColor pawnColor, Square from, Square opponentSquare) throws Exception {
 
         Piece pawn = PieceMocks.newPieceMock(pawnColor, PieceType.PAWN);
-        Piece opponent = PieceMocks.newPieceMock(pawnColor.getOpposite(), PieceType.BISHOP);
+        Piece opponent = PieceMocks.newPieceMock(pawnColor.opponent(), PieceType.BISHOP);
 
         when(board.getColorToMove()).thenReturn(pawnColor);
         when(board.getNullablePiece(from)).thenReturn(pawn);

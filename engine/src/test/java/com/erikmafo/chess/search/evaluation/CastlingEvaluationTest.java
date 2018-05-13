@@ -44,7 +44,7 @@ public class CastlingEvaluationTest {
         when(board.getColorToMove()).thenReturn(colorToMove);
 
         when(board.hasCastled(colorToMove)).thenReturn(hasCastled);
-        when(board.hasCastled(colorToMove.getOpposite())).thenReturn(hasOpponentCastled);
+        when(board.hasCastled(colorToMove.opponent())).thenReturn(hasOpponentCastled);
 
         assertEquals(castlingEvaluation.applyAsInt(board), expectedValue);
     }

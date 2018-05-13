@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.function.LongToIntFunction;
 
-class HashFunction implements LongToIntFunction {
+public class HashFunction implements LongToIntFunction {
     private final int size;
 
     public HashFunction(int size) {

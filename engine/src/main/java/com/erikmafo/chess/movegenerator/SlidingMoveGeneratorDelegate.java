@@ -32,7 +32,7 @@ public class SlidingMoveGeneratorDelegate implements MoveGeneratorDelegate {
 
         List<Move> moves = new ArrayList<>();
 
-        PieceColor opponent = board.getColorToMove().getOpposite();
+        PieceColor opponent = board.getColorToMove().opponent();
 
         for (Offset offset : attackOffsets) {
             Square target = from.next(offset);

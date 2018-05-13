@@ -30,13 +30,13 @@ public class ChessboardTest extends ApplicationTest {
     @BeforeClass
     public static void before() {
 
-        //if (Boolean.getBoolean("headless")) {
+        if (Boolean.getBoolean("headless")) {
             System.setProperty("testfx.robot", "glass");
             System.setProperty("testfx.headless", "true");
             System.setProperty("prism.order", "sw");
             System.setProperty("prism.text", "t2k");
             System.setProperty("java.awt.headless", "true");
-        //}
+        }
 
     }
 

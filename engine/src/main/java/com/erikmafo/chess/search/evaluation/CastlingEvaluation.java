@@ -37,7 +37,7 @@ public final class CastlingEvaluation implements BoardToIntFunction {
 
         int currentColorScore = getScore(board, currentColor);
 
-        int opponentScore = getScore(board, currentColor.getOpposite());
+        int opponentScore = getScore(board, currentColor.opponent());
 
         return currentColorScore - opponentScore;
     }

@@ -61,7 +61,7 @@ public class MobilityEvaluation implements BoardToIntFunction {
 
             if (mobilityCount != null) {
                 int mod = colorToMove.equals(piece.getColor()) ? 1 : -1;
-                score += mod * (mobilityCount.getEmptySquares() + 2 * mobilityCount.getOccupiedBy(colorToMove.getOpposite()));
+                score += mod * (mobilityCount.getEmptySquares() + 2 * mobilityCount.getOccupiedBy(colorToMove.opponent()));
             }
         }
 

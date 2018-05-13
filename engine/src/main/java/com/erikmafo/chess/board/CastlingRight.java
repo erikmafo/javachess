@@ -5,7 +5,7 @@ package com.erikmafo.chess.board;
  */
 public enum CastlingRight {
     NONE,
-    SHORT,
-    LONG,
+    QUEEN_SIDE,
+    KING_SIDE,
     BOTH
 }

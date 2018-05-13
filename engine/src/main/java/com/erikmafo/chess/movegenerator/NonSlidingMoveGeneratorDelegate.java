@@ -31,7 +31,7 @@ public class NonSlidingMoveGeneratorDelegate implements MoveGeneratorDelegate {
 
     @Override
     public List<Move> generateMoves(Board board, Square from) {
-        return getMoves(board, board.getColorToMove().getOpposite(), from, includeQuietMoves);
+        return getMoves(board, board.getColorToMove().opponent(), from, includeQuietMoves);
     }
 
     private List<Move> getMoves(Board board, PieceColor opponent, Square from, boolean includeQuietMoves) {

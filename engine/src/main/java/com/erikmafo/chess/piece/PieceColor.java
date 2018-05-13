@@ -4,7 +4,7 @@ package com.erikmafo.chess.piece;
 public enum PieceColor {
     BLACK, WHITE;
 
-    public PieceColor getOpposite() {
+    public PieceColor opponent() {
         return this == WHITE ? BLACK : WHITE;
     }
 

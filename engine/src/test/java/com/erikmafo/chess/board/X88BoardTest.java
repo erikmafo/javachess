@@ -16,14 +16,10 @@ import static org.mockito.Mockito.*;
 /**
  * Created by erikmafo on 19.11.16.
  */
-public class BoardImplTest {
-
-
+public class X88BoardTest {
 
     private ZobristCalculator zobristCalculator = mock(ZobristCalculator.class);
-
-    private BoardImpl board = new BoardImpl(zobristCalculator);
-
+    private Board board = new BoardImpl(zobristCalculator);
     private Piece piece = mock(Piece.class);
 
 

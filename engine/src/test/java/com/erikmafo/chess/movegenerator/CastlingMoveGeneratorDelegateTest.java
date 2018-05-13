@@ -56,7 +56,7 @@ public class CastlingMoveGeneratorDelegateTest {
             PieceColor color, Square kingFrom, Square kingTo,
             Square rookFrom, Square rookTo) throws Exception {
 
-        PieceColor opponent = color.getOpposite();
+        PieceColor opponent = color.opponent();
 
         when(board.getColorToMove()).thenReturn(color);
         when(board.hasKingSideCastlingRight(color)).thenReturn(true);

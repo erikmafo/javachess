@@ -16,14 +16,12 @@ public class ZobristCalculator {
     private static final int NUMBER_OF_PIECE_COLORS = PieceColor.values().length;
     private static final int NUMBER_OF_CASTLING_RIGHTS = CastlingRight.values().length;
 
-
     private final long[][][] pieces = new long[NUMBER_OF_PIECE_COLORS][NUMBER_OF_PIECE_TYPES][NUMBER_OF_SQUARES];
     private final long[][] castlingRights = new long[NUMBER_OF_PIECE_COLORS][NUMBER_OF_CASTLING_RIGHTS];
     private final long[] enPassent = new long[NUMBER_OF_SQUARES];
     private final long colorToMove;
 
     private long value = 0;
-
 
     public ZobristCalculator(Random random) {
 
@@ -51,8 +49,6 @@ public class ZobristCalculator {
         this(new Random(seed));
     }
 
-
-
     public static ZobristCalculator from(Board board, Random random) {
 
         ZobristCalculator zobristCalculator = new ZobristCalculator(random);
@@ -65,9 +61,9 @@ public class ZobristCalculator {
             if (board.hasKingSideCastlingRight(color) && board.hasQueenSideCastlingRight(color)) {
                 zobristCalculator.shiftCastlingRight(color, CastlingRight.BOTH);
             } else if (board.hasKingSideCastlingRight(color)) {
-                zobristCalculator.shiftCastlingRight(color, CastlingRight.SHORT);
+                zobristCalculator.shiftCastlingRight(color, CastlingRight.QUEEN_SIDE);
             } else if (board.hasQueenSideCastlingRight(color)) {
-                zobristCalculator.shiftCastlingRight(color, CastlingRight.LONG);
+                zobristCalculator.shiftCastlingRight(color, CastlingRight.KING_SIDE);
             } else {
                 zobristCalculator.shiftCastlingRight(color, CastlingRight.NONE);
             }
@@ -104,7 +100,4 @@ public class ZobristCalculator {
     public long getValue() {
         return value;
     }
-
-
-
 }

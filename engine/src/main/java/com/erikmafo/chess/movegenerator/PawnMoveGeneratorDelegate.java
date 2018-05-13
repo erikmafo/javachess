@@ -48,8 +48,6 @@ public class PawnMoveGeneratorDelegate implements MoveGeneratorDelegate {
     }
 
 
-
-
     private int getSeventRank(PieceColor color) {
         return color.isWhite() ? 7 : 1;
     }
@@ -73,7 +71,7 @@ public class PawnMoveGeneratorDelegate implements MoveGeneratorDelegate {
 
             Piece piece = board.getNullablePiece(target);
 
-            PieceColor opponent = pawnColor.getOpposite();
+            PieceColor opponent = pawnColor.opponent();
 
             if (piece != null && piece.getColor().equals(opponent)) {
                 moves.add(moveFactory.newCaptureMove(board, from, target, piece));

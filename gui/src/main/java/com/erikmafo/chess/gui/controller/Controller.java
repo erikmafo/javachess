@@ -2,6 +2,7 @@ package com.erikmafo.chess.gui.controller;
 
 import com.erikmafo.chess.board.Square;
 import com.erikmafo.chess.gui.components.*;
+import com.erikmafo.chess.gui.model.BoardLocation;
 import com.erikmafo.chess.gui.model.ChessEngine;
 import com.erikmafo.chess.gui.model.ChessMove;
 import com.erikmafo.chess.gui.model.EngineSearchResult;
@@ -29,8 +30,10 @@ public class Controller {
 
     @FXML
     private ListView<String> turnHistory;
+
     @FXML
     private ObservableList<String> turnHistoryItems = FXCollections.observableArrayList();
+
     @FXML
     private Chessboard chessboard;
 
@@ -47,7 +50,6 @@ public class Controller {
     private final List<ChessMove> moveList = new ArrayList<>();
 
     private String playerColor = "white";
-
 
     public void handleRestartPressed(ActionEvent actionEvent) {
 
@@ -81,7 +83,6 @@ public class Controller {
         update();
     }
 
-
     /**
      * Called by the fxml loader on startup
      */
@@ -92,12 +93,10 @@ public class Controller {
         update();
     }
 
-
     @PreDestroy
     public void shutdown() {
         engine.shutdown();
     }
-
 
     private void updateChessboard() {
 
@@ -120,9 +119,6 @@ public class Controller {
         chessboard.setColorToMove(engine.getColorToMove().toString().toLowerCase());
 
     }
-
-
-
 
     @NotNull
     private BoardLocation toBoardLocation(Square square) {
@@ -150,9 +146,7 @@ public class Controller {
             if (engine.isLegal(chessMove)) {
                 handlePlayerMove(chessMove);
             }
-
         }
-
     }
 
     private void play(ChessMove move) {
@@ -193,7 +187,6 @@ public class Controller {
 
     }
 
-
     private boolean isCalculationInProgress() {
         return searchResultTask != null && searchResultTask.isRunning();
     }
@@ -218,10 +211,4 @@ public class Controller {
             play(result.getBestMove());
         });
     }
-
-
-
-
-
-
 }

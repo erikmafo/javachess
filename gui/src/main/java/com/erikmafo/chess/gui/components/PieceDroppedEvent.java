@@ -1,5 +1,6 @@
 package com.erikmafo.chess.gui.components;
 
+import com.erikmafo.chess.gui.model.BoardLocation;
 import javafx.beans.NamedArg;
 import javafx.event.Event;
 import javafx.event.EventType;

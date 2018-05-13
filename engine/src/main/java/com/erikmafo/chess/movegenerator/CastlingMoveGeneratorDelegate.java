@@ -69,7 +69,7 @@ public class CastlingMoveGeneratorDelegate implements MoveGeneratorDelegate {
 
     private boolean isChecked(Board board, PieceColor color) {
 
-        return boardSeeker.isAttackedBy(color.getOpposite(), board.getKingLocation(color), board);
+        return boardSeeker.isAttackedBy(color.opponent(), board.getKingLocation(color), board);
 
     }
 
@@ -85,8 +85,8 @@ public class CastlingMoveGeneratorDelegate implements MoveGeneratorDelegate {
             }
         }
 
-        return !(boardSeeker.isAttackedBy(color.getOpposite(), getKingSideCastlingSquares(color)[0], board) ||
-                boardSeeker.isAttackedBy(color.getOpposite(), getKingSideCastlingSquares(color)[1], board));
+        return !(boardSeeker.isAttackedBy(color.opponent(), getKingSideCastlingSquares(color)[0], board) ||
+                boardSeeker.isAttackedBy(color.opponent(), getKingSideCastlingSquares(color)[1], board));
     }
 
 
@@ -101,8 +101,8 @@ public class CastlingMoveGeneratorDelegate implements MoveGeneratorDelegate {
             }
         }
 
-        return !(boardSeeker.isAttackedBy(color.getOpposite(), getQueenSideCastlingSquares(color)[0], board) ||
-                boardSeeker.isAttackedBy(color.getOpposite(), getQueenSideCastlingSquares(color)[1], board));
+        return !(boardSeeker.isAttackedBy(color.opponent(), getQueenSideCastlingSquares(color)[0], board) ||
+                boardSeeker.isAttackedBy(color.opponent(), getQueenSideCastlingSquares(color)[1], board));
 
     }
 

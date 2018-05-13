@@ -1,5 +1,6 @@
 package com.erikmafo.chess.gui.components;
 
+import com.erikmafo.chess.gui.model.BoardLocation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
@@ -18,7 +19,6 @@ import javafx.scene.shape.Rectangle;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +46,6 @@ public class Chessboard extends Pane {
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
 
-
         try {
             fxmlLoader.load();
         } catch (IOException e) {
@@ -63,10 +62,7 @@ public class Chessboard extends Pane {
         content.setOnMouseClicked(event -> {
             squareClickedHandler.handle(newChessboardEvent(ChessboardEvent.SQUARE_CLICKED, event));
         });
-
-
     }
-
 
     private ChessboardEvent newChessboardEvent(EventType<ChessboardEvent> eventEventType, MouseEvent mouseEvent) {
 
@@ -75,12 +71,9 @@ public class Chessboard extends Pane {
 
 
         return new ChessboardEvent(mouseEvent, this, eventEventType, new BoardLocation(getFileIndex(x), getRankIndex(y)));
-
     }
 
-
     private final char[] files = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
-
 
     private void generateSquares() {
         for (int i = 0; i < 8; i++) {
@@ -164,11 +157,7 @@ public class Chessboard extends Pane {
             piece.layoutYProperty().bind(rankCoordinate(to.getRank()));
             pieceImageViewMap.put(to, piece);
         }
-
-
     }
-
-
 
     /**
      * Puts the piece on the square with the specified name, e.g. "e2", "a4".
@@ -184,8 +173,6 @@ public class Chessboard extends Pane {
             put(new BoardLocation(square), pieceImageView);
         }
     }
-
-
 
     public void put(BoardLocation boardLocation, PieceImageView pieceImageView) {
 
@@ -210,7 +197,6 @@ public class Chessboard extends Pane {
 
     }
 
-
     @Nullable
     private Node findSquare(String square) {
         Node node = null;
@@ -223,7 +209,6 @@ public class Chessboard extends Pane {
         }
         return node;
     }
-
 
     public boolean remove(BoardLocation boardLocation) {
 
@@ -246,7 +231,6 @@ public class Chessboard extends Pane {
     private int getRankIndex(double y) {
         return 7 - (int) (y / getSquareSize());
     }
-
 
     private Node makeDraggable(final PieceImageView piece) {
         final DragContext dragContext = new DragContext();
@@ -334,7 +318,6 @@ public class Chessboard extends Pane {
         return file >=0 && file <=7 && rank >= 0 && rank <= 7;
     }
 
-
     private static final class DragContext {
         public double mouseAnchorX;
         public double mouseAnchorY;
@@ -343,6 +326,4 @@ public class Chessboard extends Pane {
 
 
     }
-
-
 }

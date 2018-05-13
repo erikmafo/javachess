@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
  * Created by erikmafo on 27.11.16.
  */
 @RunWith(JUnitParamsRunner.class)
-public class AlphaBetaSearchTest {
+public class AlphaBetaSearchAlgorithmTest {
 
     private BoardToIntFunction evaluationFunction;
     private Board board = mock(Board.class);
@@ -76,7 +76,7 @@ public class AlphaBetaSearchTest {
     }
 
     private PieceColor getColorToMove() {
-        return played.size() % 2 == 0 ? firstToMove : firstToMove.getOpposite();
+        return played.size() % 2 == 0 ? firstToMove : firstToMove.opponent();
     }
 
     private void setFirstToMove(PieceColor firstToMove) {

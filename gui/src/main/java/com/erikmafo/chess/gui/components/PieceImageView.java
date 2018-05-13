@@ -15,7 +15,6 @@ import java.util.Objects;
  */
 public class PieceImageView extends ImageView {
 
-
     private final String[] validColors = {"black", "white"};
     private final String[] validPieceTypes = {"pawn", "bishop", "knight", "rook", "queen", "king"};
 
@@ -23,7 +22,6 @@ public class PieceImageView extends ImageView {
     private final String pieceType;
 
     private final BooleanProperty isDraggable = new SimpleBooleanProperty();
-
 
     public PieceImageView(PieceImageView other) {
         this.color = new SimpleStringProperty(other.getColor());
@@ -48,7 +46,6 @@ public class PieceImageView extends ImageView {
             throw new IllegalArgumentException("Unknown piece type");
         }
     }
-
 
     private Image loadImage(String color, String pieceType) {
         return new Image(getClass().getResourceAsStream("/images/pieces/" + color + "_" + pieceType + ".png"));
@@ -77,7 +74,6 @@ public class PieceImageView extends ImageView {
     public String getPieceType() {
         return pieceType;
     }
-
 
     public boolean isSamePiece(PieceImageView other) {
         return Objects.equals(color, other.color) && Objects.equals(color, other.color);

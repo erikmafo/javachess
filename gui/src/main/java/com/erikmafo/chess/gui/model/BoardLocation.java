@@ -1,4 +1,4 @@
-package com.erikmafo.chess.gui.components;
+package com.erikmafo.chess.gui.model;
 
 import java.util.Arrays;
 
