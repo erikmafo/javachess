@@ -1,5 +1,6 @@
 package com.erikmafo.chess2;
 
+import com.erikmafo.chess.board.Square;
 import com.erikmafo.chess.piece.PieceColor;
 import com.erikmafo.chess.piece.PieceType;
 import com.erikmafo.chess.utils.parser.FenParseException;
@@ -24,10 +25,19 @@ import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 
 @RunWith(JUnitParamsRunner.class)
 public class MoveGenerationIT {
+
+    @Test
+    public void testPlayAndUndoMove() throws Exception {
+        String fen = "n1n5/1Pk5/8/8/8/8/5Kp1/5N1N w - - 0 1";
+        Board board = Fen.toX88Board(fen);
+        LeafNodeCount count = new LeafNodeCount();
+        countGeneratedMovesRecursive(count, board, 2);
+    }
 
     @Test
     @FileParameters(value = "src/it/resources/perft.csv")
@@ -52,7 +62,7 @@ public class MoveGenerationIT {
             assertThat("count correct number of leaf nodes at depth " + depth +  " starting from position: " + fen,
                     leafNodeCount.total, is(expectedLeafNodes));
 
-            if (depth == 3)
+            if (depth == 4)
                 break;
         }
     }
@@ -120,7 +130,9 @@ public class MoveGenerationIT {
             return;
         }
 
-        for (Move move : board.generateMoves()) {
+        List<Move> moves = board.generateMoves();
+
+        for (Move move : moves) {
             board.play(move);
             if (!board.isChecked(move.getMovingColor())) {
                 countGeneratedMovesRecursive(leafNodeCount, board, depthLeft - 1);
@@ -129,6 +141,10 @@ public class MoveGenerationIT {
                 }
             }
             board.undoLastMove();
+
+            if (moves.stream().anyMatch(m -> board.at(m.from()) == null)) {
+                fail("Failed to undo move correctly: " + move);
+            }
         }
     }
 

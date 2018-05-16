@@ -606,4 +606,48 @@ public class X88BoardTest {
         assertThat(moves, hasPromotionMoves(PieceColor.WHITE, Square.E7, Square.F8, PieceType.KNIGHT));
         assertThat(moves.size(), is(4));
     }
+
+    @Test
+    public void shouldPlayPawnPromotionMoveCorrectly() throws Exception {
+
+        //Given
+        Piece pawn = new Piece(PieceColor.WHITE, PieceType.PAWN);
+        Map<Square, Piece> map = new HashMap<>();
+        map.put(Square.E7, pawn);
+        Board board = new X88Board(map, PieceColor.WHITE);
+
+        //When
+        Move move = board.generateMoves()
+                .stream().filter(m -> m.kind().equals(Move.Kind.KNIGHT_PROMOTION))
+                .findFirst()
+                .get();
+
+        board.play(move);
+
+        //Then
+        assertThat(board.at(Square.E8).getColor(), is(PieceColor.WHITE));
+        assertThat(board.at(Square.E8).getType(), is(PieceType.KNIGHT));
+    }
+
+    @Test
+    public void shouldUndoPawnPromotionCorrectly() throws Exception {
+
+        //Given
+        Piece pawn = new Piece(PieceColor.WHITE, PieceType.PAWN);
+        Map<Square, Piece> map = new HashMap<>();
+        map.put(Square.E7, pawn);
+        Board board = new X88Board(map, PieceColor.WHITE);
+
+        //When
+        Move move = board.generateMoves()
+                .stream().filter(m -> m.kind().equals(Move.Kind.KNIGHT_PROMOTION))
+                .findFirst()
+                .get();
+
+        board.play(move);
+        board.undoLastMove();
+
+        //Then
+        assertThat(board.at(Square.E7), is(pawn));
+    }
 }

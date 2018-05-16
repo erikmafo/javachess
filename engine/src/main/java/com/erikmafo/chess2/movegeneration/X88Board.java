@@ -62,7 +62,7 @@ public class X88Board implements Board {
             initialCastlingRightMap.put(PieceColor.BLACK, CastlingRight.BOTH);
         }
 
-        if(!isValidBaord()) {
+        if(!isValidBoard()) {
             throw new AssertionError("Invalid state in board");
         }
     }
@@ -85,23 +85,31 @@ public class X88Board implements Board {
         assert move.from().isOnBoard();
         assert move.to().isOnBoard();
 
-        pieces.put(move.to(), pieces.remove(move.from()));
+        putPiece(move.to(), pieces.remove(move.from()));
 
         if (Move.Kind.KING_SIDE_CASTLE.equals(move.kind())){
             Square rookInitialSquare = move.from().next(BasicOffset.RIGHT, 3);
             Square rookTargetSquare = rookInitialSquare.next(BasicOffset.LEFT, 2);
-            pieces.put(rookTargetSquare, pieces.remove(rookInitialSquare));
+            putPiece(rookTargetSquare, pieces.remove(rookInitialSquare));
             hasCastled.put(move.getMovingColor(), true);
         } else if (Move.Kind.QUEEN_SIDE_CASTLE.equals(move.kind())) {
             Square rookInitialSquare = move.from().next(BasicOffset.LEFT, 4);
             Square rookTargetSquare = rookInitialSquare.next(BasicOffset.RIGHT, 3);
-            pieces.put(rookTargetSquare, pieces.remove(rookInitialSquare));
+            putPiece(rookTargetSquare, pieces.remove(rookInitialSquare));
             hasCastled.put(move.getMovingColor(), true);
         } else if (Move.Kind.EN_PASSENT.equals(move.kind())) {
             Offset offset = move.getMovingColor().isWhite() ? BasicOffset.DOWN : BasicOffset.UP;
             Square capturedPieceSquare = move.to().next(offset);
             Piece captured = pieces.remove(capturedPieceSquare);
             assert captured != null;
+        } else if (Move.Kind.BISHOP_PROMOTION.equals(move.kind())) {
+            putPiece(move.to(), new Piece(move.getMovingColor(), PieceType.BISHOP));
+        } else if (Move.Kind.KNIGHT_PROMOTION.equals(move.kind())) {
+            putPiece(move.to(), new Piece(move.getMovingColor(), PieceType.KNIGHT));
+        } else if (Move.Kind.ROOK_PROMOTION.equals(move.kind())) {
+            putPiece(move.to(), new Piece(move.getMovingColor(), PieceType.ROOK));
+        } else if (Move.Kind.QUEEN_PROMOTION.equals(move.kind())) {
+            putPiece(move.to(), new Piece(move.getMovingColor(), PieceType.QUEEN));
         }
 
         int castlingSquareIndex = toCastlingSquareIndex(move.to());
@@ -114,10 +122,14 @@ public class X88Board implements Board {
         moveHistory.push(move);
         moveCount++;
 
-        assert isValidBaord();
+        assert isValidBoard() : move;
     }
 
-    private boolean isValidBaord() {
+    private void putPiece(@NotNull Square square, @NotNull Piece piece) {
+        pieces.put(square, piece);
+    }
+
+    private boolean isValidBoard() {
 
         for (Square square : pieces.keySet()) {
             Piece piece = pieces.get(square);
@@ -136,27 +148,27 @@ public class X88Board implements Board {
         colorToMove = lastMove.getMovingColor();
         Piece piece = pieces.remove(lastMove.to());
 
-        pieces.put(lastMove.from(), piece);
+        putPiece(lastMove.from(), piece);
 
         if (Move.Kind.CAPTURE.equals(lastMove.kind())) {
-            pieces.put(lastMove.to(),
+            putPiece(lastMove.to(),
                     new Piece(lastMove.getMovingColor().opponent(), lastMove.getCapturedPieceType()));
         } else if (Move.Kind.EN_PASSENT.equals(lastMove.kind())) {
             Offset offset = lastMove.getMovingColor().isWhite() ? BasicOffset.DOWN : BasicOffset.UP;
             Square square = lastMove.to().next(offset);
-            pieces.put(square, new Piece(lastMove.getMovingColor().opponent(), PieceType.PAWN));
+            putPiece(square, new Piece(lastMove.getMovingColor().opponent(), PieceType.PAWN));
         } else if (Move.Kind.KING_SIDE_CASTLE.equals(lastMove.kind())) {
             Square rookFromSquare = lastMove.from().next(BasicOffset.RIGHT);
             Square rookToSquare = rookFromSquare.next(BasicOffset.RIGHT, 2);
-            pieces.put(rookToSquare, pieces.remove(rookFromSquare));
+            putPiece(rookToSquare, pieces.remove(rookFromSquare));
             hasCastled.put(lastMove.getMovingColor(), false);
-            assert isValidBaord();
         } else if (Move.Kind.QUEEN_SIDE_CASTLE.equals(lastMove.kind())) {
             Square rookFromSquare = lastMove.from().next(BasicOffset.LEFT);
             Square rookTargetSquare = rookFromSquare.next(BasicOffset.LEFT, 3);
-            pieces.put(rookTargetSquare, pieces.remove(rookFromSquare));
+            putPiece(rookTargetSquare, pieces.remove(rookFromSquare));
             hasCastled.put(lastMove.getMovingColor(), false);
-            assert isValidBaord();
+        } else if (isPawnPromotion(lastMove.kind())) {
+            putPiece(lastMove.from(), new Piece(lastMove.getMovingColor(), PieceType.PAWN));
         }
 
         int castlingSquareIndex = toCastlingSquareIndex(lastMove.to());
@@ -167,7 +179,14 @@ public class X88Board implements Board {
 
         moveCount--;
 
-        assert isValidBaord();
+        assert isValidBoard() : lastMove;
+    }
+
+    private boolean isPawnPromotion(Move.Kind kind) {
+        return kind == Move.Kind.QUEEN_PROMOTION ||
+                kind == Move.Kind.ROOK_PROMOTION ||
+                kind == Move.Kind.BISHOP_PROMOTION ||
+                kind == Move.Kind.KNIGHT_PROMOTION;
     }
 
     private Square getEnPassentTarget() {
@@ -370,6 +389,8 @@ public class X88Board implements Board {
 
             generator.generateMoves(moves, colorToMove, square);
         }
+
+        assert moves.stream().allMatch(move -> pieces.containsKey(move.from()));
 
         return moves;
     }

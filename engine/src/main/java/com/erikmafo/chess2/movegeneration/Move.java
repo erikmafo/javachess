@@ -111,9 +111,7 @@ public class Move implements Comparable<Move> {
         return 0;
     }
 
-    @Override
-    public String toString() {
-
+    public String toLongAlgebraic() {
         String moveAsString;
 
         if (kind().equals(Kind.KING_SIDE_CASTLE)) {
@@ -125,5 +123,17 @@ public class Move implements Comparable<Move> {
         }
 
         return moveAsString;
+    }
+
+    @Override
+    public String toString() {
+        return "Move{" +
+                "color=" + movingColor +
+                ", movingPiece=" + movingPiece +
+                ", kind=" + kind +
+                ", from=" + from +
+                ", to=" + to +
+                ", capturedPiece=" + capturedPieceType +
+                '}';
     }
 }
