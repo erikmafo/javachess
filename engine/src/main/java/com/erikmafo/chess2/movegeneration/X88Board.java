@@ -150,13 +150,13 @@ public class X88Board implements Board {
 
         putPiece(lastMove.from(), piece);
 
-        if (Move.Kind.CAPTURE.equals(lastMove.kind())) {
-            putPiece(lastMove.to(),
-                    new Piece(lastMove.getMovingColor().opponent(), lastMove.getCapturedPieceType()));
-        } else if (Move.Kind.EN_PASSENT.equals(lastMove.kind())) {
+        if (Move.Kind.EN_PASSENT.equals(lastMove.kind())) {
             Offset offset = lastMove.getMovingColor().isWhite() ? BasicOffset.DOWN : BasicOffset.UP;
             Square square = lastMove.to().next(offset);
             putPiece(square, new Piece(lastMove.getMovingColor().opponent(), PieceType.PAWN));
+        } else if (lastMove.getCapturedPieceType() != null) {
+            putPiece(lastMove.to(),
+                    new Piece(lastMove.getMovingColor().opponent(), lastMove.getCapturedPieceType()));
         } else if (Move.Kind.KING_SIDE_CASTLE.equals(lastMove.kind())) {
             Square rookFromSquare = lastMove.from().next(BasicOffset.RIGHT);
             Square rookToSquare = rookFromSquare.next(BasicOffset.RIGHT, 2);

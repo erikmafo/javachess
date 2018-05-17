@@ -1,32 +1,22 @@
 package com.erikmafo.chess2;
-
 import com.erikmafo.chess.board.Square;
-import com.erikmafo.chess.piece.PieceColor;
 import com.erikmafo.chess.piece.PieceType;
-import com.erikmafo.chess.utils.parser.FenParseException;
 import com.erikmafo.chess2.movegeneration.Board;
 import com.erikmafo.chess2.movegeneration.Move;
 import com.erikmafo.chess2.utils.Fen;
 import junitparams.FileParameters;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import junitparams.mappers.DataMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
-import java.io.BufferedReader;
-import java.io.Reader;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
-
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-
 
 @RunWith(JUnitParamsRunner.class)
 public class MoveGenerationIT {
@@ -62,7 +52,7 @@ public class MoveGenerationIT {
             assertThat("count correct number of leaf nodes at depth " + depth +  " starting from position: " + fen,
                     leafNodeCount.total, is(expectedLeafNodes));
 
-            if (depth == 4)
+            if (depth == 2)
                 break;
         }
     }
@@ -115,11 +105,12 @@ public class MoveGenerationIT {
 
         //Then
         assertThat("is correct en passent count", leafNodeCount.enPassent, is(enPassent));
-        assertThat("is correct promotion count", leafNodeCount.promotions, is(promotions));
+        assertThat("is correct castles count", leafNodeCount.castles, is(catles));
         assertThat("is correct check count", leafNodeCount.checks, is(checks));
         assertThat("is correct capture count", leafNodeCount.captures, is(captures));
+        assertThat("is correct promotion count", leafNodeCount.promotions, is(promotions));
         assertThat("is correct leaf node count", leafNodeCount.total, is(nodes));
-        assertThat("is correct castles count", leafNodeCount.castles, is(catles));
+
     }
 
     private void countGeneratedMovesRecursive(LeafNodeCount leafNodeCount, Board board, int depthLeft) {
@@ -133,6 +124,20 @@ public class MoveGenerationIT {
         List<Move> moves = board.generateMoves();
 
         for (Move move : moves) {
+
+
+            if (moves.stream().anyMatch(m -> board.at(m.from()) == null)) {
+                fail("Failed to undo move correctly: " + move);
+            }
+            if (move.from().equals(Square.G2)
+                    && move.to().equals(Square.H1)
+                    && move.kind().equals(Move.Kind.KNIGHT_PROMOTION)
+                    && move.getCapturedPieceType().equals(PieceType.KNIGHT)) {
+                System.out.print("");
+            }
+            if (move.from().equals(Square.F1) && move.to().equals(Square.E3) && move.getMovingColor().isWhite()) {
+                System.out.println("");
+            }
             board.play(move);
             if (!board.isChecked(move.getMovingColor())) {
                 countGeneratedMovesRecursive(leafNodeCount, board, depthLeft - 1);
